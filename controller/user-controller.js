@@ -7,5 +7,8 @@ module.exports={
     },
     signup_page:(req,res)=>{
         res.render('user/signup')
+    },
+    otp_page:(req,res)=>{
+        res.render('user/otp-page')
     }
 }
