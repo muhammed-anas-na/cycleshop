@@ -1,0 +1,11 @@
+module.exports={
+    loadHome:(req,res)=>{
+        res.render('user/index')
+    },
+    Login_page:(req,res)=>{
+        res.render('user/login-page')
+    },
+    signup_page:(req,res)=>{
+        res.render('user/signup')
+    }
+}
