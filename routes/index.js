@@ -7,7 +7,7 @@ router.get('/', function(req, res, next) {
 });
 
 router.get('/login' , (req,res)=>{
-  res.render('user/login-page.ejs')
+  res.render('user/login-page')
 })
 
 module.exports = router;
