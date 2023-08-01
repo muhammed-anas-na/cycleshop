@@ -1,79 +1,112 @@
-
 <style>
-    body {
-        color: #999;
-        background: #fafafa;
-        font-family: 'Roboto', sans-serif;
-    }
-    .form-control {
-        min-height: 41px;
-        box-shadow: none;
-        border-color: #e6e6e6;
-    }
-    .form-control:focus {
-        border-color: #00c1c0;
-    }
-    .form-control, .btn {        
-        border-radius: 3px;
-    }
-    .signup-form {
-        width: 425px;
-        margin: 0 auto;
-        padding: 30px 0;
-    }
-    .signup-form h2 {
-        color: #333;
-        font-weight: bold;
-        margin: 0 0 25px;
-    }
-    .signup-form form {
-        margin-bottom: 15px;
-        background: #fff;
-        border: 1px solid #f4f4f4;
-        box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
-        padding: 40px 50px;
-    }
-    .signup-form .form-group {
-        margin-bottom: 20px;
-    }
-    .signup-form label {
-        font-weight: normal;
-        font-size: 14px;
-    }
-    .signup-form input[type="checkbox"] {
-        position: relative;
-        top: 1px;
-    }    
-    .signup-form .btn, .signup-form .btn:active {        
-        font-size: 16px;
-        font-weight: bold;
-        background: #00c1c0 !important;
-        border: none;
-        min-width: 140px;
-    }
-    .signup-form .btn:hover, .signup-form .btn:focus {
-        background: #00b3b3 !important;
-    }
-    .signup-form a {
-        color: #00c1c0;
-        text-decoration: none;
-    }	
-    .signup-form a:hover {
-        text-decoration: underline;
-    }
-    </style>
-    </head>
-    <body>
-    <div class="signup-form">
-        <form action="/signup" method="post">
-            <h2>Confirm your otp</h2>
-            <p>An otp has send into your email.</p>
-            <div class="form-group">
-                <input id="name" type="text" class="form-control" name="otp" placeholder="Enter your otp" required="required">
-            </div>
-            <div class="form-group">
-                <button onclick="validate()" type="submit" class="btn btn-primary btn-lg">CONFIRM</button>
-                <p id="err-msg"></p>
-            </div>
-        </form>
+    @import url("https://fonts.googleapis.com/css2?family=Lato:wght@100;300;400;700&display=swap");
+
+html {
+  background-color: rgb(102, 159, 178);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  text-align: center;
+  font-family: "Lato", sans-serif;
+}
+
+section {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: space-around;
+  width: 40vw;
+  min-width: 350px;
+  height: 80vh;
+  background-color: white;
+  border-radius: 12px;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px,
+    rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
+  padding: 24px 0px;
+}
+svg {
+  margin: 16px 0;
+}
+title {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+p {
+  color: #a3a3a3;
+  font-size: 14px;
+  width: 200px;
+  margin-top: 4px;
+}
+input {
+  width: 32px;
+  height: 32px;
+  text-align: center;
+  border: none;
+  border-bottom: 1.5px solid #d2d2d2;
+  margin: 0 10px;
+}
+
+input:focus {
+  border-bottom: 1.5px solid deepskyblue;
+  outline: none;
+}
+
+button {
+  width: 250px;
+  letter-spacing: 2px;
+  margin-top: 24px;
+  padding: 12px 16px;
+  border-radius: 8px;
+  border: none;
+  background-color: #33cdff;
+  color: white;
+  cursor: pointer;
+}
+</style>
+<head>
+    <link rel="stylesheet" href="css/userOTP.css">
+</head>
+   
+
+<section style="height:25rem; width: 20rem;">
+    
+   
+    <h3>Enter OTP</h3>
+    <p>We have sent a verification code to your Given email</p>
+    <div id='inputs'>
+      <input id='input1' type='text' maxLength="1" />
+      <input id='input2' type='text' maxLength="1" />
+      <input id='input3' type='text' maxLength="1" />
+      <input id='input4' type='text' maxLength="1" />
     </div>
+    <button>Submit</button>
+  </section>
+
+  <script>
+    const inputs = ["input1", "input2", "input3", "input4"];
+
+inputs.map((id) => {
+  const input = document.getElementById(id);
+  addListener(input);
+});
+
+function addListener(input) {
+  input.addEventListener("keyup", () => {
+    const code = parseInt(input.value);
+    if (code >= 0 && code <= 9) {
+      const n = input.nextElementSibling;
+      if (n) n.focus();
+    } else {
+      input.value = "";
+    }
+
+    const key = event.key; // const {key} = event; ES6+
+    if (key === "Backspace" || key === "Delete") {
+      const prev = input.previousElementSibling;
+      if (prev) prev.focus();
+    }
+  });
+}
+  </script>
