@@ -1,5 +1,7 @@
 const config = require('../config/config')
 const nodemailer = require('nodemailer')
+const user = require('../models/user-model')
+const bcrypt = require('bcrypt')
 
 module.exports={
     loadHome:(req,res)=>{
@@ -14,7 +16,6 @@ module.exports={
     otp_page:(req,res)=>{
         otp = Math.floor(1000 + Math.random() * 9000).toString()
         req.session.otp = otp
-        res.render('user/otp-page' ,{email:req.body.email})
         const transport = nodemailer.createTransport({
             service:'gmail',
             auth:{
@@ -28,22 +29,47 @@ module.exports={
             subject:'CycleShop otp varification',
             text:`Thank you for choosing CycleShop. Use the following OTP to complete your Sign Up procedures. ${otp} `
         }
-        transport.sendMail(mailObj , (err , status)=>{
+        transport.sendMail(mailObj ,async (err , status)=>{
             if(err){
                 console.log('Err' , err)
             }else{
-                console.log("Sucess" , req.session)
+                req.body.password = await bcrypt.hash(req.body.password,10)
+                let use = new user({
+                    name:req.body.name,
+                    email:req.body.email,
+                    number:req.body.number,
+                    password:req.body.password,
+                    verified:0,
+                })
+
+                await use.save().then((data)=>{
+                    console.log("Sucess" , req.session)
+                    res.render('user/otp-page' ,{email:req.body.email , id:use._id})
+                }).catch((err)=>{
+                    console.log(err);
+                })
+                
             }
         })
     },
-    checkOtp:(req,res)=>{
+    checkOtp:async (req,res)=>{
         console.log(req.body.otp.join(''))
         console.log(req.session);
+        console.log(req.params.id)
         console.log("otp"+ req.session.otp);
         if(req.session.otp == req.body.otp.join('')){
-            console.log("Login success");
+            await user.findOneAndUpdate({_id:req.params.id} , {verified:1} , {new:true}).then((updated)=>{
+                console.log(updated)
+                req.session.loggedIn = true;
+                req.session.user = user;
+                res.redirect('/')
+            }).catch((err)=>{
+                console.log(err)
+                res.redirect('/signup')
+            })
         }else{
             console.log("Not success");
+            res.redirect('/signup')
         }
     }
 }

@@ -17,7 +17,11 @@ let userModel = new mongoose.Schema({
     password:{
         type:String,
         require:true
-    }
+    },
+    verified:{
+        type:Number,
+        require:true,
+    },
 });
 
 module.exports = mongoose.model('users' , userModel)

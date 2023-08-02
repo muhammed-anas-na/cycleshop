@@ -1,0 +1,9 @@
+module.exports={
+    isLogin:(req,res)=>{
+        if(req.session.loggedIn){
+            next()
+        }else{
+            res.redirect('/login')
+        }
+    }
+}

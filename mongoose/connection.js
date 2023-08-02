@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 module.exports={
     connect(){
-        mongoose.connect('mongodb://0.0.0.0:27017/latestdb', {
+        mongoose.connect('mongodb://0.0.0.0:27017/cycleshop', {
             useNewUrlParser: true,
             useUnifiedTopology: true
             })
