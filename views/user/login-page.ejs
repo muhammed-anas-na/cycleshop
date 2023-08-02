@@ -1,44 +1,101 @@
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
 
-<section class="vh-100" style="background-color: #508bfc;">
-  <div class="container py-3 h-100">
-    <div class="row d-flex justify-content-center align-items-center h-100">
-      <div class="col-12 col-md-8 col-lg-6 col-xl-5">
-        <div class="card shadow-2-strong" style="border-radius: 1rem;">
-          <div class="card-body p-5 text-center">
-
-            <h3 class="mb-5">Sign in</h3>
-
-            <div class="form-outline mb-4">
-              <input type="email" id="typeEmailX-2" class="form-control form-control-lg" />
-              <label class="form-label" for="typeEmailX-2">Email</label>
-            </div>
-
-            <div class="form-outline mb-4">
-              <input type="password" id="typePasswordX-2" class="form-control form-control-lg" />
-              <label class="form-label" for="typePasswordX-2">Password</label>
-            </div>
-
-            <!-- Checkbox -->
-            <div class="form-check d-flex justify-content-start mb-4">
-              <input class="form-check-input" type="checkbox" value="" id="form1Example3" />
-              <label class="form-check-label" for="form1Example3"> Remember password </label>
-            </div>
-
-            <button class="btn btn-primary btn-lg btn-block mb-4" type="submit">Login</button><br>
-            <small><a href="/signup">Don't have an account?</a></small><br>
-            <small><a href="">Forgot password?</a></small>
-
-            <hr class="my-4">
-              <a href="" class="btn btn-primary">Google</a>
-              <a href="#" class="btn btn-danger">Facebook</a>
+<style>
+  body {
+    color: #999;
+    background: #fafafa;
+    font-family: 'Roboto', sans-serif;
+  }
+  .form-control {
+    min-height: 41px;
+    box-shadow: none;
+    border-color: #e6e6e6;
+  }
+  .form-control:focus {
+    border-color: #00c1c0;
+  }
+  .form-control, .btn {        
+    border-radius: 3px;
+  }
+  .signup-form {
+    width: 425px;
+    margin: 0 auto;
+    padding: 30px 0;
+  }
+  .signup-form h2 {
+    color: #333;
+    font-weight: bold;
+    margin: 0 0 25px;
+  }
+  .signup-form form {
+    margin-bottom: 15px;
+    background: #fff;
+    border: 1px solid #f4f4f4;
+    box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+    padding: 40px 50px;
+  }
+  .signup-form .form-group {
+    margin-bottom: 20px;
+  }
+  .signup-form label {
+    font-weight: normal;
+    font-size: 14px;
+  }
+  .signup-form input[type="checkbox"] {
+    position: relative;
+    top: 1px;
+  }    
+  .signup-form .btn, .signup-form .btn:active {        
+    font-size: 16px;
+    font-weight: bold;
+    background: #00c1c0 !important;
+    border: none;
+    min-width: 140px;
+  }
+  .signup-form .btn:hover, .signup-form .btn:focus {
+    background: #00b3b3 !important;
+  }
+  .signup-form a {
+    color: #00c1c0;
+    text-decoration: none;
+  }	
+  .signup-form a:hover {
+    text-decoration: underline;
+  }
+  </style>
+  </head>
+  <body>
+  <div class="signup-form">
+      <form action="/login" method="post">
+      <h2>Log In</h2>
+          <div class="form-group">
+            <input id="email" type="email" class="form-control" name="email" placeholder="Email Address" required="required">
           </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
+          <div class="form-group">
+              <input id="password" type="password" class="form-control" name="password" placeholder="Password" required="required">
+          </div>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.min.js" integrity="sha384-Rx+T1VzGupg4BHQYs2gCW9It+akI2MM/mndMCy36UVfodzcJcF0GGLxZIzObiEfa" crossorigin="anonymous"></script>
+      <div class="form-group">
+              <button onclick="validate()" type="submit" class="btn btn-primary btn-lg">Login</button>
+              <p id="err-msg"></p>
+          </div>
+      </form>
+    <div class="text-center">Create an account <a href="/signup">Signup here</a></div>
+  
+      
+  </div>
+  
+  
+  <script>
+      function validate(){
+          document.getElementById('err-msg').innerHTML = ''
+          
+          const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
+          let password = document.getElementById('password').value;
+          if(passwordRegex.test(password)){}else{
+            document.getElementById('err-msg').innerHTML = document.getElementById('err-msg').innerHTML + '<br> Password error'
+            document.getElementById('password').style.borderColor = 'red'
+            //alert('Password Error 1:Minimum 8 charecters 2:use charecters and number 3:no white spaces')
+            event.preventDefault()
+          }
+      }
+    </script>

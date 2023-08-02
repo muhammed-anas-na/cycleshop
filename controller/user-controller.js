@@ -71,5 +71,28 @@ module.exports={
             console.log("Not success");
             res.redirect('/signup')
         }
+    },
+    doLogin:async (req,res)=>{
+        console.log("Do login");
+        let userExist = await user.findOne({email:req.body.email}).lean()
+        console.log(userExist);
+        if(userExist){
+            bcrypt.compare(req.body.password,userExist.password).then((status)=>{
+                console.log(status);
+                if(status){
+                    req.session.loggedIn = true;
+                    req.session.user = userExist;
+                    res.redirect('/')
+                }else{
+                    res.redirect('/login')
+                }
+            }).catch((err)=>{
+                console.log(err);
+                res.redirect('/login')
+            })
+        }else{
+            console.log("No user found");
+            res.redirect('/login')
+        }
     }
 }
