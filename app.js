@@ -1,10 +1,10 @@
+const session = require('express-session')
 const createError = require('http-errors');
 const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const ejsLayout = require('express-ejs-layouts')
-const session = require('express-session')
 
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
@@ -21,14 +21,18 @@ app.set('views-user', path.join(__dirname, 'views/user'));
 app.set('views-admin', path.join(__dirname, 'views/admin'));
 app.use(ejsLayout)
 
+app.use(cookieParser());
+app.use(session({
+  secret:'secret-key',
+  resave: false,
+  saveUninitialized: true
+}))
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
+
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(session({
-  secret:'secret',
-}))
+
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);

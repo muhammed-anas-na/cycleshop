@@ -12,9 +12,9 @@ module.exports={
         res.render('user/signup')
     },
     otp_page:(req,res)=>{
-
+        otp = Math.floor(1000 + Math.random() * 9000).toString()
+        req.session.otp = otp
         res.render('user/otp-page' ,{email:req.body.email})
-        let otp = Math.floor(1000 + Math.random() * 9000)
         const transport = nodemailer.createTransport({
             service:'gmail',
             auth:{
@@ -32,10 +32,18 @@ module.exports={
             if(err){
                 console.log('Err' , err)
             }else{
-                req.session.otp = otp;
-                console.log("Sucess")
+                console.log("Sucess" , req.session)
             }
         })
-        
     },
+    checkOtp:(req,res)=>{
+        console.log(req.body.otp.join(''))
+        console.log(req.session);
+        console.log("otp"+ req.session.otp);
+        if(req.session.otp == req.body.otp.join('')){
+            console.log("Login success");
+        }else{
+            console.log("Not success");
+        }
+    }
 }

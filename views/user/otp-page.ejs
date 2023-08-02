@@ -75,13 +75,15 @@ button {
    
     <h3>Enter OTP</h3>
     <p>We have sent a verification code to your Given email</p>
+    <form action="/otp-page" method="post">
     <div id='inputs'>
-      <input id='input1' type='text' maxLength="1" />
-      <input id='input2' type='text' maxLength="1" />
-      <input id='input3' type='text' maxLength="1" />
-      <input id='input4' type='text' maxLength="1" />
+        <input name="otp" id='input1' type='text' maxLength="1" />
+        <input name="otp" id='input2' type='text' maxLength="1" />
+        <input name="otp" id='input3' type='text' maxLength="1" />
+        <input name="otp" id='input4' type='text' maxLength="1" />
     </div>
-    <button>Submit</button>
+    <button type="submit">Submit</button>
+  </form>
   </section>
 
   <script>
