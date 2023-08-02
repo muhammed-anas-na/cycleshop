@@ -75,8 +75,13 @@
           </div>
 
       <div class="form-group">
-              <button onclick="validate()" type="submit" class="btn btn-primary btn-lg">Login</button>
-              <p id="err-msg"></p>
+              <button onclick="validate()" type="submit" class="btn btn-primary btn-lg">Login</button><br>
+              <% if (user_err) { %>
+                <small>User Not found</small><br>
+              <% } %>
+              <% if (pass_err) { %>
+                <small>Wrong password</small>
+              <% } %>
           </div>
       </form>
     <div class="text-center">Create an account <a href="/signup">Signup here</a></div>
@@ -86,16 +91,4 @@
   
   
   <script>
-      function validate(){
-          document.getElementById('err-msg').innerHTML = ''
-          
-          const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
-          let password = document.getElementById('password').value;
-          if(passwordRegex.test(password)){}else{
-            document.getElementById('err-msg').innerHTML = document.getElementById('err-msg').innerHTML + '<br> Password error'
-            document.getElementById('password').style.borderColor = 'red'
-            //alert('Password Error 1:Minimum 8 charecters 2:use charecters and number 3:no white spaces')
-            event.preventDefault()
-          }
-      }
     </script>

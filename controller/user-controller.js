@@ -8,7 +8,9 @@ module.exports={
         res.render('user/index')
     },
     Login_page:(req,res)=>{
-        res.render('user/login-page')
+        res.render('user/login-page' , {user_err:req.session.no_user , pass_err:req.session.pass_err})
+        req.session.no_user=null;
+        req.session.pass_err=null;
     },
     signup_page:(req,res)=>{
         res.render('user/signup')
@@ -84,6 +86,7 @@ module.exports={
                     req.session.user = userExist;
                     res.redirect('/')
                 }else{
+                    req.session.pass_err = true;
                     res.redirect('/login')
                 }
             }).catch((err)=>{
@@ -92,6 +95,7 @@ module.exports={
             })
         }else{
             console.log("No user found");
+            req.session.no_user = true;
             res.redirect('/login')
         }
     }
