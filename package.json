@@ -13,6 +13,7 @@
     "express-ejs-layouts": "^2.5.1",
     "express-session": "^1.17.3",
     "http-errors": "~1.6.3",
+    "mongoose": "^7.4.1",
     "morgan": "~1.9.1",
     "nodemailer": "^6.9.4",
     "nodemon": "^3.0.1"
