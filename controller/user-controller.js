@@ -9,8 +9,8 @@ module.exports={
     },
     Login_page:(req,res)=>{
         res.render('user/login-page' , {user_err:req.session.no_user , pass_err:req.session.pass_err})
-        req.session.no_user=null;
-        req.session.pass_err=null;
+        req.session.no_user=false;
+        req.session.pass_err=false;
     },
     signup_page:(req,res)=>{
         res.render('user/signup')
@@ -98,5 +98,6 @@ module.exports={
             req.session.no_user = true;
             res.redirect('/login')
         }
-    }
+    },
+
 }

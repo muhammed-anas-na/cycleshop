@@ -22,6 +22,10 @@ let userModel = new mongoose.Schema({
         type:Number,
         require:true,
     },
+    otp:{
+        type:String,
+        default:0,
+    }
 });
 
 module.exports = mongoose.model('users' , userModel)
