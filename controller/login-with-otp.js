@@ -4,7 +4,8 @@ const config = require('../config/config')
 
 module.exports={
     login_otp:(req,res)=>{
-        res.render('user/login-otp')
+        console.log(req.session.no_user)
+        res.render('user/login-otp' ,{usererr:req.session.no_user})
     },
     sendmail:(req,res)=>{
         user.find({email:req.body.email}).then((data)=>{
@@ -40,6 +41,9 @@ module.exports={
                         })
                     }
                 })
+            }else{
+                req.session.no_user =true;
+                res.redirect('/login-otp')
             }
         })
     },
