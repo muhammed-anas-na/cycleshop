@@ -1,6 +1,6 @@
-const user = require('../models/user-model')
+const user = require('../../models/user-model')
 const nodemailer = require('nodemailer')
-const config = require('../config/config')
+const config = require('../../config/config')
 
 module.exports={
     login_otp:(req,res)=>{

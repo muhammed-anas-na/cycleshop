@@ -1,12 +1,12 @@
-const config = require('../config/config')
+const config = require('../../config/config')
 const nodemailer = require('nodemailer')
-const user = require('../models/user-model')
+const user = require('../../models/user-model')
 const bcrypt = require('bcrypt')
 
 
 module.exports={
     loadHome:(req,res)=>{
-        res.render('user/index')
+        res.render('user/index',{user:req.session.loggedIn})
     },
     Login_page:(req,res)=>{
         res.render('user/login-page' , {user_err:req.session.no_user , pass_err:req.session.pass_err})
@@ -56,13 +56,8 @@ module.exports={
         })
     },
     checkOtp:async (req,res)=>{
-        console.log(req.body.otp.join(''))
-        console.log(req.session);
-        console.log(req.params.id)
-        console.log("otp"+ req.session.otp);
         if(req.session.otp == req.body.otp.join('')){
             await user.findOneAndUpdate({_id:req.params.id} , {verified:1} , {new:true}).then((updated)=>{
-                console.log(updated)
                 req.session.loggedIn = true;
                 req.session.user = user;
                 res.redirect('/')
@@ -100,8 +95,5 @@ module.exports={
             res.redirect('/login')
         }
     },
-    loginWithGoogle:(req,res)=>{
-
-    }
 
 }

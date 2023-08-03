@@ -1,8 +1,8 @@
 const express = require('express');
 const router = express.Router();
-const userController = require('../controller/user-controller')
+const userController = require('../controller/user/user-controller')
 const auth = require('../Auth/auth')
-const login_with_otp = require('../controller/login-with-otp')
+const login_with_otp = require('../controller/user/login-with-otp')
 const passport = require('passport')
 
 /* GET home page. */

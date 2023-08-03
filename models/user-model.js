@@ -25,6 +25,11 @@ let userModel = new mongoose.Schema({
     otp:{
         type:String,
         default:0,
+    },
+    isAdmin:{
+        type:Number,
+        required:true,
+        default:0
     }
 });
 
