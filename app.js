@@ -6,6 +6,9 @@ const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const ejsLayout = require('express-ejs-layouts')
 const db = require('./mongoose/connection')
+const googlePassport = require('./passports/google')
+const passport = require('passport')
+
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
 
@@ -28,6 +31,8 @@ app.use(session({
   resave: false,
   saveUninitialized: true
 }))
+app.use(passport.initialize())
+app.use(passport.session())
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
