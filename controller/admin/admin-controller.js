@@ -1,5 +1,8 @@
 const user = require("../../models/user-model");
 const bcrypt = require('bcrypt');
+const { Rembg } = require('rembg-node');
+const sharp = require('sharp');
+const categoryModel = require('../../models/category-model')
 
 module.exports={
     dashboard:(req,res)=>{
@@ -22,14 +25,34 @@ module.exports={
         }).catch((err)=>{
             console.log(err)
         })
-        // if(admin.isAdmin == 1){
-            // bcrypt.compare(req.body.password , admin.password).then((status)=>{
-            //     if(status){
-            //         res.redirect('/')
-            //     }else{
-            //         res.redirect('/admin-login')
-            //     }
-            // })
-        // }
+    },
+    category:(req,res)=>{
+        res.render('admin/category')
+    },
+    addCategory:(req,res)=>{
+        (async () => {
+            const rembg = new Rembg({
+              logging: true,
+            });
+            // userController.createAcc(req.body).then((id)=>{})
+            let category = new categoryModel({
+                category:req.body.category,
+                base_price:req.body.basePrice,
+                description:req.body.description,
+                image:req.file.filename,
+            })
+            category.save().then((data)=>{
+                console.log(data)
+            })
+            try {
+              console.log(req.file)
+              const input = sharp(req.file.path);
+              const output = await rembg.remove(input);
+              await output.webp().toFile('./Images/'+req.file.filename);
+              res.redirect('/admin/category')
+            } catch (error) {
+              res.status(500).json({ error: 'An error occurred while processing the image.' });
+            }
+          })();
     }
 }

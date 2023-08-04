@@ -7,9 +7,13 @@ module.exports={
         console.log(req.session.no_user)
         res.render('user/login-otp' ,{usererr:req.session.no_user})
     },
+    sendEmail:(data)=>{
+
+    },
     sendmail:(req,res)=>{
         user.find({email:req.body.email}).then((data)=>{
             if(data.length!=0){
+                console.log("Send email inside")
                 otp = Math.floor(1000 + Math.random() * 9000).toString()
                 req.session.otp = otp
                 const transport = nodemailer.createTransport({
