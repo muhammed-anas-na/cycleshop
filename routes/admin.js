@@ -1,21 +1,24 @@
 const express = require('express');
 const router = express.Router();
-const adminController = require('../controller/admin/admin-controller')
 const multer = require('multer')
 const path = require('path');
+const adminController = require('../controller/admin/admin-controller')
+const categoryController = require('../controller/admin/category-controller')
 
+
+// router.use(express.static('Images'))
 /* GET users listing. */
 router.get('/',adminController.dashboard);
 router.get('/admin-login',adminController.login)
 router.post('/admin-login',adminController.doLogin)
 
-router.get('/category',adminController.category)
+router.get('/category',categoryController.category)
 
 //----------------->Add Category<------------------
 let pathname = Date.now()
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
-      cb(null, './Images');
+      cb(null, 'public/upload/category');
     },
     filename: (req, file, cb) => {
       console.log(Date.now());
@@ -25,5 +28,5 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage: storage });
 
-router.post('/add-category',upload.single('image'), adminController.addCategory)
+router.post('/add-category',upload.single('image'), categoryController.addCategory)
 module.exports = router;

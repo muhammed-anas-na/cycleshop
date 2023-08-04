@@ -2,7 +2,7 @@ const mongoose =  require('mongoose');
 
 
 let categoryModel = new mongoose.Schema({
-    name:{
+    category:{
         type:String,
         require:true,
     },
@@ -10,7 +10,7 @@ let categoryModel = new mongoose.Schema({
         type:Number,
         require:true,
     },
-    descrition:{
+    description:{
         type:String,
         require:true
     },

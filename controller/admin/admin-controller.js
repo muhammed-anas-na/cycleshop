@@ -26,33 +26,5 @@ module.exports={
             console.log(err)
         })
     },
-    category:(req,res)=>{
-        res.render('admin/category')
-    },
-    addCategory:(req,res)=>{
-        (async () => {
-            const rembg = new Rembg({
-              logging: true,
-            });
-            // userController.createAcc(req.body).then((id)=>{})
-            let category = new categoryModel({
-                category:req.body.category,
-                base_price:req.body.basePrice,
-                description:req.body.description,
-                image:req.file.filename,
-            })
-            category.save().then((data)=>{
-                console.log(data)
-            })
-            try {
-              console.log(req.file)
-              const input = sharp(req.file.path);
-              const output = await rembg.remove(input);
-              await output.webp().toFile('./Images/'+req.file.filename);
-              res.redirect('/admin/category')
-            } catch (error) {
-              res.status(500).json({ error: 'An error occurred while processing the image.' });
-            }
-          })();
-    }
+
 }
