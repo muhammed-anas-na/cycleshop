@@ -5,7 +5,12 @@ const multer = require('multer')
 
 module.exports={
     allProduct:(req,res)=>{
-        res.render('admin/view-products')
+        productModel.find({}).then((data)=>{
+            res.render('admin/view-products' , {data})
+        }).catch((err)=>{
+
+        })
+        
     },
     showAddProduct:(req,res)=>{
         categoryModel.find({}).then((data)=>{
@@ -34,5 +39,10 @@ module.exports={
         })
         await product.save()
 
+    },
+    deleteProduct:(req,res)=>{
+        productModel.findByIdAndDelete(req.params.id).then((status)=>{
+            res.redirect('/admin/all-products')
+        })
     }
 }

@@ -1,7 +1,5 @@
 const express = require('express');
 const router = express.Router();
-const multer = require('multer')
-const path = require('path');
 const categoryUpload = require("../multer/category-multer")
 const productUpload = require("../multer/product-multer")
 const adminController = require('../controller/admin/admin-controller')
@@ -22,5 +20,5 @@ router.get('/delete-category/:id' , categoryController.delete)
 router.get('/all-products' , productController.allProduct);
 router.get('/add-product', productController.showAddProduct);
 router.post('/add-product',productUpload.array('image',4) ,productController.addProduct)
-
+router.get('/delete-product/:id',productController.deleteProduct)
 module.exports = router;
