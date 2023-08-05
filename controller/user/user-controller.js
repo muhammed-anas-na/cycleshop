@@ -95,5 +95,8 @@ module.exports={
             res.redirect('/login')
         }
     },
+    showProducts:(req,res)=>{
+        res.render('user/show-products')
+    }
 
 }

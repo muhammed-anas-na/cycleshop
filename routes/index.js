@@ -24,6 +24,7 @@ router.get('/auth/google/callback',passport.authenticate('google', {
     failureRedirect: '/sad', 
 }));
 
+router.get('/show-products', userController.showProducts)
 
 
 module.exports = router;

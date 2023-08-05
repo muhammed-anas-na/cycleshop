@@ -21,11 +21,6 @@ module.exports={
     },
     addProduct:async (req,res)=>{
         console.log("AddProduct")
-        console.log(req.body)
-        console.log(req.files[0].filename)
-        console.log(req.files[1].filename)
-        console.log(req.files[2].filename)
-        console.log(req.files[3].filename)
         let product = new productModel({
           name:req.body.product_name,
           description:req.body.description,
