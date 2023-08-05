@@ -11,7 +11,8 @@ module.exports={
 
     },
     sendmail:(req,res)=>{
-        user.find({email:req.body.email}).then((data)=>{
+        req.session.email = req.body.email;
+        user.find({email:req.session.email}).then((data)=>{
             if(data.length!=0){
                 console.log("Send email inside")
                 otp = Math.floor(1000 + Math.random() * 9000).toString()
@@ -25,7 +26,7 @@ module.exports={
                 })
                 var mailObj = {
                     from:'anasna6005@gmail.com',
-                    to:req.body.email,
+                    to:req.session.email,
                     subject:'OTP LOGIN',
                     text:`Use this otp for logging in ${otp} `
                 }
@@ -34,7 +35,7 @@ module.exports={
                         console.log('Err' , err)
                     }else{
                         console.log("Succes" ,req.session)
-                        user.findOneAndUpdate({email:req.body.email} , {otp:req.session.otp},{new:true}).then((data)=>{
+                        user.findOneAndUpdate({email:req.session.email} , {otp:req.session.otp},{new:true}).then((data)=>{
                             setTimeout(()=>{
                                 user.findOneAndUpdate({otp:req.session.otp}, {$set:{otp:'0'}} , {new:true}).then((data)=>{
                                     console.log(data)
@@ -65,6 +66,9 @@ module.exports={
             }
         })
 
+    },
+    resendOtp:(req,res)=>{
+        res.send('Resend otp on progress...😉')
     }
 
 }

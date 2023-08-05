@@ -1,3 +1,7 @@
+const { Rembg } = require('rembg-node');
+const sharp = require('sharp');
+const categoryModel = require('../../models/category-model')
+
 module.exports={
     category:(req,res)=>{
         categoryModel.find({}).then((data)=>{
@@ -33,5 +37,10 @@ module.exports={
               res.status(500).json({ error: 'An error occurred while processing the image.' });
             }
           })();
+    },
+    delete:(req,res)=>{
+        categoryModel.findByIdAndDelete(req.params.id).then((status)=>{
+            res.redirect('/admin/category')
+        })
     }
 }

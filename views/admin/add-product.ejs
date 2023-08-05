@@ -2,7 +2,7 @@
 <html lang="en">
 
 
-<!-- Mirrored from wp.alithemes.com/html/evara/evara-backend/page-categories.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 01 Aug 2021 15:33:21 GMT -->
+<!-- Mirrored from wp.alithemes.com/html/evara/evara-backend/page-form-product-1.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 01 Aug 2021 15:33:31 GMT -->
 <head>
     <meta charset="utf-8">
     <title>Evara Dashboard</title>
@@ -37,24 +37,12 @@
                         <span class="text">Dashboard</span>
                     </a>
                 </li>
-                <li class="menu-item has-submenu active">
-                    <a class="menu-link" href="page-form-product-1.html"> <i class="icon material-icons md-add_box"></i>
-                        <span class="text">Category</span>
-                    </a>
-                    <div class="submenu">
-                        <a href="page-form-product-1.html">Add category</a>
-                        <a href="page-form-product-2.html">Add product 2</a>
-                        <a href="page-form-product-3.html">Add product 3</a>
-                        <a href="page-form-product-4.html">Add product 4</a>
-                    </div>
-                </li>
-    
                 <li class="menu-item has-submenu">
                     <a class="menu-link" href="page-products-list.html"> <i class="icon material-icons md-shopping_bag"></i>
                         <span class="text">Products</span>
                     </a>
                     <div class="submenu">
-                        <a href="page-products-list.html">Manage Products</a>
+                        <a href="page-products-list.html">Product List</a>
                         <a href="page-products-grid.html">Product grid</a>
                         <a href="page-products-grid-2.html">Product grid 2</a>
                         <a href="page-categories.html">Categories</a>
@@ -80,7 +68,17 @@
                         <a href="page-seller-detail.html">Seller profile</a>
                     </div>
                 </li>
-    
+                <li class="menu-item has-submenu active">
+                    <a class="menu-link" href="page-form-product-1.html"> <i class="icon material-icons md-add_box"></i>
+                        <span class="text">Add product</span>
+                    </a>
+                    <div class="submenu">
+                        <a href="page-form-product-1.html" class="active">Add product 1</a>
+                        <a href="page-form-product-2.html">Add product 2</a>
+                        <a href="page-form-product-3.html">Add product 3</a>
+                        <a href="page-form-product-4.html">Add product 4</a>
+                    </div>
+                </li>
                 <li class="menu-item has-submenu">
                     <a class="menu-link" href="page-transactions-1.html"> <i class="icon material-icons md-monetization_on"></i>
                         <span class="text">Transactions</span>
@@ -92,10 +90,10 @@
                 </li>
                 <li class="menu-item has-submenu">
                     <a class="menu-link" href="#"> <i class="icon material-icons md-person"></i>
-                        <span class="text">User</span>
+                        <span class="text">Account</span>
                     </a>
                     <div class="submenu">
-                        <a href="page-account-login.html">All users</a>
+                        <a href="page-account-login.html">User login</a>
                         <a href="page-account-register.html">User registration</a>
                         <a href="page-error-404.html">Error 404</a>
                     </div>
@@ -138,80 +136,103 @@
     </aside>
     <%- include('../partials/admin-header')%>
     <main class="main-wrap">
-        <section class="content-main">
-            <div class="content-header">
-                <div>
-                    <h2 class="content-title card-title">Categories </h2>
-                    <p>Add, edit or delete a category</p>
+                <section class="content-main">
+            <div class="row">
+                <div class="col-9">
+                    <div class="content-header">
+                        <h2 class="content-title">Add New Product</h2>
+                        <div>
+                            <button class="btn btn-light rounded font-sm mr-5 text-body hover-up">Save to draft</button>
+                            <button class="btn btn-md rounded font-sm hover-up">Publich</button>
+                        </div>
+                    </div>
                 </div>
-                <div>
-                    <input type="text" placeholder="Search Categories" class="form-control bg-white">
-                </div>
-            </div>
-            <div class="card">
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-md-3">
-                            <form action="/admin/add-category" method="post" enctype="multipart/form-data">
+                <div class="col-lg-6">
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h4>Basic</h4>
+                        </div>
+                        <div class="card-body">
+                            <form>
                                 <div class="mb-4">
-                                    <label for="product_name" class="form-label">Name</label>
-                                    <input name="category" type="text" placeholder="Type here" class="form-control" id="product_name" required="true" />
+                                    <label for="product_name" class="form-label">Product title</label>
+                                    <input type="text" placeholder="Type here" class="form-control" id="product_name">
                                 </div>
                                 <div class="mb-4">
-                                    <label for="product_slug" class="form-label">Base Price</label>
-                                    <input name="basePrice" type="number" placeholder="Type here" class="form-control" id="base_price" required="true" />
+                                    <label class="form-label">Full description</label>
+                                    <textarea placeholder="Type here" class="form-control" rows="4"></textarea>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-4">
+                                        <div class="mb-4">
+                                            <label class="form-label">Regular price</label>
+                                            <div class="row gx-2">
+                                                <input placeholder="$" type="text" class="form-control">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <div class="mb-4">
+                                            <label class="form-label">Promotional price</label>
+                                            <input placeholder="$" type="text" class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <label class="form-label">Currency</label>
+                                        <select class="form-select">
+                                            <option> USD </option>
+                                            <option> EUR </option>
+                                            <option> RUBL </option>
+                                        </select>
+                                    </div>
                                 </div>
                                 <div class="mb-4">
-                                    <label for="image" class="form-label">Cover Image</label>
-                                    <input name="image" type="file" placeholder="Type here" class="form-control" id="image" required="true" />
+                                    <label class="form-label">Tax rate</label>
+                                    <input type="text" placeholder="%" class="form-control" id="product_name">
                                 </div>
-
-                                <div class="mb-4">
-                                    <label class="form-label">Description</label>
-                                    <textarea name="description" placeholder="Type here" class="form-control" required="true"></textarea>
-                                </div>
-                                <div class="d-grid">
-                                    <button class="btn btn-primary" type="submit">Create category</button>
-                                </div>
+                                <label class="form-check mb-4">
+                                    <input class="form-check-input" type="checkbox" value="">
+                                    <span class="form-check-label"> Make a template </span>
+                                </label>
                             </form>
                         </div>
-                        <div class="col-md-9">
-                            <div class="table-responsive">
-                                <table class="table table-hover">
-                                    <thead>
-                                        <tr>
-                                            <th>No</th>
-                                            <th>Image</th>
-                                            <th>Category</th>
-                                            <th>Description</th>
-                                            <th>Base Price</th>
-                                            <th>Action</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <% for (i = 0; i < data.length; i++) { %>
-                                            <tr>
-                                              <td><%= i+1 %></td>
-                                              <td>
-                                                <img src="/upload/category/<%= data[i].image%>" width="80px" alt="img">
-                                              </td>
-                                              <td><%= data[i].category %></td>
-                                              <td><%= data[i].description%></td>
-                                              <td><%= data[i].base_price%></td>
-                                              <td>
-                                                <a href="" class="btn btn-info p-1">Edit</a>
-                                                <a href="/admin/delete-category/<%=data[i]._id%>" class="btn btn-danger p-1">Delete</a>
-                                              </td>
-                                            </tr>
-                                          <% } %>
-                                          
-                                    </tbody>
-                                </table>
+                    </div> <!-- card end// -->
+                </div>
+                <div class="col-lg-3">
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h4>Media</h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="input-upload">
+                                <img src="/assets/imgs/theme/upload.svg" alt="">
+                                <input class="form-control" type="file" multiple>
                             </div>
-                        </div> <!-- .col// -->
-                    </div> <!-- .row // -->
-                </div> <!-- card body .// -->
-            </div> <!-- card .// -->
+                        </div>
+                    </div> <!-- card end// -->
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h4>Organization</h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="row gx-2">
+                                <div class="col-sm-6 mb-3">
+                                    <label class="form-label">Category</label>
+                                    <select class="form-select">
+                                        <%for(i=0;i<data.length;i++){%>
+                                        <option><%=data[i].category%></option>
+                                        <%}%>
+                                    </select>
+                                </div>
+                                <div class="mb-4">
+                                    <label for="product_name" class="form-label">Tags</label>
+                                    <input type="text" class="form-control">
+                                </div>
+                            </div> <!-- row.// -->
+                        </div>
+                    </div> <!-- card end// -->
+                </div>
+            </div>
         </section> <!-- content-main end// -->
         <footer class="main-footer font-xs">
             <div class="row pb-30 pt-15">
@@ -238,5 +259,5 @@
 </body>
 
 
-<!-- Mirrored from wp.alithemes.com/html/evara/evara-backend/page-categories.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 01 Aug 2021 15:33:21 GMT -->
+<!-- Mirrored from wp.alithemes.com/html/evara/evara-backend/page-form-product-1.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 01 Aug 2021 15:33:32 GMT -->
 </html>

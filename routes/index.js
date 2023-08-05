@@ -17,6 +17,7 @@ router.post('/otp-page/:id',userController.checkOtp)
 router.get('/login-otp',login_with_otp.login_otp)
 router.post('/login-otp',login_with_otp.sendmail)
 router.post('/enter-login-otp/:id',login_with_otp.checkOtp)
+router.get('/enter-login-otp',login_with_otp.resendOtp)
 //------------>LOGIN-WITH-GOOGLE<---------------
 router.get('/auth/google/callback',passport.authenticate('google', {
     successRedirect: '/',

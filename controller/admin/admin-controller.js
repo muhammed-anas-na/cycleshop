@@ -1,8 +1,5 @@
 const user = require("../../models/user-model");
 const bcrypt = require('bcrypt');
-const { Rembg } = require('rembg-node');
-const sharp = require('sharp');
-const categoryModel = require('../../models/category-model')
 
 module.exports={
     dashboard:(req,res)=>{
