@@ -137,13 +137,14 @@
     <%- include('../partials/admin-header')%>
     <main class="main-wrap">
                 <section class="content-main">
+        <form action="/admin/add-product" method="post" enctype="multipart/form-data">
             <div class="row">
                 <div class="col-9">
                     <div class="content-header">
                         <h2 class="content-title">Add New Product</h2>
                         <div>
                             <button class="btn btn-light rounded font-sm mr-5 text-body hover-up">Save to draft</button>
-                            <button class="btn btn-md rounded font-sm hover-up">Publich</button>
+                            <button class="btn btn-md rounded font-sm hover-up" type="submit">Publich</button>
                         </div>
                     </div>
                 </div>
@@ -156,44 +157,39 @@
                             <form>
                                 <div class="mb-4">
                                     <label for="product_name" class="form-label">Product title</label>
-                                    <input type="text" placeholder="Type here" class="form-control" id="product_name">
+                                    <input name="product_name" required="true"  type="text" placeholder="Type here" class="form-control" id="product_name">
                                 </div>
                                 <div class="mb-4">
                                     <label class="form-label">Full description</label>
-                                    <textarea placeholder="Type here" class="form-control" rows="4"></textarea>
+                                    <textarea name="description" placeholder="Type here" class="form-control" rows="4"></textarea>
                                 </div>
                                 <div class="row">
                                     <div class="col-lg-4">
                                         <div class="mb-4">
                                             <label class="form-label">Regular price</label>
                                             <div class="row gx-2">
-                                                <input placeholder="$" type="text" class="form-control">
+                                                <input name="regular_price" required="true" required="true" placeholder="$" type="text" class="form-control">
                                             </div>
                                         </div>
                                     </div>
                                     <div class="col-lg-4">
                                         <div class="mb-4">
-                                            <label class="form-label">Promotional price</label>
-                                            <input placeholder="$" type="text" class="form-control">
+                                            <label class="form-label">Sale price</label>
+                                            <input name="sale_price" required="true" placeholder="$" type="text" class="form-control">
                                         </div>
                                     </div>
                                     <div class="col-lg-4">
-                                        <label class="form-label">Currency</label>
-                                        <select class="form-select">
-                                            <option> USD </option>
-                                            <option> EUR </option>
-                                            <option> RUBL </option>
-                                        </select>
+                                        <div class="mb-4">
+                                            <label class="form-label">Units</label>
+                                            <input name="units" required="true" type="number" class="form-control">
+                                        </div>
                                     </div>
+
                                 </div>
                                 <div class="mb-4">
                                     <label class="form-label">Tax rate</label>
-                                    <input type="text" placeholder="%" class="form-control" id="product_name">
+                                    <input name="tax_rate" required="true" type="text" placeholder="%" class="form-control" id="product_name">
                                 </div>
-                                <label class="form-check mb-4">
-                                    <input class="form-check-input" type="checkbox" value="">
-                                    <span class="form-check-label"> Make a template </span>
-                                </label>
                             </form>
                         </div>
                     </div> <!-- card end// -->
@@ -204,9 +200,11 @@
                             <h4>Media</h4>
                         </div>
                         <div class="card-body">
+                            <small style="font-weight: bold;">Upload 4 images</small>
                             <div class="input-upload">
                                 <img src="/assets/imgs/theme/upload.svg" alt="">
-                                <input class="form-control" type="file" multiple>
+                                <input name="image" required="true" class="form-control" type="file" multiple>
+                                
                             </div>
                         </div>
                     </div> <!-- card end// -->
@@ -218,21 +216,18 @@
                             <div class="row gx-2">
                                 <div class="col-sm-6 mb-3">
                                     <label class="form-label">Category</label>
-                                    <select class="form-select">
+                                    <select name="category" class="form-select">
                                         <%for(i=0;i<data.length;i++){%>
                                         <option><%=data[i].category%></option>
                                         <%}%>
                                     </select>
-                                </div>
-                                <div class="mb-4">
-                                    <label for="product_name" class="form-label">Tags</label>
-                                    <input type="text" class="form-control">
                                 </div>
                             </div> <!-- row.// -->
                         </div>
                     </div> <!-- card end// -->
                 </div>
             </div>
+        </form>
         </section> <!-- content-main end// -->
         <footer class="main-footer font-xs">
             <div class="row pb-30 pt-15">

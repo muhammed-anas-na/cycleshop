@@ -18,6 +18,7 @@ module.exports={
               logging: true,
             });
             // userController.createAcc(req.body).then((id)=>{})
+            conosle.log(req.file)
             let category = new categoryModel({
                 category:req.body.category,
                 base_price:req.body.basePrice,
