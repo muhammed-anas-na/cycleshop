@@ -38,34 +38,29 @@ module.exports={
             if(err){
                 console.log('Err' , err)
             }else{
-                req.body.password = await bcrypt.hash(req.body.password,10)
-                let use = new user({
-                    name:req.body.name,
-                    email:req.body.email,
-                    number:req.body.number,
-                    password:req.body.password,
-                    verified:0,
-                })
-
-                await use.save().then((data)=>{
-                    console.log("Sucess" , req.session)
-                    res.render('user/otp-page' ,{email:req.body.email , id:use._id , err:false})
-                }).catch((err)=>{
-                    console.log(err);
-                })
+                req.session.signupData = req.body;
+                res.render('user/otp-page' ,{email:req.body.email})
                 
             }
         })
     },
     checkOtp:async (req,res)=>{
         if(req.session.otp == req.body.otp.join('')){
-            await user.findOneAndUpdate({_id:req.params.id} , {verified:1} , {new:true}).then((updated)=>{
-                req.session.loggedIn = true;
-                req.session.user = user;
+            req.session.signupData.password = await bcrypt.hash(req.session.signupData.password,10)
+            let use = new user({
+                name:req.session.signupData.name,
+                email:req.session.signupData.email,
+                number:req.session.signupData.number,
+                password:req.session.signupData.password,
+                verified:1,
+            })
+
+            await use.save().then((data)=>{
+                console.log("Sucess" , req.session) 
                 res.redirect('/')
             }).catch((err)=>{
-                console.log(err)
-                res.redirect('/signup')
+                console.log(err);
+                res.status(500).json({err : 'Otp error'})
             })
         }else{
             console.log("Not success");
