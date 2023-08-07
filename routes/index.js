@@ -26,5 +26,9 @@ router.get('/auth/google/callback',passport.authenticate('google', {
 
 router.get('/show-products', userController.showProducts)
 
+router.get('/forget-password' , userController.forgetPassword)
+router.post('/forget-password' , userController.sendTwillio)
+router.post('/forget-pass-otp' , userController.forgetCheckOtp)
+router.post('/reset-password' , userController.resetPass)
 
 module.exports = router;

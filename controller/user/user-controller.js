@@ -4,7 +4,6 @@ const user = require('../../models/user-model')
 const productModel = require('../../models/product-model')
 const bcrypt = require('bcrypt')
 
-
 module.exports={
     loadHome:(req,res)=>{
         res.render('user/index',{user:req.session.loggedIn})
@@ -105,5 +104,55 @@ module.exports={
         }).catch((err)=>{
             res.status(200).json({err:'Error loaidng Products'})
         })
+    },
+    sendTwillio:async (req,res)=>{
+        let userExist = await user.findOne({number:req.body.number})
+        if(userExist){
+            otp = Math.floor(1000 + Math.random() * 9000).toString()
+            console.log(otp)
+            req.session.otp = otp;
+            req.session.number = req.body.number;
+            const accountSid = config.TWILIO_SID;
+            const authToken = config.TWILIO_AUTH_TOKEN;
+            const client = require('twilio')(accountSid, authToken);
+            client.messages
+            .create({
+                body:  `Otp to reset your password is ${otp}`,
+                to: '+91'+req.body.number,
+                from: '+16625032416',
+            })
+            .then((message)=>{
+                console.log(message.sid);
+                res.render('user/forget-pass-otp')
+            });
+        }else{
+            req.session.no_number = true
+            res.redirect('/forget-password')
+        }
+
+    },
+    forgetPassword:(req,res)=>{
+        res.render('user/forget-pass' ,{err:req.session.no_number})
+        req.session.no_number = false;
+    },
+    forgetCheckOtp:(req,res)=>{
+        if(req.session.otp == req.body.otp.join('')){
+            res.render('user/reset-pass')
+        }else{
+            
+            res.redirect('/forget-password')
+        }
+    },
+    resetPass:(req,res)=>{
+        console.log(req.body)
+        if(req.body.password1 == req.body.password2){
+            console.log(req.session)
+            req.body.password2 = bcrypt.hash(req.body.password2,10)
+            user.findOneAndUpdate({number : req.session.number} , {password:req.body.password} , {new:true}).then((data)=>{
+                console.log(data);
+                res.redirect('/login')
+            })
+        }
     }
+
 }

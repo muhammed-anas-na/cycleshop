@@ -23,6 +23,7 @@
     "passport": "^0.6.0",
     "passport-google-oauth20": "^2.0.0",
     "rembg-node": "^2.0.1",
-    "sharp": "^0.32.4"
+    "sharp": "^0.32.4",
+    "twilio": "^4.14.1"
   }
 }
