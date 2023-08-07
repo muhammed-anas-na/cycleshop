@@ -5,7 +5,6 @@
 <!-- Mirrored from wp.alithemes.com/html/evara/evara-backend/page-products-grid.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 01 Aug 2021 15:33:12 GMT -->
 <head>
     <meta charset="utf-8">
-    <title>Evara Dashboard</title>
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -62,13 +61,14 @@
                     </div>
                 </header> <!-- card-header end// -->
                 <div class="card-body">
+                    <%for(i=0;i<data.length;i++){%>
                     <div class="row gx-3 row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-xl-4 row-cols-xxl-5">
                         <div class="col">
                             <div class="card card-product-grid">
-                                <a href="#" class="img-wrap"> <img src="/assets/imgs/items/1.jpg" alt="Product"> </a>
+                                <a href="/" class="img-wrap"> <img src="upload/product/<%=data[i].images[0]%>" alt="Product"> </a>
                                 <div class="info-wrap">
-                                    <a href="#" class="title text-truncate">Just another product name</a>
-                                    <div class="price mb-2">$179.00</div> <!-- price.// -->
+                                    <a href="#" class="title text-truncate"><%= data[i].name%></a>
+                                    <div class="price mb-2">$<%=data[i].sale_price%></div> <!-- price.// -->
                                     <a href="#" class="btn btn-sm font-sm btn-light rounded">
                                         <i class="fa-solid fa-cart-shopping"></i> Add to cart
                                     </a>
@@ -78,9 +78,8 @@
                                 </div>
                             </div> <!-- card-product  end// -->
                         </div> <!-- col.// -->
-                        
-
                     </div> <!-- row.// -->
+                    <%}%>
                 </div> <!-- card-body end// -->
             </div> <!-- card end// -->
 

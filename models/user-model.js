@@ -30,6 +30,11 @@ let userModel = new mongoose.Schema({
         type:Number,
         required:true,
         default:0
+    },
+    isBlocked:{
+        type:String,
+        require:true,
+        default:0,
     }
 });
 

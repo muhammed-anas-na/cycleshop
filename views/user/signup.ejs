@@ -103,7 +103,9 @@ body {
         }else{  
           document.getElementById('name').style.borderColor = 'red'
           document.getElementById('err-msg').innerHTML = document.getElementById('err-msg').innerHTML + '<br> Name error'
-          //alert("Name Eroor 1:Start with capital letter 2:No white spaces 3:No Special symbols")
+          setTimeout(()=>{
+            document.getElementById('name').style.borderColor = 'gray'
+          },10000)
           event.preventDefault()
         }
         
@@ -112,7 +114,9 @@ body {
         if(passwordRegex.test(password)){}else{
           document.getElementById('err-msg').innerHTML = document.getElementById('err-msg').innerHTML + '<br> Password error'
           document.getElementById('password').style.borderColor = 'red'
-          //alert('Password Error 1:Minimum 8 charecters 2:use charecters and number 3:no white spaces')
+          setTimeout(()=>{
+            document.getElementById('password').style.borderColor = 'gray'
+          },10000)
           event.preventDefault()
         }
   
@@ -122,6 +126,10 @@ body {
         if(phoneNumberRegex.test(number)){}else{
           document.getElementById('err-msg').innerHTML = document.getElementById('err-msg').innerHTML + '<br> Number error'
           document.getElementById('number').style.borderColor = 'red'
+          setTimeout(()=>{
+            document.getElementById('number').style.borderColor = 'gray'
+          },10000)
+          event.preventDefault()
           //alert('Number Error')
         }
         

@@ -32,7 +32,9 @@ module.exports={
           gst:req.body.tax_rate,
           images:[req.files[0].filename,req.files[1].filename,req.files[2].filename,req.files[3].filename,]
         })
-        await product.save()
+        await product.save().then((statsu)=>{
+            res.redirect('/admin/add-produt')
+        })
 
     },
     deleteProduct:(req,res)=>{

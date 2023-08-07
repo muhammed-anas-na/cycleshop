@@ -1,6 +1,7 @@
 const config = require('../../config/config')
 const nodemailer = require('nodemailer')
 const user = require('../../models/user-model')
+const productModel = require('../../models/product-model')
 const bcrypt = require('bcrypt')
 
 
@@ -9,6 +10,7 @@ module.exports={
         res.render('user/index',{user:req.session.loggedIn})
     },
     Login_page:(req,res)=>{
+        console.log(req.session)
         res.render('user/login-page' , {user_err:req.session.no_user , pass_err:req.session.pass_err})
         req.session.no_user=false;
         req.session.pass_err=false;
@@ -47,7 +49,7 @@ module.exports={
 
                 await use.save().then((data)=>{
                     console.log("Sucess" , req.session)
-                    res.render('user/otp-page' ,{email:req.body.email , id:use._id})
+                    res.render('user/otp-page' ,{email:req.body.email , id:use._id , err:false})
                 }).catch((err)=>{
                     console.log(err);
                 })
@@ -72,7 +74,7 @@ module.exports={
     },
     doLogin:async (req,res)=>{
         console.log("Do login");
-        let userExist = await user.findOne({email:req.body.email}).lean()
+        let userExist = await user.findOne({email:req.body.email , isAdmin:0 , isBlocked:0}).lean()
         console.log(userExist);
         if(userExist){
             bcrypt.compare(req.body.password,userExist.password).then((status)=>{
@@ -96,7 +98,11 @@ module.exports={
         }
     },
     showProducts:(req,res)=>{
-        res.render('user/show-products')
+        productModel.find({}).then((data)=>{
+            console.log(data)
+            res.render('user/show-products' , {data})
+        }).catch((err)=>{
+            res.status(200).json({err:'Error loaidng Products'})
+        })
     }
-
 }

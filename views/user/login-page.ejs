@@ -85,10 +85,10 @@
           </div>
       <div class="form-group">
               <button onclick="validate()" type="submit" class="btn btn-primary btn-lg" id="login-button">Login</button><br>
-              <% if (user_err) { %>
+              <% if (user_err == true) { %>
                 <small>User Not found</small><br>
               <% } %>
-              <% if (pass_err) { %>
+              <% if (pass_err == true) { %>
                 <small>Wrong password</small>
               <% } %>
           </div>
