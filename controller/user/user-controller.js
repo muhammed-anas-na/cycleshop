@@ -18,31 +18,37 @@ module.exports={
     signup_page:(req,res)=>{
         res.render('user/signup')
     },
-    otp_page:(req,res)=>{
-        otp = Math.floor(1000 + Math.random() * 9000).toString()
-        req.session.otp = otp
-        const transport = nodemailer.createTransport({
-            service:'gmail',
-            auth:{
-                user:config.EMAIL,
-                pass:config.PASSWORD
+    otp_page:async (req,res)=>{
+        let userExist = await user.findOne({email:req.body.email})
+        if(userExist == null){
+            otp = Math.floor(1000 + Math.random() * 9000).toString()
+            req.session.otp = otp
+            const transport = nodemailer.createTransport({
+                service:'gmail',
+                auth:{
+                    user:config.EMAIL,
+                    pass:config.PASSWORD
+                }
+            })
+            var mailObj = {
+                from:'anasna6005@gmail.com',
+                to:req.body.email,
+                subject:'CycleShop otp varification',
+                text:`Thank you for choosing CycleShop. Use the following OTP to complete your Sign Up procedures. ${otp} `
             }
-        })
-        var mailObj = {
-            from:'anasna6005@gmail.com',
-            to:req.body.email,
-            subject:'CycleShop otp varification',
-            text:`Thank you for choosing CycleShop. Use the following OTP to complete your Sign Up procedures. ${otp} `
+            transport.sendMail(mailObj ,async (err , status)=>{
+                if(err){
+                    console.log('Err' , err)
+                }else{
+                    req.session.signupData = req.body;
+                    res.render('user/otp-page' ,{email:req.body.email})
+                    
+                }
+            })
+        }else{
+            res.redirect('/signup')
         }
-        transport.sendMail(mailObj ,async (err , status)=>{
-            if(err){
-                console.log('Err' , err)
-            }else{
-                req.session.signupData = req.body;
-                res.render('user/otp-page' ,{email:req.body.email})
-                
-            }
-        })
+
     },
     checkOtp:async (req,res)=>{
         if(req.session.otp == req.body.otp.join('')){
