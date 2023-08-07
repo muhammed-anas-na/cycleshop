@@ -1,7 +1,6 @@
 const categoryModel = require('../../models/category-model')
 const productModel = require('../../models/product-model')
-
-const multer = require('multer')
+const cropImg = require('../../config/crop')
 
 module.exports={
     allProduct:(req,res)=>{
@@ -21,6 +20,7 @@ module.exports={
     },
     addProduct:async (req,res)=>{
         console.log("AddProduct")
+        await cropImg.crop(req);
         let product = new productModel({
           name:req.body.product_name,
           description:req.body.description,
@@ -33,7 +33,7 @@ module.exports={
           images:[req.files[0].filename,req.files[1].filename,req.files[2].filename,req.files[3].filename,]
         })
         await product.save().then((statsu)=>{
-            res.redirect('/admin/add-produt')
+            res.redirect('/admin/add-product')
         })
 
     },

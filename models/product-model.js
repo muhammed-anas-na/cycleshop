@@ -15,11 +15,11 @@ let productModel = new mongoose.Schema({
         require:true,
     },
     regular_price:{
-        type:Number,
+        type:String,
         require:true
     },
     sale_price:{
-        type:Number,
+        type:String,
         requrie:true
     },
     created_on:{
