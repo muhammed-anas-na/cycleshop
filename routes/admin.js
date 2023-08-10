@@ -14,12 +14,15 @@ router.post('/admin-login',adminController.doLogin)
 
 router.get('/category',categoryController.category)
 router.post('/add-category',categoryUpload.single('image'), categoryController.addCategory)
-router.get('/delete-category/:id' , categoryController.delete)
+router.get('/unlist-category/:id' , categoryController.UnlistCat)
+router.get('/list-category/:id' , categoryController.ListCat)
 
 router.get('/all-products' , productController.allProduct);
 router.get('/add-product', productController.showAddProduct);
 router.post('/add-product',productUpload.array('image',4) ,productController.addProduct)
+
 router.get('/delete-product/:id',productController.deleteProduct)
+
 router.get('/edit-product/:id' , productController.showEdit)
 router.post('/edit-product/:id'  ,productUpload.array('image',4),productController.editProduct)
 

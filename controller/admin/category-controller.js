@@ -45,9 +45,14 @@ module.exports={
                 res.redirect('/admin/category')
             }
     },
-    delete:(req,res)=>{
-        categoryModel.findByIdAndDelete(req.params.id).then((status)=>{
+    UnlistCat:(req,res)=>{
+        categoryModel.findByIdAndUpdate(req.params.id , {isListed:0},{upsert:true},{new:true}).then((status)=>{
             res.redirect('/admin/category')
         })
+    },
+    ListCat:(req,res)=>{
+        categoryModel.findByIdAndUpdate(req.params.id , {isListed:1},{upsert:true},{new:true}).then((status)=>{
+            res.redirect('/admin/category')
+        }) 
     }
 }

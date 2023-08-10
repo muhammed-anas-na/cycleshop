@@ -17,7 +17,13 @@ let categoryModel = new mongoose.Schema({
     image:{
         type:String,
         require:true
+    },
+    isListed:{
+        type:String,
+        require:true,
+        default:1,
     }
+
 });
 
 module.exports = mongoose.model('category' , categoryModel)

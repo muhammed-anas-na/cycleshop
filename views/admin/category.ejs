@@ -204,7 +204,11 @@
                                               <td><%= data[i].base_price%></td>
                                               <td>
                                                 <a href="" class="btn btn-info p-1">Edit</a>
-                                                <a href="/admin/delete-category/<%=data[i]._id%>" class="btn btn-danger p-1">Delete</a>
+                                                <%if(data[i].isListed == 1){%>
+                                                    <a href="/admin/unlist-category/<%=data[i]._id%>" class="btn btn-danger p-1">Unlist</a>
+                                                <%}else{%>
+                                                    <a href="/admin/list-category/<%=data[i]._id%>" class="btn btn-success p-1">List</a>
+                                                <%}%>
                                               </td>
                                             </tr>
                                           <% } %>
