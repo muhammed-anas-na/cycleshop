@@ -11,7 +11,7 @@ let userModel = new mongoose.Schema({
         require:true,
     },
     number:{
-        type:Number,
+        type:String,
         require:true,
     },
     password:{

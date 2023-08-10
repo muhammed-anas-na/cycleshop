@@ -2,7 +2,7 @@
 <html lang="en">
 
 
-<!-- Mirrored from wp.alithemes.com/html/evara/evara-backend/page-products-list.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 01 Aug 2021 15:33:00 GMT -->
+<!-- Mirrored from wp.alithemes.com/html/evara/evara-backend/page-form-product-1.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 01 Aug 2021 15:33:31 GMT -->
 <head>
     <meta charset="utf-8">
     <title>Evara Dashboard</title>
@@ -139,88 +139,113 @@
     </aside>
     <%- include('../partials/admin-header')%>
     <main class="main-wrap">
-        
-        <section class="content-main">
-            <div class="content-header">
-                <div>
-                    <h2 class="content-title card-title">Products List</h2>
-                    <p>Lorem ipsum dolor sit amet.</p>
-                </div>
-                <div>
-                    <a href="#" class="btn btn-light rounded font-md">Export</a>
-                    <a href="#" class="btn btn-light rounded  font-md">Import</a>
-                    <a href="/admin/add-product" class="btn btn-primary btn-sm rounded">Create new</a>
-                </div>
-            </div>
-            <div class="card mb-4">
-                <header class="card-header">
-                    <div class="row align-items-center">
-                        <div class="col col-check flex-grow-0">
-                            <div class="form-check ms-2">
-                                <input class="form-check-input" type="checkbox" value="">
-                            </div>
-                        </div>
-                        <div class="col-md-3 col-12 me-auto mb-md-0 mb-3">
-                            <select class="form-select">
-                                <option selected>All category</option>
-                                <%for(i=data.length-1;i>=0;i--){%>
-                                    <option><%= data[i].category%></option>
-                                <%}%>
-                            </select>
-                        </div>
-                        <div class="col-md-2 col-6">
-                            <input type="date" value="02.05.2021" class="form-control">
-                        </div>
-                        <div class="col-md-2 col-6">
-                            <select class="form-select">
-                                <option selected>Status</option>
-                                <option>Active</option>
-                                <option>Disabled</option>
-                                <option>Show all</option>
-                            </select>
+                <section class="content-main">
+        <form action="/admin/edit-product/<%=data._id%>" method="post" enctype="multipart/form-data">
+            <div class="row">
+                <div class="col-9">
+                    <div class="content-header">
+                        <h2 class="content-title">Add New Product</h2>
+                        <div>
+                            <button class="btn btn-light rounded font-sm mr-5 text-body hover-up">Save to draft</button>
+                            <button class="btn btn-md rounded font-sm hover-up" type="submit">Publich</button>
                         </div>
                     </div>
-                </header> <!-- card-header end// -->
-                <div class="card-body">
-                    <% for (i=data.length-1;i>=0;i--) { %>
-                    <article class="itemlist">
-                        <div class="row align-items-center">
-                            <div class="col col-check flex-grow-0">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox">
+                </div>
+                <div class="col-lg-6">
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h4>Basic</h4>
+                        </div>
+                        <div class="card-body">
+                            <form>
+                                <div class="mb-4">
+                                    <label for="product_name" class="form-label">Product title</label>
+                                    <input value="<%=data.name%>" name="product_name" required="true"  type="text" placeholder="Type here" class="form-control" id="product_name">
                                 </div>
-                            </div>
-                            <div class="col-lg-4 col-sm-4 col-8 flex-grow-1 col-name">
-                                <a class="itemside" href="#">
-                                    <div class="left">
-                                        <img src="/upload/product/<%=data[i].images[0]%>" class="img-sm img-thumbnail" alt="Item">
+                                <div class="mb-4">
+                                    <label class="form-label">Full description</label>
+                                    <textarea name="description" placeholder="Type here" class="form-control" rows="4"><%=data.description%></textarea>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-4">
+                                        <div class="mb-4">
+                                            <label class="form-label">Regular price</label>
+                                            <div class="row gx-2">
+                                                <input value="<%=data.regular_price%>" name="regular_price" required="true" required="true" placeholder="$" type="text" class="form-control">
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div class="info">
-                                        <h6 class="mb-0"><%=data[i].name%></h6>
+                                    <div class="col-lg-4">
+                                        <div class="mb-4">
+                                            <label class="form-label">Sale price</label>
+                                            <input value="<%=data.sale_price%>" name="sale_price" required="true" placeholder="$" type="text" class="form-control">
+                                        </div>
                                     </div>
-                                </a>
-                            </div>
-                            <div class="col-lg-2 col-sm-2 col-4 col-price"> <span><%=data[i].sale_price%></span> </div>
-                            <div class="col-lg-2 col-sm-2 col-4 col-status">
-                                <span class="badge rounded-pill alert-success">Active</span>
-                            </div>
-                            <div class="col-lg-1 col-sm-2 col-4 col-date">
-                                <span></span>
-                            </div>
-                            <div class="col-lg-2 col-sm-2 col-4 col-action text-end">
-                                <a href="/admin/edit-product/<%=data[i]._id%>" class="btn btn-sm font-sm rounded btn-brand">
-                                    <i class="material-icons md-edit"></i> Edit
-                                </a>
-                                <a href="/admin/delete-product/<%=data[i]._id%>" class="btn btn-sm font-sm btn-light rounded">
-                                    <i class="material-icons md-delete_forever"></i> Delete
-                                </a>
-                            </div>
-                        </div> <!-- row .// -->
-                    </article> <!-- itemlist  .// -->
-                    <% } %>
+                                    <div class="col-lg-4">
+                                        <div class="mb-4">
+                                            <label class="form-label">Units</label>
+                                            <input value="<%=data.unit%>" name="units" required="true" type="number" class="form-control">
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="mb-4">
+                                    <label class="form-label">Tax rate</label>
+                                    <input value="<%= data.gst%>" name="tax_rate" required="true" type="text" placeholder="%" class="form-control" id="product_name">
+                                </div>
+                            </form>
+                        </div>
+                    </div> <!-- card end// -->
+                </div>
+                <div class="col-lg-3">
                     
-                </div> <!-- card-body end// -->
-            </div> <!-- card end// -->
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h4>Images</h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="input-upload">
+                                <img src="/upload/product/<%=data.images[0]%>" alt="image">
+                                <img src="/upload/product/<%=data.images[1]%>" alt="image">
+                                <img src="/upload/product/<%=data.images[2]%>" alt="image">
+                                <img src="/upload/product/<%=data.images[3]%>" alt="image">
+                            </div>
+                        </div>
+                    </div> <!-- card end// -->
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h4>Organization</h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="row gx-2">
+                                <div class="col-sm-6 mb-3">
+                                    <label class="form-label">Category</label>
+                                    <select name="category" class="form-select">
+                                        <%for(i=0;i<category.length;i++){%>
+                                        <option><%=category[i].category%></option>
+                                        <%}%>
+                                    </select>
+                                </div>
+                            </div> <!-- row.// -->
+                        </div>
+                    </div> <!-- card end// -->
+                </div>
+
+                <div class="card col-md-3">
+                    <div class="card-header">
+                        <h4>Media</h4>
+                    </div>
+                    <div class="card-body">
+                        <small style="font-weight: bold;">Upload 4 images</small>
+                        <div class="input-upload">
+                            <img src="/assets/imgs/theme/upload.svg" alt="">
+                            <input name="image" class="form-control" type="file" multiple>
+                        </div>
+                    </div>
+                </div> <!-- card end// -->
+            </div>
+
+        </form>
         </section> <!-- content-main end// -->
         <footer class="main-footer font-xs">
             <div class="row pb-30 pt-15">
@@ -247,5 +272,5 @@
 </body>
 
 
-<!-- Mirrored from wp.alithemes.com/html/evara/evara-backend/page-products-list.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 01 Aug 2021 15:33:12 GMT -->
+<!-- Mirrored from wp.alithemes.com/html/evara/evara-backend/page-form-product-1.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 01 Aug 2021 15:33:32 GMT -->
 </html>

@@ -20,6 +20,8 @@ router.get('/all-products' , productController.allProduct);
 router.get('/add-product', productController.showAddProduct);
 router.post('/add-product',productUpload.array('image',4) ,productController.addProduct)
 router.get('/delete-product/:id',productController.deleteProduct)
+router.get('/edit-product/:id' , productController.showEdit)
+router.post('/edit-product/:id'  ,productUpload.array('image',4),productController.editProduct)
 
 router.get('/view-users', userController.viewUser) 
 router.get('/block-user/:id',userController.blockUser)

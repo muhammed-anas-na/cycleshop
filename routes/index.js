@@ -31,4 +31,7 @@ router.post('/forget-password' , userController.sendTwillio)
 router.post('/forget-pass-otp' , userController.forgetCheckOtp)
 router.post('/reset-password' , userController.resetPass)
 
+router.get('/profile/:id' , userController.showProfile)
+router.get('/edit-profile/:id' , userController.showEditProfile)
+router.post('/edit-profile/:id',userController.editProfile)
 module.exports = router;

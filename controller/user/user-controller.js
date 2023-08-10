@@ -7,7 +7,8 @@ const { errorMonitor } = require('nodemailer/lib/xoauth2')
 
 module.exports={
     loadHome:(req,res)=>{
-        res.render('user/index',{user:req.session.loggedIn})
+        console.log(req.session.user)
+        res.render('user/index',{user:req.session.loggedIn , userData:req.session.user})
     },
     Login_page:(req,res)=>{
         console.log(req.session)
@@ -157,6 +158,35 @@ module.exports={
                 console.log(data);
                 res.redirect('/login')
             })
+        }
+    },
+    showProfile:async(req,res)=>{
+        let userData = await user.findById(req.params.id)
+        res.render('user/profile' , {userData})
+    },
+    showEditProfile:async(req,res)=>{
+        let userData = await user.findById(req.params.id)
+        res.render('user/edit-profile' ,{userData})
+    },
+    editProfile:async (req,res)=>{
+        let baseUser = await user.findById(req.params.id).lean()
+        let emailUser = await user.findOne({email:req.body.email}).lean()
+        console.log(baseUser)
+        console.log(emailUser)
+        console.log(req.body)
+        if(emailUser == null){
+            emailUser = {}
+        }
+        if(baseUser.email == emailUser.email){
+            console.log("Save")
+            user.findByIdAndUpdate(req.params.id , {name:req.body.name,email:req.body.email,number:req.body.number},{new:true})
+            res.redirect('/profile/'+req.params.id)
+        }else if(emailUser.email == req.body.email){
+            console.log("Dont save")
+            res.redirect('/edit-profile/'+req.params.id)
+        }else{
+            console.log("Save else")
+            user.findByIdAndUpdate(req.params.id , {name:req.body.name,email:req.body.email,number:req.body.email})
         }
     }
 

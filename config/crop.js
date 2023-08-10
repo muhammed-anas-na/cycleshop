@@ -8,8 +8,8 @@ module.exports={
             const cropRegion = {
               left: 100,
               top: 100,
-              width: 4000,
-              height: 1000,
+              width: 3600,
+              height: 2400,
             };
             // Use sharp to read the input image
             sharp(inputFilePath)

@@ -46,9 +46,11 @@
                   <li class="nav-item">
                      <a class="nav-link" href="/show-products">Shop</a>
                   </li>
-                  <li class="nav-item">
-                     <a class="nav-link" href="news.html">News</a>
-                  </li>
+                  <%if(user){%>
+                     <li class="nav-item">
+                        <a class="nav-link" href="/profile/<%=userData._id%>">Account</a>
+                     </li>
+                  <%}%>
                   <li class="nav-item">
                      <a class="nav-link" href="contact.html">Contact</a>
                   </li>
