@@ -103,6 +103,7 @@ body {
         }else{  
           document.getElementById('name').style.borderColor = 'red'
           document.getElementById('err-msg').innerHTML = document.getElementById('err-msg').innerHTML + '<br> Name error'
+          document.getElementById('err-msg').style.color = 'red'
           setTimeout(()=>{
             document.getElementById('name').style.borderColor = 'gray'
           },10000)

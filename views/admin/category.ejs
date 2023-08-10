@@ -171,6 +171,9 @@
                                     <label class="form-label">Description</label>
                                     <textarea name="description" placeholder="Type here" class="form-control" required="true"></textarea>
                                 </div>
+                                <%if(category_err){%>
+                                    <small style="color: red;">Category already exist</small>
+                                <%}%>
                                 <div class="d-grid">
                                     <button class="btn btn-primary" type="submit">Create category</button>
                                 </div>

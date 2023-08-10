@@ -3,6 +3,7 @@ const nodemailer = require('nodemailer')
 const user = require('../../models/user-model')
 const productModel = require('../../models/product-model')
 const bcrypt = require('bcrypt')
+const { errorMonitor } = require('nodemailer/lib/xoauth2')
 
 module.exports={
     loadHome:(req,res)=>{
@@ -11,8 +12,8 @@ module.exports={
     Login_page:(req,res)=>{
         console.log(req.session)
         res.render('user/login-page' , {user_err:req.session.no_user , pass_err:req.session.pass_err})
-        req.session.no_user=false;
-        req.session.pass_err=false;
+        delete req.session.no_user;
+        delete req.session.pass_err;    
     },
     signup_page:(req,res)=>{
         res.render('user/signup')
@@ -112,8 +113,9 @@ module.exports={
             console.log(otp)
             req.session.otp = otp;
             req.session.number = req.body.number;
-            const accountSid = config.TWILIO_SID;
-            const authToken = config.TWILIO_AUTH_TOKEN;
+            require('dotenv').config();
+            const accountSid = process.env.TWILIO_SID;
+            const authToken = process.env.TWILIO_AUTH_TOKEN;
             const client = require('twilio')(accountSid, authToken);
             client.messages
             .create({
@@ -124,7 +126,9 @@ module.exports={
             .then((message)=>{
                 console.log(message.sid);
                 res.render('user/forget-pass-otp')
-            });
+            }).catch((err)=>{
+                console.log("Eree", errorMonitor)
+            })
         }else{
             req.session.no_number = true
             res.redirect('/forget-password')
@@ -132,14 +136,15 @@ module.exports={
 
     },
     forgetPassword:(req,res)=>{
-        res.render('user/forget-pass' ,{err:req.session.no_number})
+        res.render('user/forget-pass' ,{err:req.session.no_number , isAdmin:0})
+        
         req.session.no_number = false;
     },
     forgetCheckOtp:(req,res)=>{
         if(req.session.otp == req.body.otp.join('')){
             res.render('user/reset-pass')
         }else{
-            
+
             res.redirect('/forget-password')
         }
     },

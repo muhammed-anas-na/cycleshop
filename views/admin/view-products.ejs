@@ -163,7 +163,7 @@
                         <div class="col-md-3 col-12 me-auto mb-md-0 mb-3">
                             <select class="form-select">
                                 <option selected>All category</option>
-                                <%for(i=0;i<data.length;i++){%>
+                                <%for(i=data.length-1;i>=0;i--){%>
                                     <option><%= data[i].category%></option>
                                 <%}%>
                             </select>
@@ -182,7 +182,7 @@
                     </div>
                 </header> <!-- card-header end// -->
                 <div class="card-body">
-                    <% for (let i = 0; i < data.length; i++) { %>
+                    <% for (i=data.length-1;i>=0;i--) { %>
                     <article class="itemlist">
                         <div class="row align-items-center">
                             <div class="col col-check flex-grow-0">
@@ -205,7 +205,7 @@
                                 <span class="badge rounded-pill alert-success">Active</span>
                             </div>
                             <div class="col-lg-1 col-sm-2 col-4 col-date">
-                                <span><%=data[i].created_on%></span>
+                                <span></span>
                             </div>
                             <div class="col-lg-2 col-sm-2 col-4 col-action text-end">
                                 <a href="#" class="btn btn-sm font-sm rounded btn-brand">

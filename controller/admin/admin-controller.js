@@ -10,8 +10,8 @@ module.exports={
     },
     doLogin:async (req,res)=>{
         console.log(req.body);
-        req.body.email = req.body.email.trim();
         user.findOne({email:req.body.email,isAdmin:1}).then((data)=>{
+            console.log("Admin data" , data)
             bcrypt.compare(req.body.password , data.password).then((status)=>{
                 if(status){
                     res.redirect('/admin')
@@ -20,7 +20,7 @@ module.exports={
                 }
             })
         }).catch((err)=>{
-            console.log(err)
+            res.send('No admin found')
         })
     },
 
