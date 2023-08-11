@@ -203,7 +203,7 @@
                                               <td><%= data[i].description%></td>
                                               <td><%= data[i].base_price%></td>
                                               <td>
-                                                <a href="" class="btn btn-info p-1">Edit</a>
+                                                <a href="/admin/edit-category/<%=data[i]._id%>" class="btn btn-info p-1">Edit</a>
                                                 <%if(data[i].isListed == 1){%>
                                                     <a href="/admin/unlist-category/<%=data[i]._id%>" class="btn btn-danger p-1">Unlist</a>
                                                 <%}else{%>

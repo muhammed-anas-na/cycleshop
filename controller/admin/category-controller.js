@@ -54,5 +54,46 @@ module.exports={
         categoryModel.findByIdAndUpdate(req.params.id , {isListed:1},{upsert:true},{new:true}).then((status)=>{
             res.redirect('/admin/category')
         }) 
+    },
+    showEditCateroty:async (req,res)=>{
+        let data = await categoryModel.findById(req.params.id);
+        res.render('admin/edit-category' , {data})
+    },
+    EditCategory:(req,res)=>{
+        console.log(req.file)
+        if(req.file==undefined){
+            let newObj = {
+                category:req.body.category,
+                base_price:req.body.base_price,
+                description:req.body.description,
+            }
+            categoryModel.findByIdAndUpdate(req.params.id, newObj).then((status)=>{
+                console.log(status);
+                res.redirect('/admin/edit-category/'+req.params.id)
+            })
+        }else{
+            (async () => {
+                const rembg = new Rembg({
+                  logging: true,
+                });
+                // userController.createAcc(req.body).then((id)=>{})
+                let newObj = {
+                    category:req.body.category,
+                    base_price:req.body.base_price,
+                    description:req.body.description,
+                    image:req.file.filename,
+                }
+                await categoryModel.findByIdAndUpdate(req.params.id, newObj)
+                try {
+                  console.log(req.file)
+                  const input = sharp(req.file.path);
+                  const output = await rembg.remove(input);
+                  await output.webp().toFile('./public/upload/category/'+req.file.filename);
+                  res.redirect('/admin/category')
+                } catch (error) {
+                  res.status(500).json({ error: 'An error occurred while processing the image.' });
+                }
+              })();
+        }
     }
 }

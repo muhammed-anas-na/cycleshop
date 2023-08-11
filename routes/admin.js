@@ -29,4 +29,7 @@ router.post('/edit-product/:id'  ,productUpload.array('image',4),productControll
 router.get('/view-users', userController.viewUser) 
 router.get('/block-user/:id',userController.blockUser)
 router.get('/unBlock-user/:id',userController.unBlockUser)
+
+router.get('/edit-category/:id' , categoryController.showEditCateroty)
+router.post('/edit-category/:id',categoryUpload.single('image'),categoryController.EditCategory)
 module.exports = router;

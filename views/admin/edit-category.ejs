@@ -140,14 +140,14 @@
     <%- include('../partials/admin-header')%>
     <main class="main-wrap">
                 <section class="content-main">
-        <form action="/admin/edit-product/<%=data._id%>" method="post" enctype="multipart/form-data">
+        <form action="/admin/edit-category/<%=data._id%>" method="post" enctype="multipart/form-data">
             <div class="row">
                 <div class="col-9">
                     <div class="content-header">
-                        <h2 class="content-title">Edit Product</h2>
+                        <h2 class="content-title">Edit category</h2>
                         <div>
                             <button class="btn btn-light rounded font-sm mr-5 text-body hover-up">Save to draft</button>
-                            <button class="btn btn-md rounded font-sm hover-up" type="submit">Publich</button>
+                            <button class="btn btn-md rounded font-sm hover-up" type="submit">Edit</button>
                         </div>
                     </div>
                 </div>
@@ -159,39 +159,16 @@
                         <div class="card-body">
                             <form>
                                 <div class="mb-4">
-                                    <label for="product_name" class="form-label">Product title</label>
-                                    <input value="<%=data.name%>" name="product_name" required="true"  type="text" placeholder="Type here" class="form-control" id="product_name">
+                                    <label for="product_name" class="form-label">Category Name</label>
+                                    <input value="<%=data.category%>" name="category" required="true"  type="text" placeholder="Type here" class="form-control" id="product_name">
                                 </div>
                                 <div class="mb-4">
                                     <label class="form-label">Full description</label>
                                     <textarea name="description" placeholder="Type here" class="form-control" rows="4"><%=data.description%></textarea>
                                 </div>
-                                <div class="row">
-                                    <div class="col-lg-4">
-                                        <div class="mb-4">
-                                            <label class="form-label">Regular price</label>
-                                            <div class="row gx-2">
-                                                <input value="<%=data.regular_price%>" name="regular_price" required="true" required="true" placeholder="$" type="text" class="form-control">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-4">
-                                        <div class="mb-4">
-                                            <label class="form-label">Sale price</label>
-                                            <input value="<%=data.sale_price%>" name="sale_price" required="true" placeholder="$" type="text" class="form-control">
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-4">
-                                        <div class="mb-4">
-                                            <label class="form-label">Units</label>
-                                            <input value="<%=data.unit%>" name="units" required="true" type="number" class="form-control">
-                                        </div>
-                                    </div>
-
-                                </div>
                                 <div class="mb-4">
-                                    <label class="form-label">Tax rate</label>
-                                    <input value="<%= data.gst%>" name="tax_rate" required="true" type="text" placeholder="%" class="form-control" id="product_name">
+                                    <label class="form-label">Base Price</label>
+                                    <input value="<%= data.base_price%>" name="base_price" required="true" type="text" placeholder="%" class="form-control" id="product_name">
                                 </div>
                             </form>
                         </div>
@@ -205,28 +182,8 @@
                         </div>
                         <div class="card-body">
                             <div class="input-upload">
-                                <img src="/upload/product/<%=data.images[0]%>" alt="image">
-                                <img src="/upload/product/<%=data.images[1]%>" alt="image">
-                                <img src="/upload/product/<%=data.images[2]%>" alt="image">
-                                <img src="/upload/product/<%=data.images[3]%>" alt="image">
+                                <img src="/upload/category/<%=data.image%>" alt="image">
                             </div>
-                        </div>
-                    </div> <!-- card end// -->
-                    <div class="card mb-4">
-                        <div class="card-header">
-                            <h4>Organization</h4>
-                        </div>
-                        <div class="card-body">
-                            <div class="row gx-2">
-                                <div class="col-sm-6 mb-3">
-                                    <label class="form-label">Category</label>
-                                    <select name="category" class="form-select">
-                                        <%for(i=0;i<category.length;i++){%>
-                                        <option><%=category[i].category%></option>
-                                        <%}%>
-                                    </select>
-                                </div>
-                            </div> <!-- row.// -->
                         </div>
                     </div> <!-- card end// -->
                 </div>
@@ -236,7 +193,6 @@
                         <h4>Media</h4>
                     </div>
                     <div class="card-body">
-                        <small style="font-weight: bold;">Upload 4 images</small>
                         <div class="input-upload">
                             <img src="/assets/imgs/theme/upload.svg" alt="">
                             <input name="image" class="form-control" type="file" multiple>
