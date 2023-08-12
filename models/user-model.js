@@ -35,6 +35,9 @@ let userModel = new mongoose.Schema({
         type:String,
         require:true,
         default:0,
+    },
+    cart:{
+        type:Array,
     }
 });
 

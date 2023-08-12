@@ -34,4 +34,9 @@ router.post('/reset-password' , userController.resetPass)
 router.get('/profile/:id' , userController.showProfile)
 router.get('/edit-profile/:id' , userController.showEditProfile)
 router.post('/edit-profile/:id',userController.editProfile)
+
+router.get('/product-detail-page/:id' , userController.showProductDetail)
+
+router.get('/cart/:id' , userController.ShowCart)
+router.post('/add-to-cart' , userController.AddToCart)
 module.exports = router;

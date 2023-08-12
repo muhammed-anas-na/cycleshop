@@ -63,8 +63,11 @@
                          <% } else { %>
                            <li><a href="/login">Login</a></li>
                          <% } %>
-                         
-                        <li><a href="#"><img src="images/trolly-icon.png"></a></li>
+                        <%if(user){%>
+                           <li><a href="/cart/<%=userData._id%>"><img src="images/trolly-icon.png"></a></li>
+                        <%}else{%>
+                           <li><a href="/login"><img src="images/trolly-icon.png"></a></li>
+                        <%}%>
                         <li><a href="#"><img src="images/search-icon.png"></a></li>
                      </ul>
                   </div>

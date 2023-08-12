@@ -179,15 +179,74 @@ module.exports={
         }
         if(baseUser.email == emailUser.email){
             console.log("Save")
-            user.findByIdAndUpdate(req.params.id , {name:req.body.name,email:req.body.email,number:req.body.number},{new:true})
+            await user.findByIdAndUpdate(req.params.id , {name:req.body.name,email:req.body.email,number:req.body.number},{new:true}).then((status)=>{
+                console.log(status)
+            })
             res.redirect('/profile/'+req.params.id)
         }else if(emailUser.email == req.body.email){
             console.log("Dont save")
             res.redirect('/edit-profile/'+req.params.id)
         }else{
             console.log("Save else")
-            user.findByIdAndUpdate(req.params.id , {name:req.body.name,email:req.body.email,number:req.body.email})
+            await user.findByIdAndUpdate(req.params.id , {name:req.body.name,email:req.body.email,number:req.body.email})
+            res.redirect('/profile/'+req.params.id);
         }
+    },
+    showProductDetail:async (req,res)=>{
+        let data = await productModel.findById(req.params.id)
+        console.log(data)
+        res.render('user/product-detail-page' , {data})
+    },
+    ShowCart:(req,res)=>{
+        res.render('user/cart')
+    },
+    AddToCart:async(req,res)=>{
+        data = req.session.user
+        console.log("User Id :",data._id)
+        console.log("ProductId :",req.query.ProId)
+        let userData = await user.findOne({
+            _id: data._id,
+            cart: { $elemMatch: { ProductId: req.query.ProId } }
+          }).lean();
+          
+        console.log("User data=====> ",userData)
+        if(userData == null){
+            user.updateOne(
+                { _id: data._id },
+                { $push: { cart: {ProductId:req.query.ProId,
+                size:req.body.size,
+                quantity:req.body.quantity
+                } } }
+            ).then((data)=>{
+                console.log("Dataaaa",data)
+                res.send("New item added")
+            })
+        }else{
+            const matchingUser = userData;
+            console.log(matchingUser)
+            const matchingCartItem = matchingUser.cart.find(item => item.ProductId === req.query.ProId)
+            console.log("Matchin cart Item   : ",matchingCartItem)
+            console.log("Quantity : " , matchingCartItem.quantity)
+
+            let totalQua = parseInt(matchingCartItem.quantity)+parseInt(req.body.quantity);
+            totalQua = totalQua.toString()
+            user.updateOne(
+                {
+                  _id: data._id,
+                  'cart.ProductId': req.query.ProId,
+                },
+                {
+                  $set: {
+                    'cart.$.quantity': totalQua,
+                  }
+                }
+              ).then((status)=>{
+                console.log(status);
+                res.send('Be happy')
+              })
+        }
+        
+
     }
 
 }

@@ -109,6 +109,7 @@
         const nameRegex = /^[A-Z][a-z]*$/;
         let name = document.getElementById('name').value;
         if(nameRegex.test(name)){}else{
+            alert("Errrr")
             document.getElementById('name').style.borderColor = 'red';
             event.preventDefault()
         }
