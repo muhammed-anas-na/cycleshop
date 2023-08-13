@@ -39,4 +39,10 @@ router.get('/product-detail-page/:id' , userController.showProductDetail)
 
 router.get('/cart/:id' , userController.ShowCart)
 router.post('/add-to-cart' , userController.AddToCart)
+
+router.get('/change-password/:id' , userController.ShowChangePass)
+router.post('/change-password/:id' , userController.showNewPass)
+router.post('/new-password/:id' , userController.SetNewPass)
+
+router.post('/change-quantity' , userController.changeQuantity)
 module.exports = router;

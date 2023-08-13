@@ -1,6 +1,7 @@
 const config = require('../../config/config')
 const nodemailer = require('nodemailer')
 const user = require('../../models/user-model')
+const mongodb = require('mongodb');
 const productModel = require('../../models/product-model')
 const bcrypt = require('bcrypt')
 const { errorMonitor } = require('nodemailer/lib/xoauth2')
@@ -197,8 +198,27 @@ module.exports={
         console.log(data)
         res.render('user/product-detail-page' , {data})
     },
-    ShowCart:(req,res)=>{
-        res.render('user/cart')
+    ShowCart:async (req,res)=>{
+        let userSession = req.session.user;
+        console.log(userSession._id)
+        const oid = new mongodb.ObjectId(userSession._id);
+        let data = await user.aggregate([
+            {$match:{_id:oid}},
+            {$unwind:'$cart'},
+            {$project:{
+                proId:{'$toObjectId':'$cart.ProductId'},
+                quantity:'$cart.quantity',
+                size:'$cart.size'
+            }},
+            {$lookup:{
+                from:'products',
+                localField:'proId', 
+                foreignField:'_id',
+                as:'ProductDetails',
+            }}
+        ])
+        console.log(data)
+        res.render('user/cart' , {data})
     },
     AddToCart:async(req,res)=>{
         data = req.session.user
@@ -207,10 +227,11 @@ module.exports={
         let userData = await user.findOne({
             _id: data._id,
             cart: { $elemMatch: { ProductId: req.query.ProId } }
-          }).lean();
-          
+        }).lean();
+
         console.log("User data=====> ",userData)
         if(userData == null){
+            req.body.quantity = parseInt(req.body.quantity)
             user.updateOne(
                 { _id: data._id },
                 { $push: { cart: {ProductId:req.query.ProId,
@@ -219,7 +240,7 @@ module.exports={
                 } } }
             ).then((data)=>{
                 console.log("Dataaaa",data)
-                res.send("New item added")
+                res.redirect('/product-detail-page/'+ req.query.ProId);
             })
         }else{
             const matchingUser = userData;
@@ -229,7 +250,6 @@ module.exports={
             console.log("Quantity : " , matchingCartItem.quantity)
 
             let totalQua = parseInt(matchingCartItem.quantity)+parseInt(req.body.quantity);
-            totalQua = totalQua.toString()
             user.updateOne(
                 {
                   _id: data._id,
@@ -242,11 +262,72 @@ module.exports={
                 }
               ).then((status)=>{
                 console.log(status);
-                res.send('Be happy')
+                res.redirect('/product-detail-page/'+ req.query.ProId)
               })
         }
         
 
+    },
+    ShowChangePass:(req,res)=>{
+        res.render('user/change-password' , {id:req.params.id})
+    },
+    showNewPass:(req,res)=>{
+        let id = req.params.id;
+        user.findById(id).then((data)=>{
+            bcrypt.compare(req.body.password , data.password).then((status)=>{
+                if(status){
+                    res.render('user/new-password',{id:req.params.id})
+                }else{
+                    res.redirect('/change-password/'+req.params.id)
+                }
+            })
+        })
+    },
+    SetNewPass:async(req,res)=>{
+        try{
+            console.log(req.body)
+            req.body.password2 = await bcrypt.hash(req.body.password2,10);
+            let data = await user.findByIdAndUpdate(req.params.id,{password:req.body.password2} , {new:true})
+            console.log(data)
+            res.redirect('/profile/'+req.params.id)
+        }catch{
+            res.status(500).send({err:"Something went wrong"})
+        }
+    },
+    changeQuantity:(req,res)=>{
+        req.body.count = parseInt(req.body.count);
+        req.body.quantity = parseInt(req.body.quantity);
+        console.log(req.body)   
+        if(req.body.count == -1 && req.body.quantity == 1){
+            // user.findByIdAndDelete(req.body.userId , {'cart.ProductId':req.body.proId}).then((status)=>{
+            //     console.log(status);
+            // })
+            user.updateOne(
+                {_id: req.body.userId},
+                {$pull: {cart: {ProductId: req.body.proId}}
+            }).then((status)=>{
+                console.log(status);
+                res.json({status:true})
+            })
+        }else{
+            user.updateOne(
+                {
+                  _id: req.body.userId,
+                  'cart.ProductId': req.body.proId,
+                },
+                {
+                  $inc: {
+                    'cart.$.quantity': req.body.count,
+                  }
+                },
+                {
+                    new:true
+                }
+            ).then((status)=>{
+                res.json({status:false})
+            })
+        }
     }
+
 
 }
