@@ -9,13 +9,48 @@
         .icon-hover:hover i {
             color: #3b71ca !important;
         }
-        #selectedImage:hover{
-            transform: scale(1.2);
+
+        #img-zoomer-box {
+            max-width: 500px;
+            height: auto;
+            position: relative;
+            margin: 10px auto;
+        }
+
+        selectedImage {
+            width: 100%;
+            height: auto;
+        }
+
+        #img-zoomer-box:hover,
+        #img-zoomer-box:active {
+            cursor: zoom-in;
+            display: block;
+        }
+
+        #img-zoomer-box:hover #img-2,
+        #img-zoomer-box:active #img-2 {
+            opacity: 1;
+        }
+
+        #img-2 {
+            width: 340px;
+            height: 340px;
+            background: url('/upload/product/<%=data.images[0]%>') no-repeat #FFF;
+            box-shadow: 0 5px 10px -2px rgba(0, 0, 0, 0.3);
+            pointer-events: none;
+            position: absolute;
+            opacity: 0;
+            border: 4px solid whitesmoke;
+            z-index: 99;
+            border-radius: 100%;
+            display: block;
+            transition: opacity .2s;
         }
     </style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.5/dist/sweetalert2.min.css">
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.5/dist/sweetalert2.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.5/dist/sweetalert2.min.js"></script>
 </head>
 <!-- content -->
 <section class="py-5">
@@ -23,17 +58,20 @@
         <div class="row gx-5">
             <aside class="col-lg-6">
                 <div class="border rounded-4 mb-3 d-flex justify-content-center">
-                    <a id="selectedImageLink" data-fslightbox="mygallery" class="rounded-4" target="_blank" data-type="image" href="#">
-                      <img id="selectedImage" style="max-width: 100%; max-height: 100vh; margin: auto;" class="rounded-4 fit" src="/upload/product/<%=data.images[0]%>" />
-                    </a>
-                  </div>
-                  <div class="d-flex justify-content-center mb-3">
-                    <% for (i = 0; i < data.images.length; i++) { %>
-                      <a data-fslightbox="mygallery" class="border mx-1 rounded-2" data-type="image" href="#" onclick="changeImage('<%= data.images[i] %>')" class="item-thumb">
-                        <img width="60" height="60" class="rounded-2" src="/upload/product/<%= data.images[i] %>" />
-                      </a>
-                    <% } %>
-                  </div>
+                        <div id="img-zoomer-box">
+                            <img id="selectedImage" style="max-width: 100%; max-height: 100vh; margin: auto;"
+                                class="rounded-4 fit" src="/upload/product/<%=data.images[0]%>" />
+                            <div id="img-2"></div>
+                        </div>
+                </div>
+                <div class="d-flex justify-content-center mb-3">
+                    <% for (i=0; i < data.images.length; i++) { %>
+                        <a data-fslightbox="mygallery" class="border mx-1 rounded-2" data-type="image" href="#"
+                            onclick="changeImage('<%= data.images[i] %>')" class="item-thumb">
+                            <img width="60" height="60" class="rounded-2" src="/upload/product/<%= data.images[i] %>" />
+                        </a>
+                        <% } %>
+                </div>
                 <!-- thumbs-wrap.// -->
                 <!-- gallery-wrap .end// -->
             </aside>
@@ -53,12 +91,14 @@
                                 4.5
                             </span>
                         </div>
-                        <span class="text-muted"><i class="fas fa-shopping-basket fa-sm mx-1"></i><%=data.unit%> orders</span>
+                        <span class="text-muted"><i class="fas fa-shopping-basket fa-sm mx-1"></i>
+                            <%=data.unit%> orders
+                        </span>
                         <span class="text-success ms-2">In stock</span>
                     </div>
                     <span style='color:red;text-decoration:line-through'>
                         <span style='color:black'>₹<%=data.regular_price%></span>
-                      </span>
+                    </span>
 
                     <div class="mb-3">
                         <span class="h5">₹<%=data.sale_price%></span>
@@ -87,32 +127,39 @@
                         <div class="row mb-4">
                             <div class="col-md-4 col-6">
                                 <label class="mb-2">Size</label>
-                                <select id="size" name="size" class="form-select border border-secondary" style="height: 35px;">
+                                <select id="size" name="size" class="form-select border border-secondary"
+                                    style="height: 35px;">
                                     <option>Small</option>
                                     <option>Medium</option>
                                     <option>Large</option>
                                 </select>
                             </div>
                             <!-- col.// -->
-                        
+
                             <div class="col-md-4 col-6 mb-3">
                                 <label class="mb-2 d-block">Quantity</label>
                                 <div class="input-group mb-3" style="width: 170px;">
-                                <button class="btn btn-white border border-secondary px-3" type="button" id="decrementButton" data-mdb-ripple-color="dark">
-                                    <i class="fas fa-minus"></i>
-                                </button>
-                                <input name="quantity" type="text" id="quantityInput" class="form-control text-center border border-secondary" value="1" aria-label="Example text with button addon" aria-describedby="decrementButton" />
-                                <button class="btn btn-white border border-secondary px-3" type="button" id="incrementButton" data-mdb-ripple-color="dark">
-                                    <i class="fas fa-plus"></i>
-                                </button>
+                                    <button class="btn btn-white border border-secondary px-3" type="button"
+                                        id="decrementButton" data-mdb-ripple-color="dark">
+                                        <i class="fas fa-minus"></i>
+                                    </button>
+                                    <input name="quantity" type="text" id="quantityInput"
+                                        class="form-control text-center border border-secondary" value="1"
+                                        aria-label="Example text with button addon"
+                                        aria-describedby="decrementButton" />
+                                    <button class="btn btn-white border border-secondary px-3" type="button"
+                                        id="incrementButton" data-mdb-ripple-color="dark">
+                                        <i class="fas fa-plus"></i>
+                                    </button>
                                 </div>
                             </div>
-                        
+
                         </div>
                         <button type="submit" class="btn btn-warning shadow-0"> Buy now </button>
-                        <a onclick="AddToCart('<%=data._id%>')" class="btn btn-primary shadow-0"> <i class="me-1 fa fa-shopping-basket"></i> Add to cart</a>
+                        <a onclick="AddToCart('<%=data._id%>')" class="btn btn-primary shadow-0"> <i
+                                class="me-1 fa fa-shopping-basket"></i> Add to cart</a>
                         <a href="#" class="btn btn-light border border-secondary py-2 icon-hover px-3"> <i
-                            class="me-1 fa fa-heart fa-lg"></i> Save </a>
+                                class="me-1 fa fa-heart fa-lg"></i> Save </a>
                     </form>
                 </div>
             </main>
@@ -469,53 +516,84 @@
     //         }
     //     })
     // }
+    //Demo: https://www.codehim.com/demo/zoom-image-on-mouseover-using-javascript/
+    let zoomer = function () {
+        document.querySelector('#img-zoomer-box')
+            .addEventListener('mousemove', function (e) {
+                let original = document.querySelector('#selectedImage'),
+                    magnified = document.querySelector('#img-2'),
+                    style = magnified.style,
+                    x = e.pageX - this.offsetLeft,
+                    y = e.pageY - this.offsetTop,
+                    imgWidth = original.offsetWidth,
+                    imgHeight = original.offsetHeight,
+                    xperc = ((x / imgWidth) * 100),
+                    yperc = ((y / imgHeight) * 100);
 
-    function AddToCart(proId){
+                //lets user scroll past right edge of image
+                if (x > (.01 * imgWidth)) {
+                    xperc += (.15 * xperc);
+                };
+
+                //lets user scroll past bottom edge of image
+                if (y >= (.01 * imgHeight)) {
+                    yperc += (.15 * yperc);
+                };
+
+                style.backgroundPositionX = (xperc - 9) + '%';
+                style.backgroundPositionY = (yperc - 9) + '%';
+
+                style.left = (x - 180) + 'px';
+                style.top = (y - 180) + 'px';
+
+            }, false);
+    }();
+    function AddToCart(proId) {
         const quantity = document.getElementById("quantityInput").value
         const size = document.getElementById('size').value
         $.ajax({
-            url:'/add-to-cart/'+proId,
-            method:'post',
-            data:{
-                quantity:quantity,
-                size:size,
+            url: '/add-to-cart/' + proId,
+            method: 'post',
+            data: {
+                quantity: quantity,
+                size: size,
             },
-            success(response){
+            success(response) {
                 Swal.fire({
-                title: 'Added to cart!',
-                text: 'Product has been added to cart succesfully.',
-                icon: 'success',
-                timer: 5000
+                    title: 'Added to cart!',
+                    text: 'Product has been added to cart succesfully.',
+                    icon: 'success',
+                    timer: 5000
                 })
             }
         })
     }
 
     function changeImage(newImageSrc) {
-      const selectedImage = document.getElementById('selectedImage');
-      const selectedImageLink = document.getElementById('selectedImageLink');
-      
-      selectedImage.setAttribute('src', "/upload/product/" + newImageSrc);
-      selectedImageLink.setAttribute('href', "/upload/product/" + newImageSrc);
-    }
+        document.getElementById('img-2').style.backgroundImage = "url("+'/upload/product/' + newImageSrc + ")";
+        const selectedImage = document.getElementById('selectedImage');
+        const selectedImageLink = document.getElementById('selectedImageLink');
 
+        selectedImage.setAttribute('src', "/upload/product/" + newImageSrc);
+        selectedImageLink.setAttribute('href', "/upload/product/" + newImageSrc);
+    }
     const decrementButton = document.getElementById("decrementButton");
     const incrementButton = document.getElementById("incrementButton");
     const quantityInput = document.getElementById("quantityInput");
 
     decrementButton.addEventListener("click", () => {
-      let currentQuantity = parseInt(quantityInput.value);
-      if (!isNaN(currentQuantity)) {
-        currentQuantity = Math.max(currentQuantity - 1, 0);
-        quantityInput.value = currentQuantity;
-      }
+        let currentQuantity = parseInt(quantityInput.value);
+        if (!isNaN(currentQuantity)) {
+            currentQuantity = Math.max(currentQuantity - 1, 0);
+            quantityInput.value = currentQuantity;
+        }
     });
 
     incrementButton.addEventListener("click", () => {
-      let currentQuantity = parseInt(quantityInput.value);
-      if (!isNaN(currentQuantity)) {
-        currentQuantity++;
-        quantityInput.value = currentQuantity;
-      }
+        let currentQuantity = parseInt(quantityInput.value);
+        if (!isNaN(currentQuantity)) {
+            currentQuantity++;
+            quantityInput.value = currentQuantity;
+        }
     });
-  </script>
+</script>
