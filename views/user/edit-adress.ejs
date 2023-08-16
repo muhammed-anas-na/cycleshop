@@ -1,0 +1,119 @@
+
+<style>
+    body {
+        color: #999;
+        background: #fafafa;
+        font-family: 'Roboto', sans-serif;
+    }
+    .form-control {
+        min-height: 41px;
+        box-shadow: none;
+        border-color: #e6e6e6;
+    }
+    .form-control:focus {
+        border-color: #00c1c0;
+    }
+    .form-control, .btn {        
+        border-radius: 3px;
+    }
+    .signup-form {
+        width: 425px;
+        margin: 0 auto;
+        padding: 30px 0;
+    }
+    .signup-form h2 {
+        color: #333;
+        font-weight: bold;
+        margin: 0 0 25px;
+    }
+    .signup-form form {
+        margin-bottom: 15px;
+        background: #fff;
+        border: 1px solid #f4f4f4;
+        box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+        padding: 40px 50px;
+    }
+    .signup-form .form-group {
+        margin-bottom: 20px;
+    }
+    .signup-form label {
+        font-weight: normal;
+        font-size: 14px;
+    }
+    .signup-form input[type="checkbox"] {
+        position: relative;
+        top: 1px;
+    }    
+    .signup-form .btn, .signup-form .btn:active {        
+        font-size: 16px;
+        font-weight: bold;
+        background: #00c1c0 !important;
+        border: none;
+        min-width: 140px;
+    }
+    .signup-form .btn:hover, .signup-form .btn:focus {
+        background: #00b3b3 !important;
+    }
+    .signup-form a {
+        color: #00c1c0;
+        text-decoration: none;
+    }	
+    .signup-form a:hover {
+        text-decoration: underline;
+    }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+
+    <link rel="stylesheet" href="//cdn.tutorialjinni.com/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//cdn.tutorialjinni.com/bootstrap-select/1.12.4/css/bootstrap-select.min.css">
+    <link rel="stylesheet" href="//g.tutorialjinni.com/mojoaxel/bootstrap-select-country/dist/css/bootstrap-select-country.min.css" />
+    
+
+</head>
+    <body>
+    <div class="signup-form">
+        <form action="/edit-adress/<%=Adressdata.adress._id%>" method="post">
+            <h2>EDIT ADDRESS</h2>
+            <div class="form-group">
+                <select name="country" class="selectpicker countrypicker" data-flag="true" data-default="<%=Adressdata.adress.country%>"></select>
+            </div>
+            <div class="form-group">
+                <input value="<%=Adressdata.adress.name%>" id="name" type="text" class="form-control" name="name" placeholder="Full Name" required="required">
+            </div>
+            <div class="form-group">
+                <input value="<%=Adressdata.adress.number%>" id="number"   type="number" class="form-control" name="number" placeholder="Mobile Number" required="required">
+            </div>
+            <div class="form-group">
+                <input value="<%=Adressdata.adress.altNumber%>" id="altnumber"   type="number" class="form-control" name="altNumber" placeholder="Alternative Number" required="required">
+            </div>
+            <div class="form-group">
+                <input value="<%=Adressdata.adress.pinCode%>" id="pin-code" type="number" class="form-control" name="pinCode" placeholder="Pin code" required="required">
+            </div>
+            <div class="form-group">
+                <input value="<%=Adressdata.adress.house%>" id="house"   type="text" class="form-control" name="house" placeholder="Flat, House no., Building, Company, Apartment" required="required">
+            </div>
+            <div class="form-group">
+                <input value="<%=Adressdata.adress.area%>" id="area"   type="text" class="form-control" name="area" placeholder="Area, Street, Sector, Village" required="required">
+            </div>
+            <div class="form-group">
+                <input value="<%=Adressdata.adress.landmark%>" id="landmark"   type="text" class="form-control" name="landmark" placeholder="Landmark" required="required">
+            </div>
+            <div class="form-group">
+                <input value="<%=Adressdata.adress.town%>" id="town"   type="text" class="form-control" name="town" placeholder="Town/city" required="required">
+            </div>
+            <div class="form-group">
+                <input value="<%=Adressdata.adress.state%>" id="state"   type="text" class="form-control" name="state" placeholder="State" required="required">
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary btn-lg">SAVE CHANGES</button>
+                <p id="err-msg"></p>
+            </div>
+        </form>
+    
+        
+</div>
+
+<script src="//cdn.tutorialjinni.com/jquery/3.6.1/jquery.min.js"></script>
+<script src="//cdn.tutorialjinni.com/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="//cdn.tutorialjinni.com/bootstrap-select/1.12.4/js/bootstrap-select.min.js"></script>
+<script src="//g.tutorialjinni.com/mojoaxel/bootstrap-select-country/dist/js/bootstrap-select-country.min.js"></script>

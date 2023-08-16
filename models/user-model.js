@@ -38,6 +38,9 @@ let userModel = new mongoose.Schema({
     },
     cart:{
         type:Array,
+    },
+    adress:{
+        type:Array,
     }
 });
 

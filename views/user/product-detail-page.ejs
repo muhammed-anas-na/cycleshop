@@ -9,7 +9,13 @@
         .icon-hover:hover i {
             color: #3b71ca !important;
         }
+        #selectedImage:hover{
+            transform: scale(1.2);
+        }
     </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.5/dist/sweetalert2.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.5/dist/sweetalert2.min.js"></script>
 </head>
 <!-- content -->
 <section class="py-5">
@@ -77,11 +83,11 @@
                     </div>
 
                     <hr />
-                    <form action="/add-to-cart?ProId=<%=data._id%>" method="post">
+                    <form action="/buy-now/<%=data._id%>" method="post">
                         <div class="row mb-4">
                             <div class="col-md-4 col-6">
                                 <label class="mb-2">Size</label>
-                                <select name="size" class="form-select border border-secondary" style="height: 35px;">
+                                <select id="size" name="size" class="form-select border border-secondary" style="height: 35px;">
                                     <option>Small</option>
                                     <option>Medium</option>
                                     <option>Large</option>
@@ -103,13 +109,11 @@
                             </div>
                         
                         </div>
-                        <a href="#" class="btn btn-warning shadow-0"> Buy now </a>
-                        <button type="submit" class="btn btn-primary shadow-0"> <i class="me-1 fa fa-shopping-basket"></i> Add to cart</button>
+                        <button type="submit" class="btn btn-warning shadow-0"> Buy now </button>
+                        <a onclick="AddToCart('<%=data._id%>')" class="btn btn-primary shadow-0"> <i class="me-1 fa fa-shopping-basket"></i> Add to cart</a>
                         <a href="#" class="btn btn-light border border-secondary py-2 icon-hover px-3"> <i
                             class="me-1 fa fa-heart fa-lg"></i> Save </a>
                     </form>
-
-                        
                 </div>
             </main>
         </div>
@@ -449,6 +453,44 @@
 
 
 <script>
+    // function buyNow(proId){
+    //     const quantity = document.getElementById("quantityInput").value
+    //     const size = document.getElementById('size').value
+    //     $.ajax({
+    //         url:'/buy-now',
+    //         method:'get',
+    //         data:{
+    //             proId:proId,
+    //             quantity:quantity,
+    //             size:size,
+    //         },
+    //         success(response){
+
+    //         }
+    //     })
+    // }
+
+    function AddToCart(proId){
+        const quantity = document.getElementById("quantityInput").value
+        const size = document.getElementById('size').value
+        $.ajax({
+            url:'/add-to-cart/'+proId,
+            method:'post',
+            data:{
+                quantity:quantity,
+                size:size,
+            },
+            success(response){
+                Swal.fire({
+                title: 'Added to cart!',
+                text: 'Product has been added to cart succesfully.',
+                icon: 'success',
+                timer: 5000
+                })
+            }
+        })
+    }
+
     function changeImage(newImageSrc) {
       const selectedImage = document.getElementById('selectedImage');
       const selectedImageLink = document.getElementById('selectedImageLink');

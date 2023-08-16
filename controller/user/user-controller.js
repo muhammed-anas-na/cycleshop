@@ -217,16 +217,23 @@ module.exports={
                 as:'ProductDetails',
             }}
         ])
-        console.log(data)
-        res.render('user/cart' , {data})
+        console.log("Dataaaa",data)
+        let GrandTotal = 0
+        for(let i=0;i<data.length;i++){
+            let qua = parseInt(data[i].quantity);
+            GrandTotal = GrandTotal+(qua*parseInt(data[i].ProductDetails[0].sale_price))
+        }
+        console.log("This is grandtotal",GrandTotal)
+        res.render('user/cart' , {data , GrandTotal})
     },
     AddToCart:async(req,res)=>{
+        console.log("Add too cart function =================    ")
         data = req.session.user
         console.log("User Id :",data._id)
-        console.log("ProductId :",req.query.ProId)
+        console.log("ProductId :",req.params.ProId)
         let userData = await user.findOne({
             _id: data._id,
-            cart: { $elemMatch: { ProductId: req.query.ProId } }
+            cart: { $elemMatch: { ProductId: req.params.ProId } }
         }).lean();
 
         console.log("User data=====> ",userData)
@@ -234,18 +241,21 @@ module.exports={
             req.body.quantity = parseInt(req.body.quantity)
             user.updateOne(
                 { _id: data._id },
-                { $push: { cart: {ProductId:req.query.ProId,
+                { $push: { cart: {ProductId:req.params.ProId,
                 size:req.body.size,
-                quantity:req.body.quantity
+                quantity:req.body.quantity,
+
                 } } }
             ).then((data)=>{
                 console.log("Dataaaa",data)
-                res.redirect('/product-detail-page/'+ req.query.ProId);
+                res.json(true)
+            }).catch(()=>{
+                res.json(false)
             })
         }else{
             const matchingUser = userData;
             console.log(matchingUser)
-            const matchingCartItem = matchingUser.cart.find(item => item.ProductId === req.query.ProId)
+            const matchingCartItem = matchingUser.cart.find(item => item.ProductId === req.params.ProId)
             console.log("Matchin cart Item   : ",matchingCartItem)
             console.log("Quantity : " , matchingCartItem.quantity)
 
@@ -253,7 +263,7 @@ module.exports={
             user.updateOne(
                 {
                   _id: data._id,
-                  'cart.ProductId': req.query.ProId,
+                  'cart.ProductId': req.params.ProId,
                 },
                 {
                   $set: {
@@ -262,7 +272,9 @@ module.exports={
                 }
               ).then((status)=>{
                 console.log(status);
-                res.redirect('/product-detail-page/'+ req.query.ProId)
+                res.json(true)
+              }).catch((err)=>{
+                res.json(false)
               })
         }
         
@@ -327,6 +339,113 @@ module.exports={
                 res.json({status:false})
             })
         }
+    },
+    showAddAdress:(req,res)=>{
+        res.render('user/add-adress')
+    },
+    removeFromCart:(req,res)=>{
+        user.updateOne(
+            {_id: req.body.userId},
+            {$pull: {cart: {ProductId: req.body.proId}}
+        }).then((status)=>{
+            console.log(status);
+            res.json(true)
+        }).catch((err)=>{
+            res.json(false)
+        })
+    },
+    addAdress:(req,res)=>{
+        let userData = req.session.user;
+        console.log(req.body)
+        user.updateOne(
+            {_id:userData._id},
+            {$push:{adress:{
+                _id:Date.now(),
+                name:req.body.name,
+                number:req.body.number,
+                altNumber:req.body.altNumber,
+                pinCode:req.body.pinCode,
+                house:req.body.house,
+                area:req.body.area,
+                landmark:req.body.landmark,
+                town:req.body.town,
+                state:req.body.state,
+                country:req.body.country,
+            }}}
+        ).then((data)=>{
+            console.log(data)
+            res.redirect('/profile/'+userData._id);
+        })
+    },
+    removeAdress:(req,res)=>{
+        console.log(req.body)
+        req.body.adressId = parseInt(req.body.adressId)
+        user.updateOne(
+            {_id: req.body.userId},
+            {$pull: {adress: {_id: req.body.adressId}}
+        }).then((status)=>{
+            console.log(status);
+            res.json(true);
+        }).catch((err)=>{
+            res.json(false);
+        })
+    },
+    ShowEditAdress:async(req,res)=>{
+        console.log(req.params.AdressId)
+        req.params.AdressId = parseInt(req.params.AdressId)
+        let userData = req.session.user;
+        let Adressdata = await user.aggregate([
+            {
+                $unwind:'$adress'
+            },
+            {
+                $match:{'adress._id':req.params.AdressId}
+            }
+        ])
+        console.log(Adressdata)
+        res.render('user/edit-adress' , {Adressdata:Adressdata[0]})
+    },
+    editAdress:(req,res)=>{
+        let userData = req.session.user;
+        req.params.AdressId = parseInt(req.params.AdressId)
+        user.updateOne(
+            {
+                _id: userData._id,
+                'adress._id': req.params.AdressId,
+            },
+            {
+                $set: {
+                  'adress.$.name': req.body.name,
+                  'adress.$.number': req.body.number,
+                  'adress.$.altNumber': req.body.altNumber,
+                  'adress.$.pinCode': req.body.pinCode,
+                  'adress.$.house': req.body.house,
+                  'adress.$.area': req.body.area,
+                  'adress.$.landmark': req.body.landmark,
+                  'adress.$.town': req.body.town,
+                  'adress.$.state': req.body.state,
+                  'adress.$.country': req.body.country,
+
+                }
+            }
+        ).then((status)=>{
+            console.log(status)
+            res.redirect('/profile/'+userData._id)
+        })
+    },
+    showBuyNow:(req,res)=>{
+        console.log("Requsst.boyd====" , req.body)
+        let userData = req.session.user;
+        console.log("Pro Id" , req.params.proId)
+        productModel.findOne({_id:req.params.proId}).then((status)=>{
+            user.findOne({_id:userData._id}).then((userData)=>{
+                res.render('user/buy-now' ,{status , userData , quantity:req.body.quantity , size:req.body.size})
+            })
+        })
+    },
+    buyNow:(req,res)=>{
+        console.log("Buy NOw");
+        console.log(req.body)
     }
 
 

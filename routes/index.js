@@ -38,11 +38,22 @@ router.post('/edit-profile/:id',userController.editProfile)
 router.get('/product-detail-page/:id' , userController.showProductDetail)
 
 router.get('/cart/:id' , userController.ShowCart)
-router.post('/add-to-cart' , userController.AddToCart)
+router.post('/add-to-cart/:ProId' , userController.AddToCart)
 
 router.get('/change-password/:id' , userController.ShowChangePass)
 router.post('/change-password/:id' , userController.showNewPass)
 router.post('/new-password/:id' , userController.SetNewPass)
 
+//------AJAX POST CALLS-------
 router.post('/change-quantity' , userController.changeQuantity)
+router.post('/removeFromCart' , userController.removeFromCart)
+
+router.get('/add-adress/:id' , userController.showAddAdress)
+router.post('/add-adress' , userController.addAdress)
+router.post('/remove-adress' , userController.removeAdress)
+router.get('/show-edit-adress/:AdressId',userController.ShowEditAdress)
+router.post('/edit-adress/:AdressId' , userController.editAdress)
+
+router.post('/buy-now/:proId' , userController.showBuyNow)
+router.post('/buy-now' , userController.buyNow)
 module.exports = router;

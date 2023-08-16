@@ -17,7 +17,196 @@
         .icon-hover-danger:hover i {
             color: #dc4c64 !important;
         }
-    </style>    
+
+        .boxed label {
+            display: inline-block;
+            width: 100%;
+            margin-top: 20px;
+            padding: 10px;
+            border: solid 2px #ccc;
+            transition: all 0.3s;
+        }
+
+        .boxed input[type="radio"] {
+            display: none;
+        }
+
+        .boxed input[type="radio"]:checked+label {
+            border: solid 2px rgb(15, 103, 218);
+            background-color: #bad5ff;
+        }
+        :root {
+  --card-line-height: 1.2em;
+  --card-padding: 1em;
+  --card-radius: 0.5em;
+  --color-green: #558309;
+  --color-gray: #e2ebf6;
+  --color-dark-gray: #c4d1e1;
+  --radio-border-width: 2px;
+  --radio-size: 1.5em;
+}
+
+body {
+  background-color: #f2f8ff;
+  color: #263238;
+  font-family: 'Noto Sans', sans-serif;
+  margin: 0;
+  padding: 2em 6vw;
+}
+
+.grid {
+  display: grid;
+  grid-gap: var(--card-padding);
+  margin: 0 auto;
+  max-width: 60em;
+  padding: 0;
+ 
+  @media (min-width: 42em) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.card {
+  background-color: #fff;
+  border-radius: var(--card-radius);
+  position: relative;
+  
+  &:hover {
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.15);
+  }
+}
+
+.radio {
+  font-size: inherit;
+  margin: 0;
+  position: absolute;
+  right: calc(var(--card-padding) + var(--radio-border-width));
+  top: calc(var(--card-padding) + var(--radio-border-width));
+}
+
+@supports(-webkit-appearance: none) or (-moz-appearance: none) { 
+  .radio {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background: #fff;
+    border: var(--radio-border-width) solid var(--color-gray);
+    border-radius: 50%;
+    cursor: pointer;
+    height: var(--radio-size);
+    outline: none;
+    transition: 
+      background 0.2s ease-out,
+      border-color 0.2s ease-out;
+    width: var(--radio-size); 
+
+    &::after {
+      border: var(--radio-border-width) solid #fff;
+      border-top: 0;
+      border-left: 0;
+      content: '';
+      display: block;
+      height: 0.75rem;
+      left: 25%;
+      position: absolute;
+      top: 50%;
+      transform: 
+        rotate(45deg)
+        translate(-50%, -50%);
+      width: 0.375rem;
+    }
+
+    &:checked {
+      background: var(--color-green);
+      border-color: var(--color-green);
+    }
+  }
+  
+  .card:hover .radio {
+    border-color: var(--color-dark-gray);
+    
+    &:checked {
+      border-color: var(--color-green);
+    }
+  }
+}
+
+.plan-details {
+  border: var(--radio-border-width) solid var(--color-gray);
+  border-radius: var(--card-radius);
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  padding: var(--card-padding);
+  transition: border-color 0.2s ease-out;
+}
+
+.card:hover .plan-details {
+  border-color: var(--color-dark-gray);
+}
+
+.radio:checked ~ .plan-details {
+  border-color: var(--color-green);
+}
+
+.radio:focus ~ .plan-details {
+  box-shadow: 0 0 0 2px var(--color-dark-gray);
+}
+
+.radio:disabled ~ .plan-details {
+  color: var(--color-dark-gray);
+  cursor: default;
+}
+
+.radio:disabled ~ .plan-details .plan-type {
+  color: var(--color-dark-gray);
+}
+
+.card:hover .radio:disabled ~ .plan-details {
+  border-color: var(--color-gray);
+  box-shadow: none;
+}
+
+.card:hover .radio:disabled {
+    border-color: var(--color-gray);
+  }
+
+.plan-type {
+  color: var(--color-green);
+  font-size: 1.5rem;
+  font-weight: bold;
+  line-height: 1em;
+}
+
+.plan-cost {
+  font-size: 2.5rem;
+  font-weight: bold;
+  padding: 0.5rem 0;
+}
+
+.slash {
+  font-weight: normal;
+}
+
+.plan-cycle {
+  font-size: 2rem;
+  font-variant: none;
+  border-bottom: none;
+  cursor: inherit;
+  text-decoration: none;
+}
+
+.hidden-visually {
+  border: 0;
+  clip: rect(0, 0, 0, 0);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  white-space: nowrap;
+  width: 1px;
+}
+    </style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
 </head>
 <!-- cart + summary -->
@@ -28,18 +217,19 @@
             <div class="col-lg-9">
                 <div class="card border shadow-0">
                     <div class="m-4">
-                        <h4 class="card-title mb-4">Your shopping cart</h4>
-                        <%if(data){%>
-                            <%if(data.length){%>
-                        <%for(i=0;i<data.length;i++){%>
-                        <div class="row gy-3 mb-4">
+                        <h1 style="font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+                        font-weight: bolder;" class="card-title mb-4">
+                            Select Address
+                        </h1>
+                        <a href="#" class="btn btn-info" style="margin-left: 35rem;">Add Adress</a>
+                        <!-- <div class="row gy-3 mb-4">
                             <div class="col-lg-5">
                                 <div class="me-lg-5">
                                     <div class="d-flex">
-                                        <img src="/upload/product/<%=data[i].ProductDetails[0].images[0]%>"
+                                        <img src="/upload/product"
                                             class="border rounded me-3" style="width: 96px; height: 96px;" />
                                         <div class="">
-                                            <a href="#" class="nav-link"><%=data[i].ProductDetails[0].name%></a>
+                                            <a href="#" class="nav-link">Name</a>
                                             <p class="text-muted">Yellow, Jeans</p>
                                         </div>
                                     </div>
@@ -48,27 +238,23 @@
                                 <div class="col-md-4 col-6 mb-3">
                                     <label class="mb-2 d-block">Quantity</label>
                                     <div class="input-group mb-3" style="width: 170px;">
-                                    <button class="btn btn-white border border-secondary px-3" type="button" id="decrementButton" data-mdb-ripple-color="dark" onclick="changeQuantity('<%=data[i]._id%>' , '<%=data[i].proId%>' ,-1)">
+                                    <button class="btn btn-white border border-secondary px-3" type="button" id="decrementButton" data-mdb-ripple-color="dark"">
                                         <i class="fas fa-minus"></i>
                                     </button>
-                                    <input name="quantity" type="text" id="<%=data[i].ProductDetails[0]._id%>" class="form-control text-center border border-secondary" value="<%=data[i].quantity%>" aria-label="Example text with button addon" aria-describedby="decrementButton" />
-                                    <button class="btn btn-white border border-secondary px-3" type="button" id="incrementButton" data-mdb-ripple-color="dark" onclick="changeQuantity('<%=data[i]._id%>' , '<%=data[i].proId%>' ,1)">
+                                    <input name="quantity" type="text" class="form-control text-center border border-secondary"  aria-label="Example text with button addon" aria-describedby="decrementButton" />
+                                    <button class="btn btn-white border border-secondary px-3" type="button" id="incrementButton" data-mdb-ripple-color="dark">
                                         <i class="fas fa-plus"></i>
                                     </button>
                                     </div>
                                     <div class="mt-4">
-                                        <p>Size:<%=data[i].size%></p>
+                                        <p>Size:</p>
                                     </div>
                                 </div>
 
-
-
                             <div class="col-lg-2 col-sm-6 col-6 d-flex flex-row flex-lg-column flex-xl-row text-nowrap">
-                                <div class="">₹
-                                    <text id="<%=data[i].ProductDetails[0]._id%>pro-total" class="h6">
-                                        <%=parseInt(data[i].quantity) * parseInt(data[i].ProductDetails[0].sale_price)%>
-                                    </text> <br />
-                                    <small class="text-muted text-nowrap">₹<span id="<%=data[i].ProductDetails[0]._id%>price"> <%=data[i].ProductDetails[0].sale_price%></span> / per item </small>
+                                <div class="">
+                                    <text class="h6">$1156.00</text> <br />
+                                    <small class="text-muted text-nowrap"> 100 / per item </small>
                                 </div>
                             </div>
                             <div
@@ -76,25 +262,70 @@
                                 <div class="float-md-end">
                                     <a href="#!" class="btn btn-light border px-2 icon-hover-primary"><i
                                             class="fas fa-heart fa-lg px-1 text-secondary"></i></a>
-                                    <a href="#" class="btn btn-light border text-danger icon-hover-danger" onclick="removeFromCart('<%=data[i]._id%>' , '<%=data[i].proId%>')"> Remove</a>
+                                    <a href="#" class="btn btn-light border text-danger icon-hover-danger"> Remove</a>
                                 </div>
                             </div>
-                        </div>
-                        <%}%>
-                        <%}else{%>
-                            <img style="display: block;margin-left: auto;margin-right: auto; width: 25%;" class="img-fluid d-flex" src="data:image/jpeg;base64,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" alt="empty-img">
-                        <%}%>
-                    <%}%>
-                    </div>
+                        </div> -->
 
-                    <div class="border-top pt-4 mx-4 mb-4">
-                        <p><i class="fas fa-truck text-muted fa-lg"></i> Free Delivery within 1-2 weeks</p>
-                        <p class="text-muted">
-                            Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt
-                            ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
-                            laboris nisi ut
-                            aliquip
-                        </p>
+                        <form class="boxed" action="/buy-now" method="post">
+                            <%for(i=0;i<userData.adress.length;i++){%>
+                            <input type="radio" id="<%=userData.adress[i]._id%>" name="adress" required="true" value="<%=userData.adress[i]._id%>">
+                            <label for="<%=userData.adress[i]._id%>" class="d-flex">
+                                <%=userData.adress[i].name%><br>
+                                <%=userData.adress[i].number%>
+                                <%=userData.adress[i].altNumber%><br>
+                                <%=userData.adress[i].pinCode%><br>
+                                <%=userData.adress[i].house%>
+                                <%=userData.adress[i].area%>
+                                <%=userData.adress[i].landmark%>
+                                <%=userData.adress[i].town%>
+                                <%=userData.adress[i].state%>
+                                <%=userData.adress[i].country%>
+                            </label>
+                            <%}%>
+                            <br><br>
+                            <h2>Select Payment method</h2>  
+                            <div class="grid mb-4">
+
+                                <label class="card">
+                                  <input name="paymentMethod" class="radio" type="radio" value="cod"  checked>
+                                  <span class="plan-details">
+                                    <span class="plan-type">COD</span>
+                                    <img src="/payment/cod.jfif" alt="cod-img">
+                                  </span>
+                                </label>
+
+                                <label class="card">
+                                    <input name="paymentMethod" class="radio" type="radio"  value="razorpay">
+                                    <span class="plan-details">
+                                      <span class="plan-type">Razorpay</span>
+                                      <img src="/payment/razorpay.jpg" alt="razorpay-img">
+                                    </span>
+                                </label>
+
+                                <label class="card">
+                                    <input name="paymentMethod" class="radio" type="radio" value="paypal" >
+                                    <span class="plan-details">
+                                      <span class="plan-type">PayPal</span>
+                                      <img src="/payment/paypal.jpg" alt="paypal-img">
+                                    </span>
+                                </label>
+
+                              </div>
+
+                              <div class="d-flex mb-3 border border-success rounded p-3">
+                                <img class="img-fluid" width="100px" src="/upload/product/<%=status.images[0]%>" alt="Product-img">
+                                <p for="name" class="ms-4">
+                                    <%=status.name%><br>
+                                    <s>₹<%=status.regular_price%></s>
+                                    <b>₹<%=status.sale_price%></b><br>
+                                    Quantity: <%=quantity%>
+                                    Size: <%=size%>
+                                </p>
+                            </div>
+
+                            <input type="submit" value="SUBMIT">
+                        </form>  
                     </div>
                 </div>
             </div>
@@ -118,7 +349,7 @@
                     <div class="card-body">
                         <div class="d-flex justify-content-between">
                             <p class="mb-2">Total price:</p>
-                            <p class="mb-2" id="grand-total">$329.00</p>
+                            <p class="mb-2">$329.00</p>
                         </div>
                         <div class="d-flex justify-content-between">
                             <p class="mb-2">Discount:</p>
@@ -131,14 +362,12 @@
                         <hr />
                         <div class="d-flex justify-content-between">
                             <p class="mb-2">Total price:</p>
-                            <p class="mb-2 fw-bold">₹<%=GrandTotal%></p>
+                            <p class="mb-2 fw-bold"><%=status.sale_price%></p>
                         </div>
 
                         <div class="mt-3">
-                            <form action="/buy-now">
-                                <a href="#" class="btn btn-success w-100 shadow-0 mb-2"> Make Purchase </a>
-                                <a href="#" class="btn btn-light w-100 border mt-2"> Back to shop </a>
-                            </form>
+                            <a href="#" class="btn btn-success w-100 shadow-0 mb-2"> Make Purchase </a>
+                            <a href="#" class="btn btn-light w-100 border mt-2"> Back to shop </a>
                         </div>
                     </div>
                 </div>
@@ -355,7 +584,7 @@
                         <li>
                             <hr class="dropdown-divider" />
                         </li>
-                        <li>    
+                        <li>
                             <a class="dropdown-item" href="#"><i class="flag-poland flag"></i>Polski</a>
                         </li>
                         <li>
@@ -386,62 +615,6 @@
         </div>
     </div>
 </footer>
-<!-- Footer -->
-    <script>
-        function changeQuantity(userId,proId,count){
-            let proTotal = document.getElementById(proId+'pro-total').innerHTML;
-            let price = document.getElementById(proId+'price').innerHTML;
-            proTotal = parseInt(proTotal);
-            price = parseInt(price);
-            if(count == 1){
-                document.getElementById(proId+'pro-total').innerHTML = proTotal+price
-            }else{
-                document.getElementById(proId+'pro-total').innerHTML = proTotal-price
-            }   
-            let quantity = document.getElementById(proId).value
-            $.ajax({
-                url:"/change-quantity",
-                method:'post',
-                data:{
-                    userId:userId,
-                    proId:proId,
-                    count:count,
-                    quantity:quantity,
-                },
-                success:(response)=>{
-                    console.log(response)
-                    if(response.status == true){
-                        location.reload();
-                        return confirm("Are you sure?")
-                    }else{
-                        let total = parseInt(quantity)+parseInt(count);
-                        document.getElementById(proId).value = total;
-                    }
-                }
-            })
-        }
-        function removeFromCart(userId , proId){
-            $.ajax({
-                url:'/removeFromCart',
-                method:'post',
-                data:{
-                    userId:userId,
-                    proId:proId,
-                },
-                success:(response)=>{
-                    console.log(response)
-                    if(response==true){
-                        alert("Removed")
-                        location.reload()
-                    }else{
-                        alert("error")
-                        location.reload()
-                    }
-                    
-                }
-            })
-        }
-    </script>
 
 <!-- <script>
     
