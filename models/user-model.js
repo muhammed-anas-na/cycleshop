@@ -41,6 +41,9 @@ let userModel = new mongoose.Schema({
     },
     adress:{
         type:Array,
+    },
+    orders:{
+        type:Array,
     }
 });
 

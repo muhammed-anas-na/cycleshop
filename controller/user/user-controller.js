@@ -3,8 +3,15 @@ const nodemailer = require('nodemailer')
 const user = require('../../models/user-model')
 const mongodb = require('mongodb');
 const productModel = require('../../models/product-model')
+const orderModel = require('../../models/order-model');
 const bcrypt = require('bcrypt')
-const { errorMonitor } = require('nodemailer/lib/xoauth2')
+const Razorpay = require('razorpay');
+
+require('dotenv').config();
+var instance = new Razorpay({
+    key_id: process.env.RAZORPAY_KEYID,
+    key_secret: process.env.RAZORPAY_KEYSECRET,
+});
 
 module.exports={
     loadHome:(req,res)=>{
@@ -215,7 +222,9 @@ module.exports={
                 localField:'proId', 
                 foreignField:'_id',
                 as:'ProductDetails',
-            }}
+            }},
+
+
         ])
         console.log("Dataaaa",data)
         let GrandTotal = 0
@@ -239,12 +248,14 @@ module.exports={
         console.log("User data=====> ",userData)
         if(userData == null){
             req.body.quantity = parseInt(req.body.quantity)
+            let proDetails = await productModel.findOne({_id:req.params.ProId} , {sale_price:1})
+            proDetails.sale_price = parseInt(proDetails.sale_price)
             user.updateOne(
                 { _id: data._id },
                 { $push: { cart: {ProductId:req.params.ProId,
                 size:req.body.size,
                 quantity:req.body.quantity,
-
+                price:proDetails.sale_price,
                 } } }
             ).then((data)=>{
                 console.log("Dataaaa",data)
@@ -254,11 +265,7 @@ module.exports={
             })
         }else{
             const matchingUser = userData;
-            console.log(matchingUser)
             const matchingCartItem = matchingUser.cart.find(item => item.ProductId === req.params.ProId)
-            console.log("Matchin cart Item   : ",matchingCartItem)
-            console.log("Quantity : " , matchingCartItem.quantity)
-
             let totalQua = parseInt(matchingCartItem.quantity)+parseInt(req.body.quantity);
             user.updateOne(
                 {
@@ -433,20 +440,146 @@ module.exports={
             res.redirect('/profile/'+userData._id)
         })
     },
-    showBuyNow:(req,res)=>{
-        console.log("Requsst.boyd====" , req.body)
-        let userData = req.session.user;
-        console.log("Pro Id" , req.params.proId)
-        productModel.findOne({_id:req.params.proId}).then((status)=>{
-            user.findOne({_id:userData._id}).then((userData)=>{
-                res.render('user/buy-now' ,{status , userData , quantity:req.body.quantity , size:req.body.size})
-            })
+    showBuyNow:async(req,res)=>{
+        // console.log("Requsst.boyd====" , req.body)
+        // let userData = req.session.user;
+        // console.log("Pro Id" , req.params.proId)
+        // productModel.findOne({_id:req.params.proId}).then((status)=>{
+        //     user.findOne({_id:userData._id}).then((userData)=>{
+        //         res.render('user/buy-now' ,{status , userData , quantity:req.body.quantity , size:req.body.size})
+        //     })
+        // })
+        if(req.query.proId){
+            let userSession = req.session.user;
+            let oid = new mongodb.ObjectId(req.query.proId)
+            let productDetails =  await productModel.find({_id:oid})
+            let userData = await user.findOne(
+                {_id:userSession._id},
+                {_id:1, adress:1}
+            ).lean()
+            console.log(productDetails)
+            console.log(userData);
+            res.send('😎')
+            //res.render('user/buy-now' , {isSingle:true , productDetails} )
+        }else{
+            let userSession = req.session.user;
+            let userData = await user.findOne(
+                {_id:userSession._id},
+                {_id:0,cart:1 , adress:1}
+            ).lean()
+            let total = 0;
+            for(i=0;i<userData.cart.length;i++){
+                let price = parseInt(userData.cart[i].price)
+                total = total+(price*userData.cart[i].quantity);
+            }
+    
+            const oid = new mongodb.ObjectId(userSession._id);
+            let productDetails = await user.aggregate([
+                {$match:{_id:oid}},
+                {$unwind:'$cart'},
+                {$project:{
+                    proId:{'$toObjectId':'$cart.ProductId'},
+                    quantity:'$cart.quantity',
+                    size:'$cart.size'
+                }},
+                {$lookup:{
+                    from:'products',
+                    localField:'proId', 
+                    foreignField:'_id',
+                    as:'ProductDetails',
+                }},
+            ])
+            console.log("ProductData",productDetails);
+            res.render('user/buy-now' , {productDetails , total , userData})   
+        }
+    },
+    BuyNow:async(req,res)=>{
+        let userSession = req.session.user;
+        req.body.total = parseInt(req.body.total);
+        if(req.body.paymentMethod == 'cod'){
+            paymentstatus = 'completed'
+        }else{
+            paymentstatus = 'pending'
+        }
+        console.log("Req boyddd" , req.body)
+        let oid = new mongodb.ObjectId(userSession._id)
+        req.body.adressId = parseInt(req.body.adressId);
+        let data = await user.aggregate([
+            {
+                $match:{_id:oid}
+            },
+            {
+                $unwind:'$adress'
+            },
+            {
+                $match:{'adress._id': req.body.adressId}
+            }
+
+        ])
+        console.log(data)
+        let order = new orderModel({
+            adress:data[0].adress,
+            GrandTotal:req.body.total,
+            paymentstatus:paymentstatus,
+            payment:req.body.paymentMethod,
+            userId:userSession._id,
+            items:data[0].cart
+        })
+        order.save().then(()=>{
+            if(req.body.paymentMethod == 'cod'){
+                console.log("IFFFFFFFFFFFF")
+                res.json(true)
+            }else if(req.body.paymentMethod =='razorpay'){
+                console.log(req.body.total)
+                console.log("razorpayyyy")
+                var options = {
+                    amount: req.body.total,  // amount in the smallest currency unit
+                    currency: "INR",
+                    receipt: ""+order._id
+                  };
+                  instance.orders.create(options, function(err, order) {
+                    if(err){
+                        console.log("Error while creating order : ",err)
+                    }else{
+                        console.log(order);
+                        res.json(order)
+                    }
+                  });
+
+            }
+            
+        }).catch((err)=>{
+            res.state(500).json({err:'Error'})
         })
     },
-    buyNow:(req,res)=>{
-        console.log("Buy NOw");
-        console.log(req.body)
+    VerifyPayment:(req,res)=>{
+        try{
+            console.log(req.body)
+            details = req.body;
+            const crypto = require('crypto');
+            let hmac = crypto.createHmac('sha256' , process.env.RAZORPAY_KEYSECRET)
+            hmac.update(details['response[razorpay_order_id]']+'|'+details['response[razorpay_payment_id]'])
+            hmac = hmac.digest('hex');
+            console.log(details['response[razorpay_order_id]'])
+            console.log(details['response[razorpay_signature]'])
+            console.log(hmac)
+            if(hmac == details['response[razorpay_signature]']){
+                orderModel.findByIdAndUpdate(req.body['order[receipt]'] , {$set:{paymentstatus:'completed'}}).then((status) =>{
+                    console.log("status",status)
+                    res.json(true);
+                }).catch((err)=>{
+                    res.json(false);
+                })
+                
+            }else{
+                console.log('hmac not matchinggg..')
+                res.json(false);
+            }
+        }catch{
+            console.log("Catch error")
+        }
+    },
+    showSucess:(req,res)=>{
+        res.render()
     }
-
-
 }

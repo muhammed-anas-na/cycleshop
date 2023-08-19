@@ -156,11 +156,11 @@
                             <form action="/admin/add-category" method="post" enctype="multipart/form-data">
                                 <div class="mb-4">
                                     <label for="product_name" class="form-label">Name</label>
-                                    <input name="category" type="text" placeholder="Type here" class="form-control" id="product_name" required="true" />
+                                    <input name="category" pattern="^[^\s]+$" type="text" placeholder="Type here" class="form-control" id="product_name" required="true" maxlength="10" />
                                 </div>
                                 <div class="mb-4">
                                     <label for="product_slug" class="form-label">Base Price</label>
-                                    <input name="basePrice" type="number" placeholder="Type here" class="form-control" id="base_price" required="true" />
+                                    <input name="basePrice"  pattern="[1-9][0-9]*" type="number" placeholder="Type here" class="form-control" id="base_price" required="true" />
                                 </div>
                                 <div class="mb-4">
                                     <label for="image" class="form-label">Cover Image</label>

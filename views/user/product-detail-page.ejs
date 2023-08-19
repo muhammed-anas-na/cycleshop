@@ -123,7 +123,6 @@
                     </div>
 
                     <hr />
-                    <form action="/buy-now/<%=data._id%>" method="post">
                         <div class="row mb-4">
                             <div class="col-md-4 col-6">
                                 <label class="mb-2">Size</label>
@@ -155,12 +154,11 @@
                             </div>
 
                         </div>
-                        <button type="submit" class="btn btn-warning shadow-0"> Buy now </button>
+                        <a href="/buy-now?proId=<%=data._id%>" type="submit" class="btn btn-warning shadow-0"> Buy now </a>
                         <a onclick="AddToCart('<%=data._id%>')" class="btn btn-primary shadow-0"> <i
                                 class="me-1 fa fa-shopping-basket"></i> Add to cart</a>
                         <a href="#" class="btn btn-light border border-secondary py-2 icon-hover px-3"> <i
                                 class="me-1 fa fa-heart fa-lg"></i> Save </a>
-                    </form>
                 </div>
             </main>
         </div>
@@ -500,23 +498,22 @@
 
 
 <script>
-    // function buyNow(proId){
-    //     const quantity = document.getElementById("quantityInput").value
-    //     const size = document.getElementById('size').value
-    //     $.ajax({
-    //         url:'/buy-now',
-    //         method:'get',
-    //         data:{
-    //             proId:proId,
-    //             quantity:quantity,
-    //             size:size,
-    //         },
-    //         success(response){
 
-    //         }
-    //     })
-    // }
-    //Demo: https://www.codehim.com/demo/zoom-image-on-mouseover-using-javascript/
+    function buyNow(proId){
+        const quantity = document.getElementById("quantityInput").value
+        const size = document.getElementById('size').value
+        // $.ajax({
+        //     url:'/buy-now?ProId='+proId,
+        //     method:'post',
+        //     data:{
+        //         quantity,
+        //         size,
+        //     },
+        //     success:(response)=>{
+        //         location.href='/buy-now'
+        //     }
+        // })
+    }
     let zoomer = function () {
         document.querySelector('#img-zoomer-box')
             .addEventListener('mousemove', function (e) {
@@ -584,8 +581,11 @@
     decrementButton.addEventListener("click", () => {
         let currentQuantity = parseInt(quantityInput.value);
         if (!isNaN(currentQuantity)) {
-            currentQuantity = Math.max(currentQuantity - 1, 0);
+            if(currentQuantity==1){alert("Prodcut count 0 not possible")}else{
+                currentQuantity = Math.max(currentQuantity - 1, 0);
             quantityInput.value = currentQuantity;
+            }
+
         }
     });
 

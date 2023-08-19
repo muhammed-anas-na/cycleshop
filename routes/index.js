@@ -54,6 +54,10 @@ router.post('/remove-adress' , userController.removeAdress)
 router.get('/show-edit-adress/:AdressId',userController.ShowEditAdress)
 router.post('/edit-adress/:AdressId' , userController.editAdress)
 
-router.post('/buy-now/:proId' , userController.showBuyNow)
-router.post('/buy-now' , userController.buyNow)
+// router.post('/buy-now/:proId' , userController.showBuyNow)
+router.get('/buy-now' , userController.showBuyNow)
+router.post('/buy-now' , userController.BuyNow)
+router.post('/verify-payment' , userController.VerifyPayment)
+
+router.get('/sucess' , userController.showSucess)
 module.exports = router;
