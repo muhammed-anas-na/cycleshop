@@ -43,9 +43,6 @@
                     </a>
                     <div class="submenu">
                         <a href="/admin/category">Manage category</a>
-                        <a href="page-form-product-2.html">Add product 2</a>
-                        <a href="page-form-product-3.html">Add product 3</a>
-                        <a href="page-form-product-4.html">Add product 4</a>
                     </div>
                 </li>
     
@@ -56,8 +53,6 @@
                     <div class="submenu">
                         <a href="/admin/all-products">Manage Products</a>
                         <a href="/admin/add-product">Add new Product</a>
-                        <a href="page-products-grid-2.html">Product grid 2</a>
-                        <a href="page-categories.html">Categories</a>
                     </div>
                 </li>
                 <li class="menu-item has-submenu">
@@ -66,56 +61,36 @@
                     </a>
                     <div class="submenu">
                         <a href="/admin/view-users">Manage Users</a>
-                        <a href="page-account-register.html">User registration</a>
-                        <a href="page-error-404.html">Error 404</a>
                     </div>
                 </li>
                 <li class="menu-item has-submenu">
-                    <a class="menu-link" href="page-orders-1.html"> <i class="icon material-icons md-shopping_cart"></i>
+                    <a class="menu-link" > <i class="icon material-icons md-shopping_cart"></i>
                         <span class="text">Orders</span>
                     </a>
                     <div class="submenu">
-                        <a href="page-orders-1.html">Order list 1</a>
-                        <a href="page-orders-2.html">Order list 2</a>
-                        <a href="page-orders-detail.html">Order detail</a>
+                        <a href="/admin/view-orders">View Orders</a>
                     </div>
                 </li>
                 <li class="menu-item has-submenu">
-                    <a class="menu-link" href="page-sellers-cards.html"> <i class="icon material-icons md-store"></i>
-                        <span class="text">Sellers</span>
+                    <a class="menu-link" > <i class="icon material-icons md-plus"></i>
+                        <span class="text">Banner</span>
                     </a>
                     <div class="submenu">
-                        <a href="page-sellers-cards.html">Sellers cards</a>
-                        <a href="page-sellers-list.html">Sellers list</a>
-                        <a href="page-seller-detail.html">Seller profile</a>
+                        <a href="/admin/show-banners">View Banners</a>
+                        <a href="/admin/add-banner">Add Banners</a>
                     </div>
                 </li>
-    
-                <li class="menu-item has-submenu">
-                    <a class="menu-link" href="page-transactions-1.html"> <i class="icon material-icons md-monetization_on"></i>
-                        <span class="text">Transactions</span>
-                    </a>
-                    <div class="submenu">
-                        <a href="page-transactions-1.html">Transaction 1</a>
-                        <a href="page-transactions-2.html">Transaction 2</a>
-                    </div>
-                </li>
-
                 <li class="menu-item">
-                    <a class="menu-link" href="page-reviews.html"> <i class="icon material-icons md-comment"></i>
-                        <span class="text">Reviews</span>
+                    <a class="menu-link" href="/admin/add-coupen"> <i class="icon material-icons md-adjust"></i>
+                        <span class="text">Coupon</span>
                     </a>
                 </li>
                 <li class="menu-item">
-                    <a class="menu-link" href="page-brands.html"> <i class="icon material-icons md-stars"></i>
-                        <span class="text">Brands</span> </a>
-                </li>
-                <li class="menu-item">
-                    <a class="menu-link" disabled href="#"> <i class="icon material-icons md-pie_chart"></i>
-                        <span class="text">Statistics</span>
+                    <a class="menu-link" href="/admin/salesToday"> <i class="icon material-icons md-pie_chart"></i>
+                        <span class="text">Sales Report</span>
                     </a>
                 </li>
-            </ul>
+                
             <hr>
             <ul class="menu-aside">
                 <li class="menu-item has-submenu">
@@ -156,11 +131,7 @@
                             <form action="/admin/add-category" method="post" enctype="multipart/form-data">
                                 <div class="mb-4">
                                     <label for="product_name" class="form-label">Name</label>
-                                    <input name="category" pattern="^[^\s]+$" type="text" placeholder="Type here" class="form-control" id="product_name" required="true" maxlength="10" />
-                                </div>
-                                <div class="mb-4">
-                                    <label for="product_slug" class="form-label">Base Price</label>
-                                    <input name="basePrice"  pattern="[1-9][0-9]*" type="number" placeholder="Type here" class="form-control" id="base_price" required="true" />
+                                    <input name="category" pattern="^[^\s]+$" type="text" placeholder="Type here" class="form-control" id="name" required="true" maxlength="40" />
                                 </div>
                                 <div class="mb-4">
                                     <label for="image" class="form-label">Cover Image</label>
@@ -169,14 +140,15 @@
 
                                 <div class="mb-4">
                                     <label class="form-label">Description</label>
-                                    <textarea name="description" placeholder="Type here" class="form-control" required="true"></textarea>
+                                    <textarea name="description" placeholder="Type here" class="form-control" required="true" id="description"></textarea>
                                 </div>
                                 <%if(category_err){%>
                                     <small style="color: red;">Category already exist</small>
                                 <%}%>
                                 <div class="d-grid">
-                                    <button class="btn btn-primary" type="submit">Create category</button>
+                                    <button onclick="validate()" class="btn btn-primary" type="submit">Create category</button>
                                 </div>
+                                <p id="err-msg"></p>
                             </form>
                         </div>
                         <div class="col-md-9">
@@ -193,10 +165,11 @@
                                         </tr>
                                     </thead>
                                     <tbody>
+                                        <%data.reverse()%>
                                         <% for (i = 0; i < data.length; i++) { %>
                                             <tr>
                                               <td><%= i+1 %></td>
-                                              <td>
+                                              <td>  
                                                 <img src="/upload/category/<%= data[i].image%>" width="80px" alt="img">
                                               </td>
                                               <td><%= data[i].category %></td>
@@ -227,7 +200,7 @@
                     <script>
                     document.write(new Date().getFullYear())
                     </script> ©, Evara - HTML Ecommerce Template .
-                </div>
+                </div
                 <div class="col-sm-6">
                     <div class="text-sm-end">
                         All rights reserved
@@ -245,6 +218,30 @@
     <script src="/assets/js/main.js" type="text/javascript"></script>
 </body>
 
+<script>
+    function validate(){
+        document.getElementById('err-msg').innerHTML = ''
+        let name = document.getElementById('name').value;
+        let description = document.getElementById('description').value;
+        alert(name)
+        alert(description)
 
+        const nameRegex = /^[A-Za-z0-9]{1,50}$/;
+        if (nameRegex.test(name)) {
+        } else {
+            document.getElementById('name').style.borderColor = '#cc0000'
+            document.getElementById('name').style.borderWidth = '1px'
+            document.getElementById('err-msg').innerHTML = document.getElementById('err-msg').innerHTML + '<br> Name error'
+            event.preventDefault()
+        }
+        const descRegex = /^(?!\s*$).+/;
+        if (descRegex.test(description)) { } else {
+            document.getElementById('err-msg').innerHTML = document.getElementById('err-msg').innerHTML + '<br> Description  error'
+            document.getElementById('description').style.borderColor = '#cc0000'
+            document.getElementById('description').style.borderWidth = '1px'
+            event.preventDefault()
+        }
+    }
+</script>
 <!-- Mirrored from wp.alithemes.com/html/evara/evara-backend/page-categories.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 01 Aug 2021 15:33:21 GMT -->
 </html>

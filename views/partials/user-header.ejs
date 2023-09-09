@@ -1,1 +1,46 @@
-<h1>User header</h1>
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <div class="container-fluid">
+    <div class="brand-container me-3">
+      <a class="navbar-brand" href="/"
+        style="font-size: 30px;font-weight: 600;font-family: 'Kanit', sans-serif;">CYCLE SHOP</a>
+    </div>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+      data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+      aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse align-items-center justify-content-end" id="navbarSupportedContent">
+      <div class="category-container pe-4">
+        <ul class="navbar-nav mb-2 mb-lg-0 text-center">
+          <li class="nav-item">
+            <a class="nav-link active me-lg-1" aria-current="page" href="/">Home</a>
+          </li>
+          <li class="nav-item ">
+            <a class="nav-link  me-lg-1" href="/show-products" id="navbarDropdown" role="button">Shop</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link  me-lg-1" href="/contact" id="navbarDropdown" role="button">Contact Us</a>
+          </li>
+        </ul>
+      </div>
+      <div class="right-container d-lg-flex align-items-center">
+        <form class="d-flex" method="post" action="/search">
+          <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search"
+            name="search">
+          <button type="submit" class="ms-1 bg-light"
+            style="border: 1px solid rgb(227, 227, 227); border-radius: 5px;padding: 5px;" value="search" type="submit"><i
+              class="fa-solid fa-magnifying-glass"></i></button>
+        </form>
+        <div class="user-head pe-4 mt-2 mt-lg-0 mt-md-0 mt-sm-0">
+          <a href="/wishlist" style="text-decoration: none; color: rgb(98, 98, 98); font-size: 25px;"
+            class="me-2 ms-2"><i class="head-btn fa-regular fa-heart"></i></a>
+          <a href="/cart" style="text-decoration: none; color: rgb(98, 98, 98); font-size: 25px;"
+            class="me-2"><i class="head-btn fa-solid fa-cart-shopping"></i></a>
+          <a href="/profile" style="text-decoration: none; color: rgb(98, 98, 98); font-size: 25px;"><i
+              class="head-btn fa-solid fa-user"></i></a>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>

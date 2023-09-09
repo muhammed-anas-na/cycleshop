@@ -35,7 +35,7 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                <ul class="navbar-nav mr-auto">
                   <li class="nav-item active">
-                     <a class="nav-link" href="index.html">Home</a>
+                     <a class="nav-link" href="/">Home</a>
                   </li>
                   <li class="nav-item">
                      <a class="nav-link" href="about.html">About</a>
@@ -48,23 +48,23 @@
                   </li>
                   <%if(user){%>
                      <li class="nav-item">
-                        <a class="nav-link" href="/profile/<%=userData._id%>">Account</a>
+                        <a class="nav-link" href="/profile?id=<%=userData._id%>">Account</a>
                      </li>
                   <%}%>
                   <li class="nav-item">
-                     <a class="nav-link" href="contact.html">Contact</a>
+                     <a class="nav-link" href="/wishlist">WishList</a>
                   </li>
                </ul>
                <form class="form-inline my-2 my-lg-0">
                   <div class="login_menu">
                      <ul>
                         <% if (user) { %>
-                           <li><a href="#">LogOut</a></li>
+                           <li><a href="/logout">LogOut</a></li>
                          <% } else { %>
                            <li><a href="/login">Login</a></li>
                          <% } %>
                         <%if(user){%>
-                           <li><a href="/cart/<%=userData._id%>"><img src="images/trolly-icon.png"></a></li>
+                           <li><a href="/cart"><img src="images/trolly-icon.png"></a></li>
                         <%}else{%>
                            <li><a href="/login"><img src="images/trolly-icon.png"></a></li>
                         <%}%>
@@ -90,9 +90,9 @@
                               <div class="image_1"><img src="images/img-1.png"></div>
                            </div>
                            <div class="col-md-5">
-                              <h1 class="banner_taital">New Model Cycle</h1>
-                              <p class="banner_text">It is a long established fact that a reader will be distracted by the readable content </p>
-                              <div class="contact_bt"><a href="contact.html">Shop Now</a></div>
+                              <h1 class="banner_taital">DRAGO 29T MULTISPEED</h1>
+                              <p class="banner_text">Introducing the All-new Multi Speed Drago which is specially crafted for those with brave hearts. </p>
+                              <div class="contact_bt"><a href="/show-products">Shop Now</a></div>
                            </div>
                         </div>
                      </div>
@@ -105,9 +105,9 @@
                               <div class="image_1"><img src="images/img-1.png"></div>
                            </div>
                            <div class="col-md-5">
-                              <h1 class="banner_taital">New Model Cycle</h1>
-                              <p class="banner_text">It is a long established fact that a reader will be distracted by the readable content </p>
-                              <div class="contact_bt"><a href="contact.html">Shop Now</a></div>
+                              <h1 class="banner_taital">BLOODWING 700C</h1>
+                              <p class="banner_text">True Blood lineage of a perfect Hybrid bicycle, Bloodwing comes packed with undisputed specifications & unmatched looks</p>
+                              <div class="contact_bt"><a href="/show-products">Shop Now</a></div>
                            </div>
                         </div>
                      </div>
@@ -120,9 +120,9 @@
                               <div class="image_1"><img src="images/img-1.png"></div>
                            </div>
                            <div class="col-md-5">
-                              <h1 class="banner_taital">New Model Cycle</h1>
-                              <p class="banner_text">It is a long established fact that a reader will be distracted by the readable content </p>
-                              <div class="contact_bt"><a href="contact.html">Shop Now</a></div>
+                              <h1 class="banner_taital">SHADOWFAX 29T</h1>
+                              <p class="banner_text">Shadowfax is lord of all horses. He was capable of comprehending human speech and was said to run faster than the wind.</p>
+                              <div class="contact_bt"><a href="/show-products">Shop Now</a></div>
                            </div>
                         </div>
                      </div>
@@ -156,7 +156,7 @@
                      <h1 class="cycles_text">Sports Cycles</h1>
                      <p class="lorem_text">Sports cycles, also known as racing or road bikes, are designed for speed, agility, and performance in various sports-related activities. These cycles typically feature lightweight frames, narrow tires, and aerodynamic designs to minimize resistance and maximize speed.</p>
                      <div class="btn_main">
-                        <div class="buy_bt"><a href="#">Buy Now</a></div>
+                        <div class="buy_bt"><a href="/search?key=sports">Buy Now</a></div>
                         <h4 class="price_text">Price <span style=" color: #f7c17b">$</span> <span style=" color: #325662">200</span></h4>
                      </div>
                   </div>
@@ -192,7 +192,7 @@
                      <h1 class="cycles_text">Kids Cycle</h1>
                      <p class="lorem_text">Kids' cycles come in various colors, styles, and designs, often featuring characters or themes that appeal to children. These bicycles are a popular choice for young children to learn how to ride and enjoy outdoor activities, promoting exercise and healthy physical development</p>
                      <div class="btn_main">
-                        <div class="buy_bt"><a href="#">Buy Now</a></div>
+                        <div class="buy_bt"><a href="/search?key=kids">Buy Now</a></div>
                         <h4 class="price_text">Price <span style=" color: #f7c17b">$</span> <span style=" color: #325662">200</span></h4>
                      </div>
                   </div>

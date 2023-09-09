@@ -1,0 +1,325 @@
+<!DOCTYPE HTML>
+<html lang="en">
+
+
+<!-- Mirrored from wp.alithemes.com/html/evara/evara-backend/page-orders-1.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 01 Aug 2021 15:33:21 GMT -->
+
+<head>
+    <meta charset="utf-8">
+    <title>Evara Dashboard</title>
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta property="og:title" content="">
+    <meta property="og:type" content="">
+    <meta property="og:url" content="">
+    <meta property="og:image" content="">
+    <!-- Favicon -->
+    <link rel="shortcut icon" type="image/x-icon" href="/assets/imgs/theme/favicon.svg">
+    <!-- Template CSS -->
+    <link href="/assets/css/main.css" rel="stylesheet" type="text/css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.5/dist/sweetalert2.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.5/dist/sweetalert2.min.js"></script>
+</head>
+
+<body>
+    <div class="screen-overlay"></div>
+
+    <main class="">
+        <%- include('../partials/user-header')%>
+            <section class="content-main">
+                <div class="content-header">
+                    <div>
+                        <h2 class="content-title card-title">Order List </h2>
+                        <p>Lorem ipsum dolor sit amet.</p>
+                    </div>
+                    <div>
+                        <input type="text" placeholder="Search order ID" class="form-control bg-white">
+                    </div>
+                </div>
+                <div class="card mb-4">
+                    <header class="card-header">
+                        <div class="row gx-3">
+                            <div class="col-lg-4 col-md-6 me-auto">
+                                <input type="text" placeholder="Search..." class="form-control">
+                            </div>
+                            <div class="col-lg-2 col-6 col-md-3">
+                                <select onchange="changeStatus()" class="form-select" id="status" name="status">
+                                    <option value="all">All Orderes</option>
+                                    <option value="delivered">Delivered</option>
+                                    <option value="confirmed">Confirmed</option>
+                                    <option value="pending">Pending</option>
+                                    <option value="cancled">Cancled</option>
+                                </select>
+                            </div>
+                            <div class="col-lg-2 col-6 col-md-3">
+                                <select class="form-select">
+                                    <option>Show 20</option>
+                                    <option>Show 30</option>
+                                    <option>Show 40</option>
+                                </select>
+                            </div>
+                        </div>
+                    </header> <!-- card-header end// -->
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>#ID</th>
+                                        <th scope="col">Name</th>
+                                        <th scope="col">Price</th>
+                                        <th scope="col">Quantity</th>
+                                        <th scope="col">Total</th>
+                                        <th scope="col">Status</th>
+                                        <th scope="col">Date</th>
+                                        <th scope="col" class="text-end"> Action </th>
+                                        <th scope="col" class="text-end"></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <%for(i=0;i<orders.length;i++){%>
+                                        <%if(orders[i].ProductDetails.length!==0){%>
+                                            <tr>
+                                                <td>0901</td>
+                                                <td><b>
+                                                        <%=orders[i].ProductDetails[0].name%>
+                                                    </b></td>
+                                                <td>
+                                                    <%=orders[i].ProductDetails[0].sale_price%>
+                                                </td>
+                                                <td>
+                                                    <%=orders[i].quantity%>
+                                                </td>
+                                                <td>
+                                                    <%=parseInt(orders[i].ProductDetails[0].sale_price) *
+                                                        parseInt(orders[i].quantity)%>
+                                                </td>
+                                                <%if(orders[i].orderStatus=='pending' ){%>
+                                                    <td><span id="<%=orders[i].ProductDetails[0]._id%>badge"
+                                                            class="badge rounded-pill alert-warning">Pending...</span>
+                                                    </td>
+                                                    <%}else if(orders[i].orderStatus=='delivered' ){%>
+                                                        <td><span id="<%=orders[i].ProductDetails[0]._id%>badge"
+                                                                class="badge rounded-pill alert-success">Delivered</span>
+                                                        </td>
+                                                        <%}else if(orders[i].orderStatus=='cancled' ){%>
+                                                            <td><span id="<%=orders[i].ProductDetails[0]._id%>badge"
+                                                                    class="badge rounded-pill alert-danger">Cancled</span>
+                                                            </td>
+                                                            <%}else if(orders[i].orderStatus=='confirmed' ){%>
+                                                                <td><span id="<%=orders[i].ProductDetails[0]._id%>badge"
+                                                                        class="badge rounded-pill alert-primary">Confirmed</span>
+                                                                </td>
+                                                                <%}else if(orders[i].orderStatus=='confirmed' ){%>
+                                                                    <td><span
+                                                                            id="<%=orders[i].ProductDetails[0]._id%>badge"
+                                                                            class="badge rounded-pill alert-info">Confirmed</span>
+                                                                    </td>
+                                                                    <%}else{%>
+                                                                        <p>
+                                                                            <%=orders[i].orderStatus%>
+                                                                        </p>
+                                                                        <%}%>
+                                                                            <td>
+                                                                                <%=orders[i].orderedOn%>
+                                                                            </td>
+                                                                            <td class="text-end">
+                                                                                <a onclick="showDetails('<%=orders[i].adress.name%>' , '<%=orders[i].adress.number%>','<%=orders[i].adress.altNumber%>' , '<%=orders[i].adress.pinCode%>' , '<%=orders[i].adress.house%>' , '<%=orders[i].adress.area%>' , '<%=orders[i].adress.landmark%>' ,'<%=orders[i].adress.town%>' ,  '<%=orders[i].adress.state%>','<%=orders[i].adress.country%>' , '<%=orders[i].GrandTotal%>' , '<%=orders[i].paymentstatus%>' , '<%=orders[i].orderStatus%>' , '<%=orders[i].paymentMethod%>' , '<%=orders[i].orderedOn%>')"
+                                                                                    class="btn btn-md rounded font-sm">Detail</a>
+                                                                            </td>
+                                                                            <%if(orders[i].orderStatus !=='cancled' ){%>
+                                                                                <td class="btn btn-danger p-1"
+                                                                                    onclick="cancelOrder('<%=orders[i]._id%>' , '<%=orders[i].ProductDetails[0]._id%>')">
+                                                                                    Cancle</td>
+                                                                                <%}%>
+                                            </tr>
+                                            <%}else{%>
+                                                <tr>
+                                                    <td>Empty</td>
+                                                </tr>
+                                                <%}%>
+                                                    <%}%>
+                                </tbody>
+                            </table>
+                        </div> <!-- table-responsive //end -->
+                    </div> <!-- card-body end// -->
+                </div> <!-- card end// -->
+                <% if (totalpages> 1) { %>
+                    <div class="pagination-area mt-15 mb-50">
+                        <nav aria-label="Page navigation example">
+                            <ul class="pagination justify-content-start">
+                                <% if (currentpage> 1) { %>
+                                    <li class="page-item"><a style="width: 5rem;" class="page-link"
+                                            href="/orders/<%=userData._id%>?page=<%= currentpage - 1 %>">Previous</a>
+                                    </li>
+                                    <% } %>
+                                        <% for (let i=1; i <=totalpages; i++) { %>
+                                            <li class="page-item"><a class="page-link"
+                                                    href="/orders/<%=userData._id%>?page=<%= i %>">
+                                                    <%= i %>
+                                                </a></li>
+                                            <% } %>
+                                                <% if (currentpage < totalpages) { %>
+                                                    <li class="page-item active"><a style="width: 5rem;"
+                                                            class="page-link"
+                                                            href="/orders/<%=userData._id%>?page=<%= currentpage + 1 %>">Next</a>
+                                                    </li>
+                                                    <% } %>
+                            </ul>
+                        </nav>
+                    </div>
+                    <% }%>
+            </section> <!-- content-main end// -->
+            <footer class="main-footer font-xs">
+                <div class="row pb-30 pt-15">
+                    <div class="col-sm-6">
+                        <script data-cfasync="false"
+                            src="../../../cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
+                        <script>
+                            document.write(new Date().getFullYear())
+                        </script> ©, Evara - HTML Ecommerce Template .
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="text-sm-end">
+                            All rights reserved
+                        </div>
+                    </div>
+                </div>
+            </footer>
+    </main>
+    <script src="/assets/js/vendors/jquery-3.6.0.min.js"></script>
+    <script src="/assets/js/vendors/bootstrap.bundle.min.js"></script>
+    <script src="/assets/js/vendors/select2.min.js"></script>
+    <script src="/assets/js/vendors/perfect-scrollbar.js"></script>
+    <script src="/assets/js/vendors/jquery.fullscreen.min.js"></script>
+    <!-- Main Script -->
+    <script src="/assets/js/main.js" type="text/javascript"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.5/dist/sweetalert2.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.5/dist/sweetalert2.min.js"></script>
+</body>
+
+
+<script>
+
+    function changeStatus() {
+        const status = document.getElementById('status').value;
+        $.ajax({
+            url: '/change-status',
+            method: 'post',
+            data: {
+                status
+            },
+            success: (orders) => {
+                $('.table').empty();
+                $('.table').append(`
+                <thead>
+                    <tr>
+                        <th>#ID</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Price</th>
+                        <th scope="col">Quantity</th>
+                        <th scope="col">Total</th>
+                        <th scope="col">Status</th>
+                        <th scope="col">Date</th>
+                        <th scope="col" class="text-end"> Action </th>
+                        <th scope="col" class="text-end"></th>
+                    </tr>
+                </thead>
+                `)
+                for (i = 0; i < orders.orders.length; i++) {
+                    
+                    let statusTag='';
+                    if(orders.orders[i].orderStatus == 'pending'){
+                        statusTag = `<span class="badge rounded-pill alert-warning">${orders.orders[i].orderStatus}</span>`
+                    }else if(orders.orders[i].orderStatus == 'cancled'){
+                        statusTag = `<span class="badge rounded-pill alert-danger">${orders.orders[i].orderStatus}</span>`
+                    }else if(orders.orders[i].orderStatus == 'delivered'){
+                        statusTag = `<span class="badge rounded-pill alert-primary">${orders.orders[i].orderStatus}</span>`
+                    }else if(orders.orders[i].orderStatus == 'confirmed'){
+                        statusTag = `<span class="badge rounded-pill alert-info">${orders.orders[i].orderStatus}</span>`
+                    }
+                    $('.table').append(`
+                        <tbody>
+                        <tr>
+                            <td>${i+1}</td>
+                            <td>${orders.orders[i].ProductDetails[0].name}</td>
+                            <td>${orders.orders[i].ProductDetails[0].sale_price}</td>
+                            <td>${orders.orders[i].quantity}</td>
+                            <td>${orders.orders[i].GrandTotal}</td>
+                            <td>${statusTag}</td>
+                            <td>${orders.orders[i].orderedOn}</td>
+                            <td class="text-end">
+                                <a onclick="showDetails('${orders.orders[i].adress.name}' , '${orders.orders[i].adress.number}','${orders.orders[i].adress.altNumber}' , '${orders.orders[i].adress.pinCode}' , '${orders.orders[i].adress.house}' , '${orders.orders[i].adress.area}' , '${orders.orders[i].adress.landmark}' ,'${orders.orders[i].adress.town}' ,  '${orders.orders[i].adress.state}','${orders.orders[i].adress.country}' , '${orders.orders[i].GrandTotal}' , '${orders.orders[i].paymentstatus}' , '${orders.orders[i].orderStatus}' , '${orders.orders[i].paymentStatus}' , '${orders.orders[i].orderedOn}')"
+                                    class="btn btn-md rounded font-sm">Detail</a>
+                            </td>
+                            </tr>
+                        </tbody>
+                    `);
+                }
+            },
+            error: function (error) {
+                console.error('Error:', error);
+            }
+        })
+    }
+
+    function showDetails(name, number, altNumber, pinCode, house, area, landmark, town, state, country, GrandTotal, paymentStatus, orderStatus, payment, createdOn) {
+        if (orderStatus == 'pending') {
+            imgUrl = '/assets/imgs/order-status/pending.jpeg'
+        } else if (orderStatus == 'cancled') {
+            imgUrl = '/assets/imgs/order-status/cancle.png'
+        } else if (orderStatus == 'delivered') {
+            imgUrl = '/assets/imgs/order-status/complete.webp'
+        }
+        Swal.fire({
+            title: '<strong><u>ORDER DETAILS</u></strong>',
+            imageUrl: imgUrl,
+            imageWidth: 400,
+            imageHeight: 200,
+            html:
+                'Name : ' + name + '<br>' + ' Number: ' + number + ',' + ' Alternative: ' + altNumber + '<hr>' +
+                '<h5>Delivery Address</h4> ' +
+                '<span style="font-weight:bold">Pin code:</span>' + pinCode + ',' +
+                '<span style="font-weight:bold">House: </span>' + house + '<br>' +
+                '<span style="font-weight:bold">Area: </span>' + area + ',' +
+                '<span style="font-weight:bold">Landmark: </span>' + landmark + '<br>' +
+                '<span style="font-weight:bold">Town: </span>' + town + ',' +
+                '<span style="font-weight:bold">State: </span>' + state + '<br>' +
+                '<span style="font-weight:bold">Country: </span>' + country + '<hr>' +
+                '<h4>Other info</h4>' +
+                '<span style="font-weight:bold">Order Status: </span>' + orderStatus + ',' +
+                '<span style="font-weight:bold"> Payment Method: </span>' + payment + '<br>' +
+                '<span style="font-weight:bold">Grand Total: </span>' + GrandTotal + '<br>' +
+                '<span style="font-weight:bold">Ordered On: </span>' + createdOn + '<hr>',
+
+
+            showCloseButton: true,
+            focusConfirm: true,
+            confirmButtonText:
+                '<i class="fa fa-thumbs-up"></i> Conntinue!',
+        })
+    }
+
+
+    function cancelOrder(orderId, proId) {
+        $.ajax({
+            url: '/cancle-order',
+            method: 'post',
+            data: {
+                orderId,
+                proId,
+            },
+            success: (response) => {
+                if (response == true) {
+                    location.reload()
+                }
+            }
+        })
+    }
+</script>
+
+</html>

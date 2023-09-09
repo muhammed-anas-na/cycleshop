@@ -13,17 +13,18 @@ module.exports={
         })
     },
     addCategory:async (req,res)=>{
-        let categoryExist = await categoryModel.find({category:req.body.category})
+        let categoryExist = await categoryModel.find({
+            category: { $regex: new RegExp(req.body.category, 'i') }
+        });
         console.log(categoryExist);
         if(categoryExist.length == 0){
             (async () => {
                 const rembg = new Rembg({
                   logging: true,
                 });
-                // userController.createAcc(req.body).then((id)=>{})
+
                 let category = new categoryModel({
                     category:req.body.category,
-                    base_price:req.body.basePrice,
                     description:req.body.description,
                     image:req.file.filename,
                 })

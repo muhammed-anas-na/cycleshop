@@ -6,6 +6,19 @@ let userModel = new mongoose.Schema({
         type:String,
         require:true,
     },
+    image:{
+        type:String,
+    },
+    referal:{
+        type:String,
+    },
+    wallet:{
+        type:Array,
+    },
+    wallet:{
+        type:Number,
+        default:0
+    },
     email:{
         type:String,
         require:true,
@@ -37,6 +50,9 @@ let userModel = new mongoose.Schema({
         default:0,
     },
     cart:{
+        type:Array,
+    },
+    wishList:{
         type:Array,
     },
     adress:{

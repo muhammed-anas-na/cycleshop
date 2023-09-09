@@ -1,0 +1,101 @@
+<head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.5/dist/sweetalert2.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.5/dist/sweetalert2.min.js"></script>
+</head>
+<%-include('../partials/user-header')%>
+<div class="container mt-5 mb-5">
+    <nav class="colorlib-nav" role="navigation">
+    </nav>
+    <div class="d-flex justify-content-center row">
+        <div class="col-md-10">
+            <%if(data.length == 0){%>
+                <h2>Wishlist is empty</h2>
+            <%}else{%>
+            <%for(i=0;i<data.length;i++){%>
+            <div class="row p-2 bg-white border rounded mb-2">
+                <div class="col-md-3 mt-1"><img class="img-fluid img-responsive rounded product-image" src="upload/product/<%=data[i].ProductDetails[0].images[0]%>"></div>
+                <div class="col-md-6 mt-1">
+                    <h5><%=data[i].ProductDetails[0].name%></h5>
+                    <div class="d-flex flex-row">
+                        <div class="ratings mr-2"><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i></div><span>310</span>
+                    </div>
+                    <div class="mt-1 mb-1 spec-1"><span>100% cotton</span><span class="dot"></span><span>Light weight</span><span class="dot"></span><span>Best finish<br></span></div>
+                    <div class="mt-1 mb-1 spec-1"><span>Unique design</span><span class="dot"></span><span>For men</span><span class="dot"></span><span>Casual<br></span></div>
+                    <p class="text-justify text-truncate para mb-0">There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable.<br><br></p>
+                </div>
+                <div class="align-items-center align-content-center col-md-3 border-left mt-1">
+                    <div class="d-flex flex-row align-items-center">
+                        <h4 class="mr-1"><%=data[i].ProductDetails[0].sale_price%></h4><span class="strike-text"><%=data[i].ProductDetails[0].regular_price%></span>
+                    </div>
+                    <h6 class="text-success">Free shipping</h6>
+                    <div class="d-flex flex-column mt-4">
+                        <div class="d-flex" style="justify-content: space-evenly;">
+                            <a href="/product-detail-page/<%=data[i].proId%>" class="btn btn-primary btn-sm px-4" type="button">Details</a>
+                            <a onclick="deleteWishList('<%=data[i].proId%>')" class="btn btn-danger btn-sm px-4">Delete</a>
+                        </div>
+                        <button onclick="AddToCart('<%=data[i].proId%>' , '<%=data[i].ProductDetails[0].unit%>')" class="btn btn-outline-primary btn-sm mt-2" type="button">Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+            <%}%>
+            <%}%>
+        </div>
+    </div>
+</div>
+<style>
+    body{background:#eee}.ratings i{font-size: 16px;color: red}.strike-text{color: red;text-decoration: line-through}.product-image{width: 100%}.dot{height: 7px;width: 7px;margin-left: 6px;margin-right: 6px;margin-top: 3px;background-color: blue;border-radius: 50%;display: inline-block}.spec-1{color: #938787;font-size: 15px}h5{font-weight: 400}.para{font-size: 16px}
+</style>
+
+<script>
+    function deleteWishList(proId){
+        $.ajax({
+            url:'/delete-wishlist',
+            method:'post',
+            data:{
+                proId
+            },
+            success:(response)=>{
+                location.reload()
+            }
+        })
+    }
+    function AddToCart(proId,stock) {
+        if(stock<=0){
+            Swal.fire({
+                    title: 'STOCK!',
+                    text: 'Quantity exceed the unit the in cart.',
+                    icon: 'error',
+                    timer: 5000
+            })
+            return;
+        }
+        const quantity = 1
+        const size = 'small'
+        $.ajax({
+            url: '/add-to-cart/' + proId,
+            method: 'post',
+            data: {
+                quantity: quantity,
+                size: size,
+            },
+            success(response) {
+                if(response.stockerr){
+                    Swal.fire({
+                    title: 'STOCK!',
+                    text: 'Quantity exceed the unit the in cart.',
+                    icon: 'error',
+                    timer: 5000
+                })
+                }else{
+                    Swal.fire({
+                    title: 'Added to cart!',
+                    text: 'Product has been added to cart succesfully.',
+                    icon: 'success',
+                    timer: 5000
+                })
+                }
+            }
+        })
+    }
+</script>

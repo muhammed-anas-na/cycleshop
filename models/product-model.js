@@ -23,23 +23,17 @@ let productModel = new mongoose.Schema({
         requrie:true
     },
     created_on:{
-        type:Date,
+        type:String,
         require:true
     },
     unit:{
-        type:String,
+        type:Number,
         require:true
-    },
-    gst:{
-        type:String,
-        require:true,
     },
     images:{
         type:Array,
         require:true 
     }
-
-
 });
 
 module.exports = mongoose.model('product' , productModel)

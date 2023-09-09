@@ -43,9 +43,6 @@
                     </a>
                     <div class="submenu">
                         <a href="/admin/category">Manage category</a>
-                        <a href="page-form-product-2.html">Add product 2</a>
-                        <a href="page-form-product-3.html">Add product 3</a>
-                        <a href="page-form-product-4.html">Add product 4</a>
                     </div>
                 </li>
     
@@ -56,8 +53,6 @@
                     <div class="submenu">
                         <a href="/admin/all-products">Manage Products</a>
                         <a href="/admin/add-product">Add new Product</a>
-                        <a href="page-products-grid-2.html">Product grid 2</a>
-                        <a href="page-categories.html">Categories</a>
                     </div>
                 </li>
                 <li class="menu-item has-submenu">
@@ -66,56 +61,36 @@
                     </a>
                     <div class="submenu">
                         <a href="/admin/view-users">Manage Users</a>
-                        <a href="page-account-register.html">User registration</a>
-                        <a href="page-error-404.html">Error 404</a>
                     </div>
                 </li>
                 <li class="menu-item has-submenu">
-                    <a class="menu-link" href="page-orders-1.html"> <i class="icon material-icons md-shopping_cart"></i>
+                    <a class="menu-link" > <i class="icon material-icons md-shopping_cart"></i>
                         <span class="text">Orders</span>
                     </a>
                     <div class="submenu">
-                        <a href="page-orders-1.html">Order list 1</a>
-                        <a href="page-orders-2.html">Order list 2</a>
-                        <a href="page-orders-detail.html">Order detail</a>
+                        <a href="/admin/view-orders">View Orders</a>
                     </div>
                 </li>
                 <li class="menu-item has-submenu">
-                    <a class="menu-link" href="page-sellers-cards.html"> <i class="icon material-icons md-store"></i>
-                        <span class="text">Sellers</span>
+                    <a class="menu-link" > <i class="icon material-icons md-plus"></i>
+                        <span class="text">Banner</span>
                     </a>
                     <div class="submenu">
-                        <a href="page-sellers-cards.html">Sellers cards</a>
-                        <a href="page-sellers-list.html">Sellers list</a>
-                        <a href="page-seller-detail.html">Seller profile</a>
+                        <a href="/admin/show-banners">View Banners</a>
+                        <a href="/admin/add-banner">Add Banners</a>
                     </div>
                 </li>
-    
-                <li class="menu-item has-submenu">
-                    <a class="menu-link" href="page-transactions-1.html"> <i class="icon material-icons md-monetization_on"></i>
-                        <span class="text">Transactions</span>
-                    </a>
-                    <div class="submenu">
-                        <a href="page-transactions-1.html">Transaction 1</a>
-                        <a href="page-transactions-2.html">Transaction 2</a>
-                    </div>
-                </li>
-
                 <li class="menu-item">
-                    <a class="menu-link" href="page-reviews.html"> <i class="icon material-icons md-comment"></i>
-                        <span class="text">Reviews</span>
+                    <a class="menu-link" href="/admin/add-coupen"> <i class="icon material-icons md-adjust"></i>
+                        <span class="text">Coupon</span>
                     </a>
                 </li>
                 <li class="menu-item">
-                    <a class="menu-link" href="page-brands.html"> <i class="icon material-icons md-stars"></i>
-                        <span class="text">Brands</span> </a>
-                </li>
-                <li class="menu-item">
-                    <a class="menu-link" disabled href="#"> <i class="icon material-icons md-pie_chart"></i>
-                        <span class="text">Statistics</span>
+                    <a class="menu-link" href="/admin/salesToday"> <i class="icon material-icons md-pie_chart"></i>
+                        <span class="text">Sales Report</span>
                     </a>
                 </li>
-            </ul>
+                
             <hr>
             <ul class="menu-aside">
                 <li class="menu-item has-submenu">
@@ -205,7 +180,7 @@
                                 <span class="badge rounded-pill alert-success">Active</span>
                             </div>
                             <div class="col-lg-1 col-sm-2 col-4 col-date">
-                                <span></span>
+                                <span><%=data[i].unit%></span>
                             </div>
                             <div class="col-lg-2 col-sm-2 col-4 col-action text-end">
                                 <a href="/admin/edit-product/<%=data[i]._id%>" class="btn btn-sm font-sm rounded btn-brand">

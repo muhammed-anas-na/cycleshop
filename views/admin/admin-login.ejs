@@ -84,6 +84,13 @@
                 <button onclick="validate()" type="submit" class="btn btn-primary btn-lg">LOGIN</button>
             </div>
         </form>
+
+        <%if(noAdmin){%>
+          <p style="color: red;">Please enter a valid email</p>
+        <%}%>
+        <%if(passErr){%>
+          <p style="color: red;">Check your password</p>
+        <%}%>
     
         
     </div>

@@ -1,0 +1,452 @@
+
+<html>
+	<head>
+   <meta charset="utf-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+	<link href="https://fonts.googleapis.com/css?family=Montserrat:300,400,500,600,700" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Rokkitt:100,300,400,700" rel="stylesheet">
+	
+	<link rel="stylesheet" href="showProducts/css/animate.css">
+	<!-- Icomoon Icon Fonts-->
+	<link rel="stylesheet" href="showProducts/css/icomoon.css">
+	<!-- Ion Icon Fonts-->
+	<link rel="stylesheet" href="showProducts/css/ionicons.min.css">
+	<!-- Bootstrap  -->
+	<link rel="stylesheet" href="showProducts/css/bootstrap.min.css">
+
+	<!-- Magnific Popup -->
+	<link rel="stylesheet" href="showProducts/css/magnific-popup.css">
+
+	<!-- Flexslider  -->
+	<link rel="stylesheet" href="showProducts/css/flexslider.css">
+
+	<!-- Owl Carousel -->
+	<link rel="stylesheet" href="showProducts/css/owl.carousel.min.css">
+	<link rel="stylesheet" href="showProducts/css/owl.theme.default.min.css">
+	
+	<!-- Date Picker -->
+	<link rel="stylesheet" href="showProducts/css/bootstrap-datepicker.css">
+	<!-- Flaticons  -->
+	<link rel="stylesheet" href="showProducts/fonts/flaticon/font/flaticon.css">
+
+	<!-- Theme style  -->
+	<link rel="stylesheet" href="showProducts/css/style.css">
+
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.5/dist/sweetalert2.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.5/dist/sweetalert2.min.js"></script>
+
+
+	</head>
+	<body>
+		
+	<div class="colorlib-loader"></div>
+    <%- include('../partials/user-header')%>
+	<div id="page">
+        <div class="sale mt-5" style="background-color: aliceblue;">
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-8 offset-sm-2 text-center">
+                        <div class="row">
+                            <div class="owl-carousel2">
+                                <div class="item">
+                                    <div class="col">
+                                        <h3><a href="#">25% off (Almost) Everything! Use Code: Summer Sale</a></h3>
+                                    </div>
+                                </div>
+                                <div class="item">
+                                    <div class="col">
+                                        <h3><a href="#">Our biggest sale yet 50% off all summer shoes</a></h3>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+		<div class="breadcrumbs">
+			<div class="container">
+				<div class="row">
+					<div class="col">
+						<p class="bread"><span><a href="index.html">Home</a></span> / <span>Women</span></p>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="breadcrumbs-two mb-5 ">
+			<div class="container">
+				<div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
+					<div class="carousel-inner">
+						<%bannerData.reverse()%>
+						<%for(i=0;i<bannerData.length;i++){%>
+					  <div class="carousel-item <%= i === 0 ? 'active' : '' %>">
+						<img class="d-block w-100" src="upload/banner/<%=bannerData[i].image%>" alt="First slide">
+					  </div>
+					  <%}%>
+					</div>
+					<a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
+					  <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+					  <span class="sr-only">Previous</span>
+					</a>
+					<a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
+					  <span class="carousel-control-next-icon" aria-hidden="true"></span>
+					  <span class="sr-only">Next</span>
+					</a>
+				  </div>
+			</div>
+		</div>
+
+		<div class="colorlib-featured">
+			<div class="container">
+				<div class="row">
+					<div class="col-sm-4 text-center">
+						<div class="featured">
+							<div class="featured-img featured-img-2" style="background-image: url(https://images.unsplash.com/photo-1530173235220-f6825c107a77?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTh8fGJpY3ljbGV8ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&w=500&q=60);">
+								<h2>Adventure</h2>
+								<p><a href="/search?key=sports" class="btn btn-primary btn-lg">Shop now</a></p>
+							</div>
+						</div>
+					</div>
+					<div class="col-sm-4 text-center">
+						<div class="featured">
+							<div class="featured-img featured-img-2" style="background-image: url(https://images.unsplash.com/photo-1532298229144-0ec0c57515c7?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8YmljeWNsZSUyMGVsZWN0cmljfGVufDB8fDB8fHww&auto=format&fit=crop&w=500&q=60);">
+								<h2>Electric</h2>
+								<p><a href="/search?key=electric" class="btn btn-primary btn-lg">Shop now</a></p>
+							</div>
+						</div>
+					</div>
+					<div class="col-sm-4 text-center">
+						<div class="featured">
+							<div class="featured-img featured-img-2" style="background-image: url(https://images.unsplash.com/photo-1510228957367-be4a85ea7509?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTJ8fGJpY3ljbGUlMjBzcG9ydHN8ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&w=500&q=60);">
+								<h2>Sports</h2>
+								<p><a href="/search?key=sports" class="btn btn-primary btn-lg">Shop now</a></p>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="colorlib-product">
+			<div class="container">
+				<div class="row">
+					<div class="col-lg-3 col-xl-3">
+						<div class="row">
+							<div class="col-sm-12">
+								<div class="side border mb-1">
+									<h3>Brand</h3>
+									<ul>
+										<li><a href="/search?key=avon">Avon</a></li>
+										<li><a href="/search?key=bsacycles">BSA cycles</a></li>
+										<li><a href="/search?key=trek">Trek Bicycle</a></li>
+										<li><a href="/search?key=hero">Hero cycles</a></li>
+										<li><a href="/search?key=mach">Mach City</a></li>
+									</ul>
+								</div>
+							</div>
+							<div class="col-sm-12">
+								<div class="side border mb-1">
+									<h3>Price</h3>
+							
+					               <ul>
+									<li><a href="/search?min=1000&max=10000">Under 10K</a></li>
+									<li><a href="/search?min=10000&max=20000">10K - 20K</a></li>
+									<li><a href="/search?min=20000&max=30000">20K-30K</a></li>
+									<li><a href="/search?min=30000&max=40000">30K-40K</a></li>
+									<li><a href="/search?min=40000&max=99999">40K+</a></li>
+					               </ul>
+					            
+								</div>
+							</div>
+							<div class="col-sm-12">
+								<div class="side border mb-1">
+									<h3>Size/Width</h3>
+									
+					            <div class="block-26">
+										<h4>Width</h4>
+					               <ul>
+					                  <li><a href="/search?key=s">S</a></li>
+					                  <li><a href="#">M</a></li>
+					                  <li><a href="#">W</a></li>
+					               </ul>
+					            </div>
+								</div>
+							</div>
+							<div class="col-sm-12">
+								<div class="side border mb-1">
+									<h3>Category</h3>
+									<ul>
+										<li><a href="/search?key=sports">Sports</a></li>
+										<li><a href="/search?key=mens">Mens</a></li>
+										<li><a href="/search?key=womens">Womens</a></li>
+										<li><a href="/search?key=kids">Kids</a></li>
+										<li><a href="/search?key=electric">Electric</a></li>
+										
+									</ul>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-9 col-xl-9">
+						<div class="row row-pb-md">
+							<%for(i=0;i<data.length;i++){%>
+							<div class="col-lg-4 mb-4 text-center">
+								<div class="product-entry border">
+									<!-- <span class="wishlist" style="float: right;padding: 5px;"><i class="fa fa-heart"></i></span>		 -->
+									<a class="prod-img" href="/product-detail-page/<%=data[i]._id%>">								
+										<img  width="380rem" height="300rem" src="/upload/product/<%=data[i].images[0]%>" class="img-fluid" alt="product-img">
+									</a>
+									<div class="desc">
+										<h2><a href="/product-detail-page/<%=data[i]._id%>"><%=data[i].name.substring(0, 20)%></a></h2>
+										<span class="text-danger"><s>₹ <%=data[i].regular_price%></s></span>
+										<span class="price">₹ <%=data[i].sale_price%></span>
+										<%if(user){%>
+										<a class="btn btn-sm btn-brand rounded" style="align-items: center;" onclick="addToCart('<%=data[i]._id%>')">
+											<i class="material-icons md-shopping_cart" style="align-items: center;"></i>Add to cart
+										</a>
+										<span onclick="addToWishList('<%=data[i]._id%>')" class="wishlist" style="padding: 5px;"><i class="fa-solid fa-heart"></i></span>	
+										<!-- <i class="fa-regular fa-heart"></i> -->
+										<%}%>
+									</div>
+								</div>
+							</div>
+							<%}%>
+						</div>
+						<!-- <% if (totalpages> 1) { %>
+							
+							<div class="pagination-area mt-15 mb-50">
+								<nav aria-label="Page navigation example">
+									<ul class="pagination justify-content-start">
+										<% if (currentpage> 1) { %>
+											<li class="page-item"><a style="width: 5rem;" class="page-link"
+													href="/orders/<%=userData._id%>?page=<%= currentpage - 1 %>">Previous</a>
+											</li>
+											<% } %>
+												<% for (let i=1; i <=totalpages; i++) { %>
+													<li class="page-item"><a class="page-link"
+															href="/orders/<%=userData._id%>?page=<%= i %>">
+															<%= i %>
+														</a></li>
+													<% } %>
+														<% if (currentpage < totalpages) { %>
+															<li class="page-item active"><a style="width: 5rem;"
+																	class="page-link"
+																	href="/orders/<%=userData._id%>?page=<%= currentpage + 1 %>">Next</a>
+															</li>
+															<% } %>
+									</ul>
+								</nav>
+							</div>
+							<% }%> -->
+						<% if (totalpages> 1) {%>
+						<div class="row">
+							<div class="col-md-12 text-center">
+								<div class="block-27">
+				               <ul>
+								<% if (currentpage> 1) { %>
+					               <li><a href="#"><i class="ion-ios-arrow-back"></i></a></li>
+								<%}%>
+								<%for(i=1;i<=totalpages;i++){%>
+				                  <li class="active"><span><%i%></span></li>
+								<%}%>
+								<%if(currentpage<totalpages){%>
+				                  <li><a href="#"><i class="ion-ios-arrow-forward"></i></a></li>
+								<%}%>
+				               </ul>
+				            </div>
+							</div>
+						</div>
+						<%}%>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="colorlib-partner">
+			<div class="container">
+				<div class="row">
+					<div class="col-sm-8 offset-sm-2 text-center colorlib-heading colorlib-heading-sm">
+						<h2>Trusted Partners</h2>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col partner-col text-center">
+						<img src="showProducts/images/download.png" class="img-fluid" alt="Free html4 bootstrap 4 template">
+					</div>
+					<div class="col partner-col text-center">
+						<img src="showProducts/images/download (1).png" class="img-fluid" alt="Free html4 bootstrap 4 template">
+					</div>
+					<div class="col partner-col text-center">
+						<img src="showProducts/images/download (2).jfif" class="img-fluid" alt="Free html4 bootstrap 4 template">
+					</div>
+					<div class="col partner-col text-center">
+						<img src="showProducts/images/download (3).png" class="img-fluid" alt="Free html4 bootstrap 4 template">
+					</div>
+					<div class="col partner-col text-center">
+						<img src="showProducts/images/download (4).png" class="img-fluid" alt="Free html4 bootstrap 4 template">
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<footer id="colorlib-footer" role="contentinfo">
+			<div class="container">
+				<div class="row row-pb-md">
+					<div class="col footer-col colorlib-widget">
+						<h4>About Footwear</h4>
+						<p>Even the all-powerful Pointing has no control about the blind texts it is an almost unorthographic life</p>
+						<p>
+							<ul class="colorlib-social-icons">
+								<li><a href="#"><i class="icon-twitter"></i></a></li>
+								<li><a href="#"><i class="icon-facebook"></i></a></li>
+								<li><a href="#"><i class="icon-linkedin"></i></a></li>
+								<li><a href="#"><i class="icon-dribbble"></i></a></li>
+							</ul>
+						</p>
+					</div>
+					<div class="col footer-col colorlib-widget">
+						<h4>Customer Care</h4>
+						<p>
+							<ul class="colorlib-footer-links">
+								<li><a href="#">Contact</a></li>
+								<li><a href="#">Returns/Exchange</a></li>
+								<li><a href="#">Gift Voucher</a></li>
+								<li><a href="#">Wishlist</a></li>
+								<li><a href="#">Special</a></li>
+								<li><a href="#">Customer Services</a></li>
+								<li><a href="#">Site maps</a></li>
+							</ul>
+						</p>
+					</div>
+					<div class="col footer-col colorlib-widget">
+						<h4>Information</h4>
+						<p>
+							<ul class="colorlib-footer-links">
+								<li><a href="#">About us</a></li>
+								<li><a href="#">Delivery Information</a></li>
+								<li><a href="#">Privacy Policy</a></li>
+								<li><a href="#">Support</a></li>
+								<li><a href="#">Order Tracking</a></li>
+							</ul>
+						</p>
+					</div>
+
+					<div class="col footer-col">
+						<h4>News</h4>
+						<ul class="colorlib-footer-links">
+							<li><a href="blog.html">Blog</a></li>
+							<li><a href="#">Press</a></li>
+							<li><a href="#">Exhibitions</a></li>
+						</ul>
+					</div>
+
+					<div class="col footer-col">
+						<h4>Contact Information</h4>
+						<ul class="colorlib-footer-links">
+							<li>291 South 21th Street, <br> Suite 721 New York NY 10016</li>
+							<li><a href="tel://1234567920">+ 1235 2355 98</a></li>
+							<li><a href="mailto:info@yoursite.com">info@yoursite.com</a></li>
+							<li><a href="#">yoursite.com</a></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+			<div class="copy">
+				<div class="row">
+					<div class="col-sm-12 text-center">
+						<p>
+							<span><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="icon-heart" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
+<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. --></span> 
+							<span class="block">Demo Images: <a href="http://unsplash.co/" target="_blank">Unsplash</a> , <a href="http://pexels.com/" target="_blank">Pexels.com</a></span>
+						</p>
+					</div>
+				</div>
+			</div>
+		</footer>
+	</div>
+
+	<div class="gototop js-top">
+		<a href="#" class="js-gotop"><i class="ion-ios-arrow-up"></i></a>
+	</div>
+	
+	<!-- jQuery -->
+	<script src="showProducts/js/jquery.min.js"></script>
+   <!-- popper -->
+   <script src="showProducts/js/popper.min.js"></script>
+   <!-- bootstrap 4.1 -->
+   <script src="showProducts/js/bootstrap.min.js"></script>
+   <!-- jQuery easing -->
+   <script src="showProducts/js/jquery.easing.1.3.js"></script>
+	<!-- Waypoints -->
+	<script src="showProducts/js/jquery.waypoints.min.js"></script>
+	<!-- Flexslider -->
+	<script src="showProducts/js/jquery.flexslider-min.js"></script>
+	<!-- Owl carousel -->
+	<script src="showProducts/js/owl.carousel.min.js"></script>
+	<!-- Magnific Popup -->
+	<script src="showProducts/js/jquery.magnific-popup.min.js"></script>
+	<script src="showProducts/js/magnific-popup-options.js"></script>
+	<!-- Date Picker -->
+	<script src="showProducts/js/bootstrap-datepicker.js"></script>
+	<!-- Stellar Parallax -->
+	<script src="showProducts/js/jquery.stellar.min.js"></script>
+	<!-- Main -->
+	<script src="showProducts/js/main.js"></script>
+
+	<script>
+
+		 function addToWishList(proId){
+        $.ajax({
+            url:'/add-to-wishlist',
+            method:'post',
+            data:{
+                proId
+            },
+            success:(response)=>{
+            
+                Swal.fire({
+                    title: 'WISHLIST',
+                    text: 'Product added to wishlist.',
+                    icon: 'success',
+                    timer: 5000
+                })
+            }
+        })
+    }
+
+		function addToCart(proId){
+			$.ajax({
+				url:'/add-to-cart/'+proId,
+				method:'post',
+				data:{
+					quantity:1,
+					size:'small'
+				},
+				success(response){
+					if(response == true){
+						Swal.fire({
+						title: 'CART',
+						text: 'Product ADDED TO CART.',
+						icon: 'SUCCESSS',
+						timer: 5000
+					})
+					}else{
+						Swal.fire({
+						title: 'STOCK!',
+						text: 'Product is out of stock.',
+						icon: 'error',
+						timer: 5000
+					})
+					}
+				}
+				
+			})
+		}
+	</script>
+	</body>
+</html>
+

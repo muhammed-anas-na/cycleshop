@@ -1,0 +1,261 @@
+<!DOCTYPE HTML>
+<html lang="en">
+
+
+<!-- Mirrored from wp.alithemes.com/html/evara/evara-backend/page-form-product-1.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 01 Aug 2021 15:33:31 GMT -->
+<head>
+    <meta charset="utf-8">
+    <title>Evara Dashboard</title>
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta property="og:title" content="">
+    <meta property="og:type" content="">
+    <meta property="og:url" content="">
+    <meta property="og:image" content="">
+    <!-- Favicon -->
+    <link rel="shortcut icon" type="image/x-icon" href="/assets/imgs/theme/favicon.svg">
+    <!-- Template CSS -->
+    <link href="/assets/css/main.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="https://unpkg.com/cropperjs/dist/cropper.min.css">
+
+    <!-- Add jQuery (required by Cropper.js) -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- Add Cropper.js -->
+    <script src="https://unpkg.com/cropperjs/dist/cropper.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+    
+
+</head>
+
+<body>
+    <div class="screen-overlay"></div>
+    <aside class="navbar-aside" id="offcanvas_aside">
+        <div class="aside-top">
+            <a href="index.html" class="brand-wrap">
+                <img src="http://localhost:3000/images/logo.png" class="logo" alt="Evara Dashboard">
+            </a>
+            <div>
+                <button class="btn btn-icon btn-aside-minimize"> <i class="text-muted material-icons md-menu_open"></i> </button>
+            </div>
+        </div>
+        <nav>
+            <ul class="menu-aside">
+                <li class="menu-item">
+                    <a class="menu-link" href="/admin"> <i class="icon material-icons md-home"></i>
+                        <span class="text">Dashboard</span>
+                    </a>
+                </li>
+                <li class="menu-item has-submenu">
+                    <a class="menu-link" href="page-form-product-1.html"> <i class="icon material-icons md-add_box"></i>
+                        <span class="text">Category</span>
+                    </a>
+                    <div class="submenu">
+                        <a href="/admin/category">Manage category</a>
+                    </div>
+                </li>
+    
+                <li class="menu-item has-submenu">
+                    <a class="menu-link" href="page-products-list.html"> <i class="icon material-icons md-shopping_bag"></i>
+                        <span class="text">Products</span>
+                    </a>
+                    <div class="submenu">
+                        <a href="/admin/all-products">Manage Products</a>
+                        <a href="/admin/add-product">Add new Product</a>
+                    </div>
+                </li>
+                <li class="menu-item has-submenu">
+                    <a class="menu-link" href="#"> <i class="icon material-icons md-person"></i>
+                        <span class="text">Users</span>
+                    </a>
+                    <div class="submenu">
+                        <a href="/admin/view-users">Manage Users</a>
+                    </div>
+                </li>
+                <li class="menu-item has-submenu">
+                    <a class="menu-link" > <i class="icon material-icons md-shopping_cart"></i>
+                        <span class="text">Orders</span>
+                    </a>
+                    <div class="submenu">
+                        <a href="/admin/view-orders">View Orders</a>
+                    </div>
+                </li>
+                <li class="menu-item has-submenu active">
+                    <a class="menu-link" > <i class="icon material-icons md-plus"></i>
+                        <span class="text">Banner</span>
+                    </a>
+                    <div class="submenu">
+                        <a href="/admin/show-banner">View Banners</a>
+                        <a href="/admin/add-banner">Add Banners</a>
+                    </div>
+                </li>
+                <li class="menu-item">
+                    <a class="menu-link" href="/admin/add-coupen"> <i class="icon material-icons md-adjust"></i>
+                        <span class="text">Coupon</span>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a class="menu-link" href="/admin/salesToday"> <i class="icon material-icons md-pie_chart"></i>
+                        <span class="text">Sales Report</span>
+                    </a>
+                </li>
+                
+            <hr>
+            <ul class="menu-aside">
+                <li class="menu-item has-submenu">
+                    <a class="menu-link" href="#"> <i class="icon material-icons md-settings"></i>
+                        <span class="text">Settings</span>
+                    </a>
+                    <div class="submenu">
+                        <a href="page-settings-1.html">Setting sample 1</a>
+                        <a href="page-settings-2.html">Setting sample 2</a>
+                    </div>
+                </li>
+                <li class="menu-item">
+                    <a class="menu-link" href="page-blank.html"> <i class="icon material-icons md-local_offer"></i>
+                        <span class="text"> Starter page </span>
+                    </a>
+                </li>
+            </ul>
+            <br>
+            <br>
+        </nav>
+    </aside>
+    <%- include('../partials/admin-header')%>
+    <main class="main-wrap">
+        <section class="content-main">
+            <form action="/admin/add-banner" method="post" enctype="multipart/form-data">
+            <div class="row">
+                <div class="col-9">
+                    <div class="content-header">
+                        <h2 class="content-title">Add Banner</h2>
+                        <div>
+                            <button class="btn btn-light rounded font-sm mr-5 text-body hover-up">Save to draft</button>
+                            <button class="btn btn-md rounded font-sm hover-up">Publich</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h4>Basic</h4>
+                        </div>
+                        <div class="card-body">
+                                <div class="mb-4">
+                                    <label for="product_name" class="form-label">Banner title</label>
+                                    <input name="name" type="text" placeholder="Type here" class="form-control" id="product_name">
+                                </div>
+                                <div class="mb-4">
+                                    <label class="form-label">Full description</label>
+                                    <textarea name="description" placeholder="Type here" class="form-control" rows="4"></textarea>
+                                </div>
+                                <div class="mb-4">
+                                    <label for="product_name" class="form-label">Expiry Date</label>
+                                    <input name="date" type="date" placeholder="Type here" class="form-control" id="product_name">
+                                </div>
+                            
+                        </div>
+                    </div> <!-- card end// -->
+                </div>
+                <div class="col-lg-3">
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h4>Media</h4>
+                        </div>
+                    </div> <!-- card end// -->
+                    <div class="card-body">
+                        <input class="form-control" type="file" name="bannerImg" id="input1"
+                        accept="image/*" required>
+                    </div>
+                </div>
+            </div>
+            </form>
+        </section> <!-- content-main end// -->
+        <footer class="main-footer font-xs">
+            <div class="row pb-30 pt-15">
+                <div class="col-sm-6">
+                    <script>
+                    document.write(new Date().getFullYear())
+                    </script> ©, Evara - HTML Ecommerce Template .
+                </div>
+                <div class="col-sm-6">
+                    <div class="text-sm-end">
+                        All rights reserved
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </main>
+    <script src="/assets/js/vendors/jquery-3.6.0.min.js"></script>
+    <script src="/assets/js/vendors/bootstrap.bundle.min.js"></script>
+    <script src="/assets/js/vendors/select2.min.js"></script>
+    <script src="/assets/js/vendors/perfect-scrollbar.js"></script>
+    <script src="/assets/js/vendors/jquery.fullscreen.min.js"></script>
+
+    <script src="/assets/js/main.js" type="text/javascript"></script>
+
+</body>
+
+
+<script>
+    // function viewImage1(event) {
+    //         document.getElementById('imgView1').src = URL.createObjectURL(event.target.files[0])
+    //     }
+
+    //     function viewImage(event, index) {
+    //         let input = event.target;
+    //         let reader = new FileReader();
+
+    //         reader.onload = function () {
+    //             let dataURL = reader.result;
+    //             let image = document.getElementById('imgView' + index);
+    //             image.src = dataURL;
+
+    //             // Initialize Cropper.js on the image
+    //             let cropper = new Cropper(image, {
+    //                 aspectRatio: 1600 / 530, // Initial aspect ratio
+    //                 viewMode: 1,
+    //                 guides: true,
+    //                 background: false,
+    //                 autoCropArea: 1,
+    //                 zoomable: true
+    //             });
+
+
+    //             // Show the image cropper container
+    //             let cropperContainer = document.querySelector('#croppedImg' + index).parentNode;
+    //             cropperContainer.style.display = 'block';
+
+    //             // Update the cropped image when the "Save" button is clicked
+    //             let saveButton = document.querySelector('#saveButton' + index);
+    //             saveButton.addEventListener('click', async function () {
+    //                 let croppedCanvas = cropper.getCroppedCanvas({
+    //                     width: 487,
+    //                     height: 203
+    //                 });
+    //                 let croppedImage = document.getElementById("croppedImg" + index);
+    //                 croppedImage.src = croppedCanvas.toDataURL('image/jpeg', 1.5);
+
+    //                 // Generate a unique name for the cropped image file based on the current timestamp
+    //                 let timestamp = new Date().getTime();
+    //                 let fileName = `cropped-img-${timestamp}-${index}.png`;
+
+    //                 await croppedCanvas.toBlob(blob => {
+    //                     let input = document.getElementById('input' + index)
+    //                     let imgFile = new File([blob], fileName, blob)
+    //                     const fileList = new DataTransfer();
+    //                     fileList.items.add(imgFile);
+    //                     input.files = fileList.files
+    //                 });
+    //                 // cropperContainer.style.display = 'none';
+    //             });
+
+    //         };
+
+    //         reader.readAsDataURL(input.files[0]);
+    //     }
+</script>
+
+<!-- Mirrored from wp.alithemes.com/html/evara/evara-backend/page-form-product-1.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 01 Aug 2021 15:33:32 GMT -->
+</html>

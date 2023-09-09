@@ -13,64 +13,32 @@
     <link rel="shortcut icon" type="image/x-icon" href="/assets/imgs/theme/favicon.svg">
     <!-- Template CSS -->
     <link href="/assets/css/main.css" rel="stylesheet" type="text/css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.5/dist/sweetalert2.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.5/dist/sweetalert2.min.js"></script>
+
 </head>
 
 <body>
     <div class="screen-overlay"></div>
    
     <main >
+        <%- include('../partials/user-header')%>
         <section class="content-main">
-            <div class="content-header">
-                <div>
-                    <h2 class="content-title card-title">Products grid</h2>
-                    <p>Lorem ipsum dolor sit amet.</p>
-                </div>
-                <div>
-                    <a href="#" class="btn btn-light rounded font-md">Export</a>
-                    <a href="#" class="btn btn-light rounded  font-md">Import</a>
-                    <a href="#" class="btn btn-primary btn-sm rounded">Create new</a>
-                </div>
-            </div>
-            <header class="card card-body mb-4">
-                <div class="row gx-3">
-                    <div class="col-lg-4 col-md-6 me-auto d-flex">
-                        <input type="text" placeholder="Search..." class="form-control">
-                        <button class="btn btn-primary p-2 d-flex" style="align-items: center;">
-                            <i class="fa-solid fa-magnifying-glass"></i>
-                            Search
-                        </button>
-                    </div>
-                    <div class="col-lg-2 col-6 col-md-3">
-                        <select class="form-select">
-                            <option>All category</option>
-                            <option>Electronics</option>
-                            <option>Clothings</option>
-                            <option>Something else</option>
-                        </select>
-                    </div>
-                    <div class="col-lg-2 col-6 col-md-3">
-                        <select class="form-select">
-                            <option>Latest added</option>
-                            <option>Cheap first</option>
-                            <option>Most viewed</option>
-                        </select>
-                    </div>
-                </div>
-            </header> <!-- card-header end// -->
+
+            
             <div class="row">
                 <%for(i=0;i<data.length;i++){%>
                 <div class="col-xl-3 col-lg-4 col-md-6">
                     <div class="card card-product-grid">
-                        <a href="/product-detail-page/<%=data[i]._id%>" class="img-wrap"> <img src="/upload/product/<%=data[i].images[1]%>" alt="Product"> </a>
+                        <a href="/product-detail-page/<%=data[i]._id%>" class="img-wrap"> <img src="/upload/product/<%=data[i].images[0]%>" alt="Product"> </a>
                         <div class="info-wrap">
                             <a href="#" class="title"><%=data[i].name%></a>
+                            <div class="price mt-1"><s style="color: red;">Rs <%=data[i].regular_price%></s></div> 
                             <div class="price mt-1">Rs <%=data[i].sale_price%></div> 
                             <div class="dropdown float-end">
-                                <a href="#" class="btn btn-sm btn-brand rounded">
-                                    <i class="material-icons md-shopping_cart mr-5"></i>Add to cart
-                                </a>
-                                <a href="#" class="btn btn-sm btn-brand rounded">
-                                    <i class="material-icons mr-5"></i>Buy Now
+                                <a class="btn btn-sm btn-brand rounded" onclick="addToCart('<%=data[i]._id%>')">
+                                    <i class="material-icons md-shopping_cart" style="align-items: center;"></i>Add to cart
                                 </a>
                             </div>
                         </div>
@@ -78,18 +46,6 @@
                 </div> <!-- col.// -->
                 <%}%>
             </div> <!-- row.// -->
-            <div class="pagination-area mt-15 mb-50">
-                <nav aria-label="Page navigation example">
-                    <ul class="pagination justify-content-start">
-                        <li class="page-item active"><a class="page-link" href="#">01</a></li>
-                        <li class="page-item"><a class="page-link" href="#">02</a></li>
-                        <li class="page-item"><a class="page-link" href="#">03</a></li>
-                        <li class="page-item"><a class="page-link dot" href="#">...</a></li>
-                        <li class="page-item"><a class="page-link" href="#">16</a></li>
-                        <li class="page-item"><a class="page-link" href="#"><i class="material-icons md-chevron_right"></i></a></li>
-                    </ul>
-                </nav>
-            </div>
         </section> <!-- content-main end// -->
         <footer class="main-footer font-xs">
             <div class="row pb-30 pt-15">
@@ -115,6 +71,35 @@
     <script src="/assets/js/main.js" type="text/javascript"></script>
 </body>
 
-
+<script>
+    function addToCart(proId){
+        $.ajax({
+            url:'/add-to-cart/'+proId,
+            method:'post',
+            data:{
+                quantity:1,
+                size:'small',
+            },
+            success(response){
+                if(response == true){
+                    Swal.fire({
+                    title: 'CART',
+                    text: 'Product ADDED TO CART.',
+                    icon: 'SUCCESSS',
+                    timer: 5000
+                })
+                }else{
+                    Swal.fire({
+                    title: 'STOCK!',
+                    text: 'Product is out of stock.',
+                    icon: 'error',
+                    timer: 5000
+                })
+                }
+            }
+            
+        })
+    }
+</script>
 <!-- Mirrored from wp.alithemes.com/html/evara/evara-backend/page-products-grid-2.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 01 Aug 2021 15:33:21 GMT -->
 </html>

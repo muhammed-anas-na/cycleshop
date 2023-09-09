@@ -13,7 +13,7 @@ module.exports={
             };
             // Use sharp to read the input image
             sharp(inputFilePath)
-              .extract(cropRegion)
+            .resize(3600, 2400)
               .toBuffer((err, processedImageBuffer) => {
                 if (err) {
                   console.error('Error while cropping the image:', err);
@@ -29,7 +29,6 @@ module.exports={
                   });
                 }
               });
-            
         }
     }
 }

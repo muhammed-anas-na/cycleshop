@@ -20,6 +20,12 @@ module.exports={
     },
     addProduct:async (req,res)=>{
         console.log("AddProduct")
+        const date = new Date();
+        const day = date.getDate(); // Returns the day of the month (1-31)
+        const month = date.getMonth() + 1; // Returns the month (0-11), so adding 1 to get 1-12
+        const year = date.getFullYear(); // Returns the year (e.g., 2023)
+        let createdOn = ` ${day}/${month}/${year}`
+        req.body.units = parseInt(req.body.units);
         await cropImg.crop(req);
         let product = new productModel({
           name:req.body.product_name,
@@ -27,9 +33,8 @@ module.exports={
           category:req.body.category,
           regular_price:req.body.regular_price,
           sale_price:req.body.sale_price,
-          created_on:Date.now(),
+          created_on:createdOn,
           unit:req.body.units,
-          gst:req.body.tax_rate,
           images:[req.files[0].filename,req.files[1].filename,req.files[2].filename,req.files[3].filename]
         })
         await product.save().then((statsu)=>{
@@ -59,7 +64,6 @@ module.exports={
                 sale_price:req.body.sale_price,
                 created_on:Date.now(),
                 unit:req.body.units,
-                gst:req.body.tax_rate,
             }
             productModel.findByIdAndUpdate(req.params.id ,updateObj).then(()=>{
                 res.redirect('/admin/all-products')
@@ -76,7 +80,6 @@ module.exports={
                 sale_price:req.body.sale_price,
                 created_on:Date.now(),
                 unit:req.body.units,
-                gst:req.body.tax_rate,
                 images:[req.files[0].filename,req.files[1].filename,req.files[2].filename,req.files[3].filename]
             }
             productModel.findByIdAndUpdate(req.params.id ,updateObj).then(()=>{

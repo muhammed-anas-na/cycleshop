@@ -1,7 +1,6 @@
 <head>
     <style>
         body {
-            margin-top: 20px;
             color: #1a202c;
             text-align: left;
             background-color: #e2e8f0;
@@ -63,7 +62,7 @@
     </style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
 </head>
-
+<%- include('../partials/user-header')%>
 <div class="container">
     <div class="main-body">
 
@@ -72,16 +71,19 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="d-flex flex-column align-items-center text-center">
-                            <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="Admin"
+                            <%if(userData.image){%>
+                            <img src="upload/profile/<%=userData.image%>" alt="profile-img"
                                 class="rounded-circle" width="150">
-                            <div class="mt-3">
+                            <%}else{%>
+                                <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAIMAAACDCAMAAACZQ1hUAAAAMFBMVEXk5ueutLfo6uu3vb+rsbTe4eK9wsTa3d7IzM7Bxsi6v8LN0dOxt7rX2tvQ1NbFycu/cW2wAAAC6klEQVR4nO2awZKDIAxAIYACCv7/365a67a7FRMk1ANvpqcefBNCDEQhGo1Go9FoNBqNRqPxC8B3H276OAw2BmPEN0xAhElJvTH6ydQOCJhpfr58YfYYagYDjHsX2DTkUE8hyg8Gq4XqK4WiOzBYLWwFCTBHQdgkOn6HPiWwSvivK/BLmHOFRYIzJ2DEOLAmJthkOr5IBC4JCEgFKUcmBSFwK7EGYuIJBAzoMMwYHgeCAVMgIFLCIDWDggBFUZB6YAiEIYVBSlVeAV0bdhiy0hMVGBbD4IvDRlfcoacuhRyLO5AK1IPSCQET3aEv7eDICjqWdqBuCw4HWpW8jUPpE88t4tDdwCFjb4bSDjeoUQLfzz4p39eiTjdvqPJNDHVjMBx0wBEXQ5d+XQj6y5uhl8OeNfcwcDT3xIZSsxxyaI01z/mflJW6dJHcIJQIXb6hfUDJCJ4j7wJ2a7DeEOICwbYSC9izN5+BwKYEXzI8JBB9BPud9anEaPhvrI9v7Re0qqCw3Jr7Q4kq1/YPizh+tNC+ShA2CTGMfyc5Wnqmd8SxRejWadr6+GWqZmuNcN40oI/Wee87Z2P1qd4u8UL1h88/Y0K0k+sW3GSH2JvtnwrPn5dgcH7chqvymQ9LSihnA/vsGUyYlP4023xujvk/x5ccACZ6mR7qbR5SDTwD8NAhnv9SLEpPnkHYz5UxGQ5XsGIcjLcRFr7QXAuEIyzCX3yJUyfYCwZynT1fjAWEawaLxLUL/HkZrhqsFhe+SICevBmOyA0FcYiWRLs8hSLrsEvk9Jlw3DTmQe+3iyvMUCUYFIgSkPrsJp+RcAjMuZzGSaADQfjOgQj+so46VaZIYIsVSz4+QaVEyfL4H+QVDacC7tKQPt8nghkpMCsgvltiDwPmQp8+QyRz1mKyladfzgoVW5V+5aRik76Byia9GPTpXQYng3DWGrk7uNRi5ExzM0iWKabe5R9JB6dqkN4YUIdkTjYajUbjhvwAhkMhCkCbAawAAAAASUVORK5CYII=" alt="profile-img"
+                                class="rounded-circle" width="150">
+                            <%}%>
+                            <div class="m-3">
                                 <h4>
                                     <%=userData.name%>
                                 </h4>
-                                <p class="text-secondary mb-1">Full Stack Developer</p>
-                                <p class="text-muted font-size-sm">Bay Area, San Francisco, CA</p>
-                                <button class="btn btn-primary">Follow</button>
-                                <button class="btn btn-outline-primary">Message</button>
+                                <a href="/orders/<%=userData._id%>" class="btn btn-primary mt-3">Orders</a>
+                                <a class="btn btn-outline-primary mt-3">Message</a>
                             </div>
                         </div>
                     </div>
@@ -89,20 +91,28 @@
                 <div class="card mt-3">
                     <ul class="list-group list-group-flush">
                         <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
-                            <h6 class="mb-0"><a href="/change-password/<%=userData._id%>">Change Password</a></h6>
+                            <div class="d-flex" style="align-items: center;">
+                                <i class="fa-solid fa-wallet me-2"></i>
+                                <h6 class="mb-0 btn btn-outline"><a href="/wallet">Wallet</a></h6>
+                            </div>
                         </li>
                         <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
-                            <h6 class="mb-0"><a href="">Logout</a></h6>
+                            <div class="d-flex" style="align-items: center;">
+                                <i class="fa-solid fa-key me-2"></i>
+                                 <h6 class="mb-0 btn btn-outline"><a href="/change-password/<%=userData._id%>">Change Password</a></h6>
+                            </div>
                         </li>
                         <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
-                            <h6 class="mb-0"><a href="#">Delete Account</a></h6>
+                            <div class="d-flex" style="align-items: center;">
+                                <i class="fa-solid fa-right-from-bracket me-2"></i>
+                                <h6 class="mb-0 btn btn-outline"><a href="/logout">Logout</a></h6>
+                            </div>
                         </li>
                         <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
-                            <h6 class="mb-0">Instagram</h6>
-
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
-                            <h6 class="mb-0">Facebook</h6>
+                            <div class="d-flex" style="align-items: center;">
+                                <i class="fa-solid fa-trash me-2"></i>
+                            <h6 class="mb-0 btn btn-outline"><a href="#">Delete Account</a></h6>
+                            </div>
                         </li>
                     </ul>
                 </div>
@@ -141,7 +151,7 @@
                         <div class="row">
                             <div class="col-sm-12">
                                 <a class="btn btn-info " target="__blank"
-                                    href="/edit-profile/<%=userData._id%>">Edit</a>
+                                    href="/edit-profile?id=<%=userData._id%>">Edit</a>
                             </div>
                         </div>
                     </div>
@@ -153,8 +163,10 @@
                             <div class="card-body">
                                 <h6 class="d-flex align-items-center mb-3"><i
                                         class="material-icons text-info mr-2">Manage Address</i>
+                                        <%if(userData.adress.length<2){%>
                                         <a href="/add-adress/<%=userData._id%>"
                                         class="text-info ms-auto">Add Address</a>
+                                        <%}%>
                                     </h6>
                                 <div class="progress mb-3" style="height: 5px">
                                     <div class="progress-bar bg-primary" role="progressbar" style="width: 100%"

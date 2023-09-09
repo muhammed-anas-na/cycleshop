@@ -1,0 +1,238 @@
+<!DOCTYPE HTML>
+<html lang="en">
+
+
+<!-- Mirrored from wp.alithemes.com/html/evara/evara-backend/page-categories.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 01 Aug 2021 15:33:21 GMT -->
+<head>
+    <meta charset="utf-8">
+    <title>Evara Dashboard</title>
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta property="og:title" content="">
+    <meta property="og:type" content="">
+    <meta property="og:url" content="">
+    <meta property="og:image" content="">
+    <!-- Favicon -->
+    <link rel="shortcut icon" type="image/x-icon" href="/assets/imgs/theme/favicon.svg">
+    <!-- Template CSS -->
+    <link href="/assets/css/main.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+    <div class="screen-overlay"></div>
+    <aside class="navbar-aside" id="offcanvas_aside">
+        <div class="aside-top">
+            <a href="index.html" class="brand-wrap">
+                <img src="http://localhost:3000/images/logo.png" class="logo" alt="Evara Dashboard">
+            </a>
+            <div>
+                <button class="btn btn-icon btn-aside-minimize"> <i class="text-muted material-icons md-menu_open"></i> </button>
+            </div>
+        </div>
+        <nav>
+            <ul class="menu-aside">
+                <li class="menu-item">
+                    <a class="menu-link" href="/admin"> <i class="icon material-icons md-home"></i>
+                        <span class="text">Dashboard</span>
+                    </a>
+                </li>
+                <li class="menu-item has-submenu">
+                    <a class="menu-link" href="page-form-product-1.html"> <i class="icon material-icons md-add_box"></i>
+                        <span class="text">Category</span>
+                    </a>
+                    <div class="submenu">
+                        <a href="/admin/category">Manage category</a>
+                    </div>
+                </li>
+    
+                <li class="menu-item has-submenu">
+                    <a class="menu-link" href="page-products-list.html"> <i class="icon material-icons md-shopping_bag"></i>
+                        <span class="text">Products</span>
+                    </a>
+                    <div class="submenu">
+                        <a href="/admin/all-products">Manage Products</a>
+                        <a href="/admin/add-product">Add new Product</a>
+                    </div>
+                </li>
+                <li class="menu-item has-submenu">
+                    <a class="menu-link" href="#"> <i class="icon material-icons md-person"></i>
+                        <span class="text">Users</span>
+                    </a>
+                    <div class="submenu">
+                        <a href="/admin/view-users">Manage Users</a>
+                    </div>
+                </li>
+                <li class="menu-item has-submenu">
+                    <a class="menu-link" > <i class="icon material-icons md-shopping_cart"></i>
+                        <span class="text">Orders</span>
+                    </a>
+                    <div class="submenu">
+                        <a href="/admin/view-orders">View Orders</a>
+                    </div>
+                </li>
+                <li class="menu-item has-submenu">
+                    <a class="menu-link" > <i class="icon material-icons md-plus"></i>
+                        <span class="text">Banner</span>
+                    </a>
+                    <div class="submenu">
+                        <a href="/admin/show-banners">View Banners</a>
+                        <a href="/admin/add-banner">Add Banners</a>
+                    </div>
+                </li>
+                <li class="menu-item active">
+                    <a class="menu-link" href="/admin/add-coupen"> <i class="icon material-icons md-adjust"></i>
+                        <span class="text">Coupon</span>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a class="menu-link" href="/admin/salesToday"> <i class="icon material-icons md-pie_chart"></i>
+                        <span class="text">Sales Report</span>
+                    </a>
+                </li>
+                
+            <hr>
+            <ul class="menu-aside">
+                <li class="menu-item has-submenu">
+                    <a class="menu-link" href="#"> <i class="icon material-icons md-settings"></i>
+                        <span class="text">Settings</span>
+                    </a>
+                    <div class="submenu">
+                        <a href="page-settings-1.html">Setting sample 1</a>
+                        <a href="page-settings-2.html">Setting sample 2</a>
+                    </div>
+                </li>
+                <li class="menu-item">
+                    <a class="menu-link" href="page-blank.html"> <i class="icon material-icons md-local_offer"></i>
+                        <span class="text"> Starter page </span>
+                    </a>
+                </li>
+            </ul>
+            <br>
+            <br>
+        </nav>
+    </aside>
+    <%- include('../partials/admin-header')%>
+    <main class="main-wrap">
+        <section class="content-main">
+            <div class="content-header">
+                <div>
+                    <h2 class="content-title card-title">Add Coupon</h2>
+                    <p>Add, edit or delete a coupon</p>
+                </div>
+                <div>
+                    <input type="text" placeholder="Search Coupon" class="form-control bg-white">
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <form action="/admin/add-coupen" method="post">
+                                <div class="mb-4">
+                                    <label for="product_name" class="form-label">Name</label>
+                                    <input name="couponName" pattern="^[^\s]+$" type="text" placeholder="Type here" class="form-control" id="name" required="true" maxlength="40" />
+                                </div>
+                                <div class="mb-4">
+                                    <label class="form-label">Start Date</label>
+                                    <input name="startingDate" type="date" class="form-control" id="startingDate" required="true" />    
+                                </div>
+                                <div class="mb-4">
+                                    <label class="form-label">Expiry Date</label>
+                                    <input name="exipiringDate" type="date" class="form-control" id="exipiringDate" required="true" />    
+                                </div>
+                                <div class="mb-4">
+                                    <label for="product_name" class="form-label">Minimum Price</label>
+                                    <input name="minimumPrice" type="number" placeholder="Type here" class="form-control" id="minimumPrice" required="true" maxlength="40" />
+                                </div>
+                                <div class="mb-4">
+                                    <label for="product_name" class="form-label">Offer Price</label>
+                                    <input name="offerPrice" type="number" placeholder="Type here" class="form-control" id="offerPrice" required="true" maxlength="40" />
+                                </div>
+                                <div class="d-grid">
+                                    <button onclick="validate()" class="btn btn-primary" type="submit">Create Coupen</button>
+                                </div>
+                                <p id="err-msg"></p>
+                            </form>
+                        </div>
+                        <div class="col-md-9">
+                            <%if(couponData){%>
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>No</th>
+                                        
+                                            <th>Coupen Name</th>
+                                            <th>Coupen code</th>
+                                            <th>Start Date</th>
+                                            <th>Expiry Date</th>
+                                            <th>Used By</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <%for(i=0;i<couponData.length;i++){%>
+                                            <tr>
+                                              <td><%=i+1%></td>
+                                              <td><%=couponData[i].name%></td>
+                                              <td><%=couponData[i].code%></td>
+                                              <td><%=couponData[i].createdS%></td>
+                                              <td><%=couponData[i].expiryS%></td>
+                                            </tr>
+                                            <%}%>                                       
+                                    </tbody>
+                                </table>
+                            </div>
+                            <%}%>
+                        </div> <!-- .col// -->
+                    </div> <!-- .row // -->
+                </div> <!-- card body .// -->
+            </div> <!-- card .// -->
+        </section> <!-- content-main end// -->
+        <footer class="main-footer font-xs">
+            <div class="row pb-30 pt-15">
+                <div class="col-sm-6">
+                    <script>
+                    document.write(new Date().getFullYear())
+                    </script> ©, Evara - HTML Ecommerce Template .
+                </div
+                <div class="col-sm-6">
+                    <div class="text-sm-end">
+                        All rights reserved
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </main>
+    <script src="/assets/js/vendors/jquery-3.6.0.min.js"></script>
+    <script src="/assets/js/vendors/bootstrap.bundle.min.js"></script>
+    <script src="/assets/js/vendors/select2.min.js"></script>
+    <script src="/assets/js/vendors/perfect-scrollbar.js"></script>
+    <script src="/assets/js/vendors/jquery.fullscreen.min.js"></script>
+    <!-- Main Script -->
+    <script src="/assets/js/main.js" type="text/javascript"></script>
+</body>
+
+<script>
+    const startingDateInput = document.getElementById("startingDate");
+    const todayDate = new Date().toISOString().slice(0, 10);
+    document.getElementById('startingDate').value = todayDate
+    const todayDateObj = new Date(todayDate)
+    function validate(){
+        alert("Hi")
+        const sDate = document.getElementById('startingDate').value
+        const eDate = document.getElementById('exipiringDate').value
+        const sDateObj = new Date(sDate);
+        const eDateObj = new Date(eDate)
+        if (sDateObj > eDateObj){
+            alert("Expiry date Error")
+            event.preventDefault()
+        }
+        if(sDateObj<todayDateObj){
+            alert("Starting date should be abouve todays date");
+            event.preventDefault()
+        }
+    }
+</script>
+<!-- Mirrored from wp.alithemes.com/html/evara/evara-backend/page-categories.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 01 Aug 2021 15:33:21 GMT -->
+</html>

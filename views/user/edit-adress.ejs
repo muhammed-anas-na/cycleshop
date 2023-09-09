@@ -72,7 +72,7 @@
 </head>
     <body>
     <div class="signup-form">
-        <form action="/edit-adress/<%=Adressdata.adress._id%>" method="post">
+        <form action="/edit-adress/<%=Adressdata.adress._id%>?from=<%=from%>" method="post">
             <h2>EDIT ADDRESS</h2>
             <div class="form-group">
                 <select name="country" class="selectpicker countrypicker" data-flag="true" data-default="<%=Adressdata.adress.country%>"></select>
@@ -87,7 +87,7 @@
                 <input value="<%=Adressdata.adress.altNumber%>" id="altnumber"   type="number" class="form-control" name="altNumber" placeholder="Alternative Number" required="required">
             </div>
             <div class="form-group">
-                <input value="<%=Adressdata.adress.pinCode%>" id="pin-code" type="number" class="form-control" name="pinCode" placeholder="Pin code" required="required">
+                <input value="<%=Adressdata.adress.pinCode%>" id="pincode" type="number" class="form-control" name="pinCode" placeholder="Pin code" required="required">
             </div>
             <div class="form-group">
                 <input value="<%=Adressdata.adress.house%>" id="house"   type="text" class="form-control" name="house" placeholder="Flat, House no., Building, Company, Apartment" required="required">
@@ -105,7 +105,7 @@
                 <input value="<%=Adressdata.adress.state%>" id="state"   type="text" class="form-control" name="state" placeholder="State" required="required">
             </div>
             <div class="form-group">
-                <button type="submit" class="btn btn-primary btn-lg">SAVE CHANGES</button>
+                <button onclick="validate()" type="submit" class="btn btn-primary btn-lg">SAVE CHANGES</button>
                 <p id="err-msg"></p>
             </div>
         </form>
@@ -113,6 +113,140 @@
         
 </div>
 
+
+<script>
+    function validate(){
+        document.getElementById('err-msg').innerHTML = ''
+        let name = document.getElementById('name').value;
+        const nameRegex = /^[A-Za-z0-9]{1,50}$/
+;
+
+        if(nameRegex.test(name)){
+            document.getElementById('name').style.borderColor = 'white'
+        }else{  
+          document.getElementById('name').style.borderColor = 'red'
+          document.getElementById('name').style.borderWidth = '1px'
+          document.getElementById('err-msg').innerHTML = document.getElementById('err-msg').innerHTML + '<br> Name error'
+          //alert("Name Eroor 1:Start with capital letter 2:No white spaces 3:No Special symbols")
+          event.preventDefault()
+        }
+        
+        const numberRegex =/^\d{10}$/
+
+        let number = document.getElementById('number').value;
+        if(numberRegex.test(number)){
+            document.getElementById('number').style.borderColor = 'white'
+        }else{
+          document.getElementById('err-msg').innerHTML = document.getElementById('err-msg').innerHTML + '<br> Number  error'
+          document.getElementById('number').style.borderColor = 'red'
+          document.getElementById('number').style.borderWidth = '1px'
+          //alert('Password Error 1:Minimum 8 charecters 2:use charecters and number 3:no white spaces')
+          event.preventDefault()
+        }
+
+        const altnumberRegex = /^\d{10}$/
+
+
+        let altnumber = document.getElementById('altnumber').value;
+        if(altnumberRegex.test(altnumber)){
+            document.getElementById('altnumber').style.borderColor = 'white'
+        }else{
+        document.getElementById('err-msg').innerHTML = document.getElementById('err-msg').innerHTML + '<br> Alt Number error'
+        document.getElementById('altnumber').style.borderColor = 'red'
+        document.getElementById('altnumber').style.borderWidth = '1px'
+        //alert('Password Error 1:Minimum 8 charecters 2:use charecters and number 3:no white spaces')
+        event.preventDefault()
+        }
+
+        const pincodeRegex =/^\d{6}$/
+
+
+        let pincode = document.getElementById('pincode').value;
+        if(pincodeRegex.test(pincode)){
+            document.getElementById('pincode').style.borderColor = 'white'
+        }else{
+        document.getElementById('err-msg').innerHTML = document.getElementById('err-msg').innerHTML + '<br> Pincode  error'
+        document.getElementById('pincode').style.borderColor = 'red'
+        document.getElementById('pincode').style.borderWidth = '1px'
+        //alert('Password Error 1:Minimum 8 charecters 2:use charecters and number 3:no white spaces')
+        event.preventDefault()
+        }
+  
+
+        const houseRegex = /^[A-Za-z0-9]{1,50}$/
+
+
+
+        let house = document.getElementById('house').value;
+        if(houseRegex.test(house)){
+            document.getElementById('house').style.borderColor = 'white'
+        }else{
+        document.getElementById('err-msg').innerHTML = document.getElementById('err-msg').innerHTML + '<br> House field  error'
+        document.getElementById('house').style.borderColor = 'red'
+        document.getElementById('house').style.borderWidth = '1px'
+        //alert('Password Error 1:Minimum 8 charecters 2:use charecters and number 3:no white spaces')
+        event.preventDefault()
+        }
+
+        const areaRegex =/^[A-Za-z0-9]{1,50}$/
+
+
+
+        let area = document.getElementById('area').value;
+        if(areaRegex.test(area)){
+            document.getElementById('area').style.borderColor = 'white'
+        }else{
+        document.getElementById('err-msg').innerHTML = document.getElementById('err-msg').innerHTML + '<br> Area field  error'
+        document.getElementById('area').style.borderColor = 'red'
+        document.getElementById('area').style.borderWidth = '1px'
+        //alert('Password Error 1:Minimum 8 charecters 2:use charecters and number 3:no white spaces')
+        event.preventDefault()
+        }
+
+        const townRegex = /^[A-Za-z0-9]{1,50}$/
+
+
+
+        let town = document.getElementById('town').value;
+        if(townRegex.test(town)){
+            document.getElementById('town').style.borderColor = 'white'
+        }else{
+        document.getElementById('err-msg').innerHTML = document.getElementById('err-msg').innerHTML + '<br> Town field  error'
+        document.getElementById('town').style.borderColor = 'red'
+        document.getElementById('town').style.borderWidth = '1px'
+        //alert('Password Error 1:Minimum 8 charecters 2:use charecters and number 3:no white spaces')
+        event.preventDefault()
+        }
+
+        const stateRegex = /^[A-Za-z0-9]{1,50}$/
+
+
+
+        let state = document.getElementById('state').value;
+        if(stateRegex.test(state)){
+            document.getElementById('state').style.borderColor = 'white'
+        }else{
+        document.getElementById('err-msg').innerHTML = document.getElementById('err-msg').innerHTML + '<br> state field  error'
+        document.getElementById('state').style.borderColor = 'red'
+        document.getElementById('state').style.borderWidth = '1px'
+        //alert('Password Error 1:Minimum 8 charecters 2:use charecters and number 3:no white spaces')
+        event.preventDefault()
+        }
+
+
+        const landmarkRegex =/^[A-Za-z0-9]{1,50}$/
+        let landmark = document.getElementById('landmark').value;
+        if(areaRegex.test(area)){
+            document.getElementById('landmark').style.borderColor = 'white'
+        }else{
+        document.getElementById('err-msg').innerHTML = document.getElementById('err-msg').innerHTML + '<br> Area field  error'
+        document.getElementById('landmark').style.borderColor = 'red'
+        document.getElementById('landmark').style.borderWidth = '1px'
+        //alert('Password Error 1:Minimum 8 charecters 2:use charecters and number 3:no white spaces')
+        event.preventDefault()
+        }
+    }
+  </script>
 <script src="//cdn.tutorialjinni.com/jquery/3.6.1/jquery.min.js"></script>
 <script src="//cdn.tutorialjinni.com/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <script src="//cdn.tutorialjinni.com/bootstrap-select/1.12.4/js/bootstrap-select.min.js"></script>
