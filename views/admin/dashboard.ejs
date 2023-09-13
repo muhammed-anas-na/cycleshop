@@ -182,12 +182,23 @@
             </div>
             <div class="row">
                 <div class="col-xl-8 col-lg-12">
-                    <div class="card mb-4">
-                        <article class="card-body">
-                            <h5 class="card-title">Sale statistics</h5>
-                            <canvas id="myChart" height="120px"></canvas>
-                        </article>
-                    </div>
+                    <div class="col-xl-12 col-lg-12">
+                        <div class="row mt-4">
+                          <div class="col-md-9">
+                            <canvas id="lineChart"></canvas>
+                          </div>
+                          <div class="col-md-3">
+                            <div class="card">
+                              <div class="card-body">
+                                <h5 class="card-title">Statistics</h5>
+                                <p class="card-text">Total Revenue: <span id="revenue">Loading...</span></p>
+                                <p class="card-text">Order Count: <span id="ordercount">Loading...</span></p>
+                                <p class="card-text">Product Sales: <span id="productsales">Loading...</span></p>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
                     <div class="row">
                         <div class="col-lg-5">
                             <div class="card mb-4">
@@ -597,6 +608,70 @@
             </div>
         </footer>
     </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script>
+
+        var ctxL = document.getElementById("lineChart").getContext('2d');
+        var myLineChart;
+        async function fetchMonthlyData() {
+          try {
+            const response = await fetch('/admin/monthly-report'); // Replace with your actual endpoint
+            const data = await response.json();
+            const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+            console.log("This is data : ",data);
+            // Initialize arrays for revenue and order count data for all months
+            const allMonthsRevenue = Array.from({ length: 12 }, () => 0);
+            const allMonthsOrderCount = Array.from({ length: 12 }, () => 0);
+
+            // Update data arrays with fetched data
+            data.labels.forEach((label, index) => {
+              const monthIndex = months.indexOf(label);
+              if (monthIndex !== -1) {
+                allMonthsRevenue[monthIndex] = data.revenueData[index];
+                allMonthsOrderCount[monthIndex] = data.orderCountData[index];
+
+              }
+            });
+            const element = document.getElementById('revenue')
+            const revenue = data.revenueData[0]
+            element.textContent = revenue
+            const element1 = document.getElementById('ordercount')
+            const ordercount = data.orderCountData[0]
+            element1.textContent = ordercount
+            const element2 = document.getElementById('productsales')
+            const productsaled = data.productCountData[0]
+            element2.textContent = productsaled
+
+            myLineChart = new Chart(ctxL, {
+              type: 'line',
+              data: {
+                labels: months,
+                datasets: [{
+                  label: "Total Revenue",
+                  data: allMonthsRevenue,
+                  backgroundColor: 'rgba(105, 0, 132, .2)',
+                  borderColor: 'rgba(200, 99, 132, .7)',
+                  borderWidth: 2
+                },
+                {
+                  label: "Order Count",
+                  data: allMonthsOrderCount,
+                  backgroundColor: 'rgba(0, 137, 132, .2)',
+                  borderColor: 'rgba(0, 10, 130, .7)',
+                  borderWidth: 2
+                }]
+              },
+              options: {
+                responsive: true
+              }
+            });
+          } catch (error) {
+            console.error(error);
+          }
+        }
+        fetchMonthlyData();
+        </script>
     <script src="assets/js/vendors/jquery-3.6.0.min.js"></script>
     <script src="assets/js/vendors/bootstrap.bundle.min.js"></script>
     <script src="assets/js/vendors/select2.min.js"></script>

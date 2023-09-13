@@ -18,6 +18,7 @@
     "express-ejs-layouts": "^2.5.1",
     "express-session": "^1.17.3",
     "http-errors": "~1.6.3",
+    "moment": "^2.29.4",
     "mongodb": "^5.7.0",
     "mongoose": "^7.4.1",
     "morgan": "~1.9.1",

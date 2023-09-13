@@ -121,7 +121,8 @@
             method: 'post',
             data: {
                 response,
-                order
+                order,
+                from:'wallet',
             },
             success: (response) => {
                 if (response) {
@@ -129,8 +130,9 @@
                         title: "Success",
                         text: "Payment has been succesful",
                         icon: "success",
+                    }).then(()=>{
+                      location.reload()
                     })
-                    location.reload()
                 } else {
                     Swal.fire("PAYMENT ERROR!", "Something wrong occured while processing the payment.", "error");
                     location.reload()
@@ -141,10 +143,10 @@
 
       async function addMoney(){
         const { value: number } = await Swal.fire({
-          title: 'Input email address',
+          title: 'Enter the amount',
           input: 'number',
-          inputLabel: 'Your email address',
-          inputPlaceholder: 'Enter your email address'
+          inputLabel: 'The amount will be added into your wallet',
+          inputPlaceholder: 'Enter your amount'
         })
         $.ajax({
           url:'/add-money',
@@ -160,7 +162,7 @@
             "currency": "INR",
             "name": "CYCLE SHOP",
             "description": "Test Transaction",
-            "image": "https://example.com/your_logo",
+            "image": "http://localhost:3000/images/logo.png",
             "order_id": data.order.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
             "handler": function (response) {
                 verifyPayment(response, data);

@@ -88,5 +88,29 @@ module.exports={
                 res.status(500).json({err:"Error occured while updating products"})
             })
         }
+    },
+    unListProduct:(req,res)=>{
+        try{
+            productModel.findByIdAndUpdate(req.body.proId , {isListed:0}).then((status)=>{
+                res.json({updated:true})
+            }).catch((err)=>{
+                res.json({updated:false})
+            })
+        }catch(err){
+            console.log(err);
+            res.status(500).send("Error while unlisting the product")
+        }
+    },
+    ListProduct:(req,res)=>{
+        try{
+            productModel.findByIdAndUpdate(req.body.proId , {isListed:1}).then((status)=>{
+                res.json({updated:true})
+            }).catch((err)=>{
+                res.json({updated:false})
+            })
+        }catch(err){
+            console.log(err);
+            res.status(500).send("Error while listing the product")
+        }
     }
 }

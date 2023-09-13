@@ -66,9 +66,12 @@ router.post("/verify-payment",Auth.isLogin, userController.VerifyPayment);
 
 router.get("/orders/:id",Auth.isLogin, userController.ShowOrders);
 router.post('/cancle-order' , userController.cancelOrder)
+router.post('/return-order' , userController.returnOrder);
 
 router.get('/search' , userController.search)
 router.post('/search' , userController.searchProducts)
+router.post('/categoryFilter', userController.categoryFilter)
+
 router.get('/wishlist' ,Auth.isLogin, wishListController.showWishList)
 router.post('/add-to-wishlist' ,Auth.isLogin, wishListController.addToWishList)
 router.post('/delete-wishlist' ,Auth.isLogin, wishListController.deleteWishList)
@@ -81,6 +84,7 @@ router.post('/apply-coupon' ,Auth.isLogin ,coupenController.applyCoupon)
 
 router.get('/wallet' ,Auth.isLogin,userController.showWallet)
 router.post('/add-money' , Auth.isLogin, userController.addMoney)
+router.get('/wallet/show-wallet-history' , Auth.isLogin , userController.showHistory)
 
 router.get('/logout', userController.LogOut)
 

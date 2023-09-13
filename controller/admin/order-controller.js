@@ -6,6 +6,7 @@ const { Readable } = require("stream");
 const user = require('../../models/user-model');
 const userModel = require('../../models/user-model');
 const invoice = require('../../config/invoice');
+const moment = require('moment');
 
 module.exports={
     invoice:async(req,res)=>{
@@ -21,7 +22,7 @@ module.exports={
         //res.render('admin/view-orders' , {orders})
         try {
             const order = await orderModel.find({});
-            const itemsperpage = 10;
+            const itemsperpage = 15;
             order.reverse()
             const currentpage = parseInt(req.query.page) || 1;
             const startindex = (currentpage - 1) * itemsperpage;
@@ -72,10 +73,9 @@ module.exports={
       try{
           orderModel.findByIdAndUpdate(req.body.orderId , {orderStatus:req.body.status},{new:true}).then((status)=>{
             console.log("This is status : ",status);
+            const discount = "+"+status.GrandTotal;
             if(status.orderStatus == 'cancled'){
-              console.log("Starting.....")
-              userModel.findByIdAndUpdate(status.userId , {$inc:{'wallet':status.GrandTotal}}).then((status)=>{console.log("Status : ",status)})
-
+              userModel.findByIdAndUpdate(status.userId , {$inc:{'wallet':status.GrandTotal},$push:{'history':discount}}).then((status)=>{console.log("Status : ",status)})
             }
             res.json(true);            
           }).catch((err)=>{
@@ -191,6 +191,68 @@ module.exports={
           }
       }).sort({ createdOn: -1 });
       res.render('admin/sales-report',{order,salesToday:false,salesWeekly:false , salesMonthly:false , salesYearly:true})
+  },
+
+  monthlyreport:async(req,res)=>{
+    try {
+      const start = moment().subtract(30, 'days').startOf('day'); // Data for the last 30 days
+      const end = moment().endOf('day');
+  
+      const orderSuccessDetails = await orderModel.find({
+        createdOn: { $gte: start, $lte: end },
+        orderStatus: 'delivered' 
+      });
+      
+      const monthlySales = {};
+  
+      orderSuccessDetails.forEach(order => {
+        const monthName = moment(order.order_date).format('MMMM');
+        if (!monthlySales[monthName]) {
+          monthlySales[monthName] = {
+            revenue: 0,
+            productCount: 0,
+            orderCount: 0,
+            codCount: 0,
+            razorpayCount: 0,
+          };
+        }
+        console.log("ORder: ",order)
+        monthlySales[monthName].revenue += order.GrandTotal;
+        monthlySales[monthName].productCount += order.items.length;
+        monthlySales[monthName].orderCount++;
+  
+        if (order.payment=== 'cod') {
+          monthlySales[monthName].codCount++;
+        } else if (order.payment === 'Razorpay') {
+          monthlySales[monthName].razorpayCount++;
+        } 
+      });
+  
+      const monthlyData = {
+        labels: [],
+        revenueData: [],
+        productCountData: [],
+        orderCountData: [],
+        codCountData: [],
+        razorpayCountData: [],
+      };
+  
+      for (const monthName in monthlySales) {
+        if (monthlySales.hasOwnProperty(monthName)) {
+          monthlyData.labels.push(monthName);
+          monthlyData.revenueData.push(monthlySales[monthName].revenue);
+          monthlyData.productCountData.push(monthlySales[monthName].productCount);
+          monthlyData.orderCountData.push(monthlySales[monthName].orderCount);
+          monthlyData.codCountData.push(monthlySales[monthName].codCount);
+          monthlyData.razorpayCountData.push(monthlySales[monthName].razorpayCount);
+        }
+      }
+      console.log(monthlyData);
+      return res.json(monthlyData);
+    } catch (error) {
+      console.error(error);
+      return res.status(500).json({ message: 'An error occurred while generating the monthly report.' });
+    }
   },
 
 }

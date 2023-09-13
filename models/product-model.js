@@ -33,7 +33,11 @@ let productModel = new mongoose.Schema({
     images:{
         type:Array,
         require:true 
-    }
+    },
+    isListed:{
+        type:Number,
+        default:1
+    },
 });
 
 module.exports = mongoose.model('product' , productModel)

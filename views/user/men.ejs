@@ -70,7 +70,7 @@
 			<div class="container">
 				<div class="row">
 					<div class="col">
-						<p class="bread"><span><a href="index.html">Home</a></span> / <span>Women</span></p>
+						<p class="bread"><span><a href="/">Home</a></span> / <span>Shopping</span></p>
 					</div>
 				</div>
 			</div>
@@ -179,19 +179,19 @@
 								<div class="side border mb-1">
 									<h3>Category</h3>
 									<ul>
-										<li><a href="/search?key=sports">Sports</a></li>
-										<li><a href="/search?key=mens">Mens</a></li>
-										<li><a href="/search?key=womens">Womens</a></li>
-										<li><a href="/search?key=kids">Kids</a></li>
-										<li><a href="/search?key=electric">Electric</a></li>
-										
+										<li><a onclick="categoryFilter('All')">All</a></li>
+										<%categoryData.reverse()%>
+										<%for(let i=0;i<categoryData.length;i++){%>
+										<li><a onclick="categoryFilter('<%=categoryData[i].category%>')"><%=categoryData[i].category%></a></li>
+										<%}%>
+
 									</ul>
 								</div>
 							</div>
 						</div>
 					</div>
 					<div class="col-lg-9 col-xl-9">
-						<div class="row row-pb-md">
+						<div class="row row-pb-md" id="row">
 							<%for(i=0;i<data.length;i++){%>
 							<div class="col-lg-4 mb-4 text-center">
 								<div class="product-entry border">
@@ -203,44 +203,18 @@
 										<h2><a href="/product-detail-page/<%=data[i]._id%>"><%=data[i].name.substring(0, 20)%></a></h2>
 										<span class="text-danger"><s>₹ <%=data[i].regular_price%></s></span>
 										<span class="price">₹ <%=data[i].sale_price%></span>
-										<%if(user){%>
+										
 										<a class="btn btn-sm btn-brand rounded" style="align-items: center;" onclick="addToCart('<%=data[i]._id%>')">
 											<i class="material-icons md-shopping_cart" style="align-items: center;"></i>Add to cart
 										</a>
 										<span onclick="addToWishList('<%=data[i]._id%>')" class="wishlist" style="padding: 5px;"><i class="fa-solid fa-heart"></i></span>	
 										<!-- <i class="fa-regular fa-heart"></i> -->
-										<%}%>
+										
 									</div>
 								</div>
 							</div>
 							<%}%>
 						</div>
-						<!-- <% if (totalpages> 1) { %>
-							
-							<div class="pagination-area mt-15 mb-50">
-								<nav aria-label="Page navigation example">
-									<ul class="pagination justify-content-start">
-										<% if (currentpage> 1) { %>
-											<li class="page-item"><a style="width: 5rem;" class="page-link"
-													href="/orders/<%=userData._id%>?page=<%= currentpage - 1 %>">Previous</a>
-											</li>
-											<% } %>
-												<% for (let i=1; i <=totalpages; i++) { %>
-													<li class="page-item"><a class="page-link"
-															href="/orders/<%=userData._id%>?page=<%= i %>">
-															<%= i %>
-														</a></li>
-													<% } %>
-														<% if (currentpage < totalpages) { %>
-															<li class="page-item active"><a style="width: 5rem;"
-																	class="page-link"
-																	href="/orders/<%=userData._id%>?page=<%= currentpage + 1 %>">Next</a>
-															</li>
-															<% } %>
-									</ul>
-								</nav>
-							</div>
-							<% }%> -->
 						<% if (totalpages> 1) {%>
 						<div class="row">
 							<div class="col-md-12 text-center">
@@ -398,6 +372,63 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 	<script src="showProducts/js/main.js"></script>
 
 	<script>
+function categoryFilter(cat){
+        $.ajax({
+            url:'/categoryFilter',
+            method:'post',
+            data:{
+                category:cat
+
+            },success:(data)=>{ 
+                $('#row').empty();
+                console.log(data)
+                renderProducts(data.products)
+            }
+        })
+    }
+
+      
+    function createCard(products) {
+        
+
+        return `
+		<div class="col-lg-4 mb-4 text-center">
+								<div class="product-entry border">
+									<!-- <span class="wishlist" style="float: right;padding: 5px;"><i class="fa fa-heart"></i></span>		 -->
+									<a class="prod-img" href="/product-detail-page/${products._id}">								
+										<img  width="380rem" height="300rem" src="/upload/product/${products.images[0]}" class="img-fluid" alt="product-img">
+									</a>
+									<div class="desc">
+										<h2><a href="/product-detail-page/${products._id}">${products.name.length > 20 ? products.name.slice(0, 20) + '...' : products.name}</a></h2>
+										<span class="text-danger"><s>₹ ${products.regular_price}</s></span>
+										<span class="price">₹ ${products.sale_price}</span>
+										
+										<a class="btn btn-sm btn-brand rounded" style="align-items: center;" onclick="addToCart('${products._id}')">
+											<i class="material-icons md-shopping_cart" style="align-items: center;"></i>Add to cart
+										</a>
+										<span onclick="addToWishList('${products._id}')" class="wishlist" style="padding: 5px;"><i class="fa-solid fa-heart"></i></span>	
+										<!-- <i class="fa-regular fa-heart"></i> -->
+										
+									</div>
+								</div>
+							</div>
+    `;
+}
+
+
+  
+
+
+function renderProducts(productss) {
+    let products = productss
+    console.log(productss,'hehe');
+    const productContainer = document.getElementById('row');
+    products.forEach(product => {
+        console.log(product)
+        const card = createCard(product);
+        productContainer.innerHTML += card;
+    });
+}
 
 		 function addToWishList(proId){
         $.ajax({
@@ -407,13 +438,28 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
                 proId
             },
             success:(response)=>{
-            
-                Swal.fire({
+                if(response.success == true){
+                    Swal.fire({
                     title: 'WISHLIST',
                     text: 'Product added to wishlist.',
                     icon: 'success',
                     timer: 5000
-                })
+                    })
+                }else if(response.err == true){
+                    Swal.fire({
+                    title: 'Error',
+                    text: 'Error while adding to cart.',
+                    icon: 'error',
+                    timer: 5000
+                    })
+                }else{
+                    Swal.fire({
+                    title: 'Login',
+                    text: 'Login to add to wishlist.',
+                    icon: 'error',
+                    timer: 5000
+                    })
+				}
             }
         })
     }
@@ -427,20 +473,22 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 					size:'small'
 				},
 				success(response){
-					if(response == true){
+					if(response.added == true){
 						Swal.fire({
 						title: 'CART',
 						text: 'Product ADDED TO CART.',
 						icon: 'SUCCESSS',
 						timer: 5000
 					})
-					}else{
+					}else if(response.err == true){
 						Swal.fire({
 						title: 'STOCK!',
 						text: 'Product is out of stock.',
 						icon: 'error',
 						timer: 5000
-					})
+						})
+					}else{
+						location.href='/login'
 					}
 				}
 				

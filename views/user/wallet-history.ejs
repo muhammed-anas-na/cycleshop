@@ -1,0 +1,26 @@
+<%- include('../partials/user-header')%>
+<div class="container mt-5">
+    <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">NO</th>
+            <th scope="col">Type</th>
+            <th scope="col">Amount</th>
+          </tr>
+        </thead>
+        <tbody>
+            <%data.history.reverse()%>
+            <%for(i=0;i<data.history.length;i++){%>
+          <tr>
+            <th><%=i+1%></th>
+            <%if(data.history[i][0] == '+'){%>
+            <td>Debit</td>
+            <%}else{%>
+                <td>Creadit</td>
+            <%}%>
+            <td><%= data.history[i].slice(1) %></td>
+          </tr>
+          <%}%>
+        </tbody>
+      </table>
+</div>

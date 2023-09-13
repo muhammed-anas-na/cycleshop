@@ -20,6 +20,7 @@ module.exports={
                     as:'ProductDetails',
                 }}
             ])
+            console.log("WishList data" , data)
             res.render('user/wishlist', {data})
         }catch(err){
             console.log(err);
@@ -36,10 +37,10 @@ module.exports={
                 { $addToSet: { wishList: {proId} } },
                 { new: true }
             );
-            res.json(true);
+            res.json({success:true});
         }catch(err){
             console.log(err);
-            res.send('Error while addid to wish list');
+            res.json({err:true})
         }
     },
     deleteWishList:async(req,res)=>{

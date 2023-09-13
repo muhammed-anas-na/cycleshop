@@ -41,11 +41,11 @@
                                                 <div class="me-lg-5">
                                                     <div class="d-flex">
                                                         <img src="/upload/product/<%=data[i].ProductDetails[0].images[0]%>"
-                                                            class="border rounded me-3"
-                                                            style="width: 96px; height: 96px;" />
+                                                            class="border rounded me-3 mt-2"
+                                                            style="width: 96px; height: 64px;" />
                                                         <div class="">
                                                             <a href="#" class="nav-link">
-                                                                <%=data[i].ProductDetails[0].name%>
+                                                                <%=data[i].ProductDetails[0].name.substring(0,22)%>
                                                             </a>
                                                             <p class="text-muted">Yellow, Jeans</p>
                                                         </div>
@@ -96,7 +96,7 @@
                                             <div
                                                 class="col-lg col-sm-6 d-flex justify-content-sm-center justify-content-md-start justify-content-lg-center justify-content-xl-end mb-2">
                                                 <div class="float-md-end">
-                                                    <a href="#!" class="btn btn-light border px-2 icon-hover-primary"><i
+                                                    <a onclick="addToWishList('<%=data[i].proId%>')" href="#!" class="btn btn-light border px-2 icon-hover-primary"><i
                                                             class="fas fa-heart fa-lg px-1 text-secondary"></i></a>
                                                     <a href="#"
                                                         class="btn btn-light border text-danger icon-hover-danger"
@@ -118,12 +118,7 @@
                         <div class="border-top pt-4 mx-4 mb-4">
                             <p><i class="fas fa-truck text-muted fa-lg"></i> Free Delivery within 1-2 weeks</p>
                             <p class="text-muted">
-                                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor
-                                incididunt
-                                ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation
-                                ullamco
-                                laboris nisi ut
-                                aliquip
+                                "Enjoy the convenience of free delivery within just 1-2 weeks!"
                             </p>
                         </div>
                     </div>
@@ -306,6 +301,34 @@
     </footer>
     <!-- Footer -->
     <script>
+
+function addToWishList(proId){
+        $.ajax({
+            url:'/add-to-wishlist',
+            method:'post',
+            data:{
+                proId
+            },
+            success:(response)=>{
+                if(response.success == true){
+                    Swal.fire({
+                    title: 'WISHLIST',
+                    text: 'Product added to wishlist.',
+                    icon: 'success',
+                    timer: 5000
+                    })
+                }else if(response.err == true){
+                    Swal.fire({
+                    title: 'WISHLIST',
+                    text: 'Product added to wishlist.',
+                    icon: 'error',
+                    timer: 5000
+                    })
+                }
+
+            }
+        })
+    }
         function changeQuantity(userId, proId, count, unit) {
             let proTotal = document.getElementById(proId + 'pro-total').innerHTML;
             let price = document.getElementById(proId + 'price').innerHTML;
@@ -356,7 +379,17 @@
 
         }
         function removeFromCart(userId, proId) {
-            $.ajax({
+            Swal.fire({
+            title: 'Are you sure?',
+            text: "The product will be removed from the cart",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, Remove it!'
+            }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
                 url: '/removeFromCart',
                 method: 'post',
                 data: {
@@ -380,5 +413,8 @@
 
                 }
             })
+            }
+            })
+            
         }
     </script>

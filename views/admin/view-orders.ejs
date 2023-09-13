@@ -179,6 +179,8 @@
                                         <td><span id="badge" class="badge rounded-pill alert-primary">Shipped</span></td>
                                     <%}else if(orders[i].orderStatus == 'confirmed'){%>
                                         <td><span id="badge" class="badge rounded-pill alert-info">Confirmed</span></td>
+                                    <%}else if(orders[i].orderStatus == 'return'){%>
+                                        <td><span id="badge" class="badge rounded-pill alert-info">Returned</span></td>
                                     <%}%>
 
                                     <td><%=orders[i].createdOn%></td>

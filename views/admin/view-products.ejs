@@ -17,6 +17,9 @@
     <link rel="shortcut icon" type="image/x-icon" href="/assets/imgs/theme/favicon.svg">
     <!-- Template CSS -->
     <link href="/assets/css/main.css" rel="stylesheet" type="text/css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.5/dist/sweetalert2.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.5/dist/sweetalert2.min.js"></script>
 </head>
 
 <body>
@@ -186,9 +189,16 @@
                                 <a href="/admin/edit-product/<%=data[i]._id%>" class="btn btn-sm font-sm rounded btn-brand">
                                     <i class="material-icons md-edit"></i> Edit
                                 </a>
-                                <a href="/admin/delete-product/<%=data[i]._id%>" class="btn btn-sm font-sm btn-light rounded">
-                                    <i class="material-icons md-delete_forever"></i> Delete
+
+                                <%if(data[i].isListed==1){%>
+                                <a id="<%=data[i]._id%>button" onclick="ListAndUnlistProduct('<%=data[i]._id%>')" class="btn btn-sm font-sm btn-light rounded">
+                                    Unlist
                                 </a>
+                                <%}else{%>
+                                    <a id="<%=data[i]._id%>button" onclick="ListAndUnlistProduct('<%=data[i]._id%>')" class="px-3 btn btn-sm font-sm btn-light rounded">
+                                        List
+                                    </a>
+                                <%}%>
                             </div>
                         </div> <!-- row .// -->
                     </article> <!-- itemlist  .// -->
@@ -212,6 +222,75 @@
             </div>
         </footer>
     </main>
+
+    <script>
+        function ListAndUnlistProduct(proId){
+            const data = document.getElementById(proId+'button').innerText
+            if(data == 'Unlist'){
+                alert("Enter into unlist")  
+                $.ajax({
+                url:'/admin/unlist-product',
+                method:'post',
+                data:{
+                    proId
+                },
+                success:(response)=>{
+                    if(response.updated == true){
+                        document.getElementById(proId+'button').innerText = 'List';
+                        document.getElementById(proId+'button').className = 'px-3 btn btn-sm font-sm btn-light rounded';
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Unlisted',
+                            text: 'The product has been unlisted.',
+                            timer: 5000
+					    })
+                    }else if(response.updated == false){
+                        Swal.fire({
+                            title: 'Error',
+                            text: 'Error while unlisting the cart.',
+                            icon: 'error',
+                            timer: 5000
+					    })
+                    }else{
+                        location.reload()
+                    }
+                }
+            })
+            }else if(data == 'List'){
+                $.ajax({
+                url:'/admin/list-product',
+                method:'post',
+                data:{
+                    proId
+                },
+                success:(response)=>{
+                    if(response.updated == true){
+                        document.getElementById(proId+'button').innerHTML = 'Unlist';
+                        document.getElementById(proId+'button').className = 'btn btn-sm font-sm btn-light rounded';
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Listed',
+                            text: 'The product has been listed.',
+                            timer: 5000
+					    })
+                    }else if(response.updated == false){
+                        Swal.fire({
+                            title: 'Error',
+                            text: 'Error while listing the cart.',
+                            icon: 'error',
+                            timer: 5000
+					    })
+                    }else{
+                        location.reload()
+                    }
+                }
+            })
+            }else{
+                alert("Else")
+            }
+        }
+    </script>
+
     <script src="/assets/js/vendors/jquery-3.6.0.min.js"></script>
     <script src="/assets/js/vendors/bootstrap.bundle.min.js"></script>
     <script src="/assets/js/vendors/select2.min.js"></script>

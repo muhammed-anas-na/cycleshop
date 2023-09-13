@@ -15,6 +15,7 @@ module.exports={
             res.redirect('/admin/admin-login')
         }
     },
+
     login:(req,res)=>{
         if(req.session.isAdmin){
             res.redirect('/admin')

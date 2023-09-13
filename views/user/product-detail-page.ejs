@@ -326,12 +326,28 @@
                 proId
             },
             success:(response)=>{
-                Swal.fire({
+                if(response.success == true){
+                    Swal.fire({
                     title: 'WISHLIST',
                     text: 'Product added to wishlist.',
                     icon: 'success',
                     timer: 5000
-                })
+                    })
+                }else if(response.err == true){
+                    Swal.fire({
+                    title: 'Error',
+                    text: 'Error while adding to cart.',
+                    icon: 'error',
+                    timer: 5000
+                    })
+                }else{
+                    Swal.fire({
+                    title: 'Login',
+                    text: 'Login to add to wishlist.',
+                    icon: 'error',
+                    timer: 5000
+                    })
+				}
             }
         })
     }
@@ -401,21 +417,23 @@
                 size: size,
             },
             success(response) {
-                if(response.stockerr){
-                    Swal.fire({
-                    title: 'STOCK!',
-                    text: 'Quantity exceed the unit the in cart.',
-                    icon: 'error',
-                    timer: 5000
-                })
-                }else{
-                    Swal.fire({
-                    title: 'Added to cart!',
-                    text: 'Product has been added to cart succesfully.',
-                    icon: 'success',
-                    timer: 5000
-                })
-                }
+                if(response.added == true){
+						Swal.fire({
+						title: 'CART',
+						text: 'Product ADDED TO CART.',
+						icon: 'success',
+						timer: 5000
+					})
+					}else if(response.err == true){
+						Swal.fire({
+						title: 'STOCK!',
+						text: 'Product is out of stock.',
+						icon: 'error',
+						timer: 5000
+						})
+					}else{
+						location.href='/login'
+					}
             }
         })
     }

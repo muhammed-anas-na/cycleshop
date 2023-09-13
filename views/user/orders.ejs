@@ -51,6 +51,7 @@
                                     <option value="confirmed">Confirmed</option>
                                     <option value="pending">Pending</option>
                                     <option value="cancled">Cancled</option>
+                                    <option value="return">Returned</option>
                                 </select>
                             </div>
                             <div class="col-lg-2 col-6 col-md-3">
@@ -68,6 +69,7 @@
                                 <thead>
                                     <tr>
                                         <th>#ID</th>
+                                        <th scope="col">Image</th>
                                         <th scope="col">Name</th>
                                         <th scope="col">Price</th>
                                         <th scope="col">Quantity</th>
@@ -82,7 +84,10 @@
                                     <%for(i=0;i<orders.length;i++){%>
                                         <%if(orders[i].ProductDetails.length!==0){%>
                                             <tr>
-                                                <td>0901</td>
+                                                <td><%=i+1%></td>
+                                                <td>
+                                                    <img style="width: 60px;" src="/upload/product/<%=orders[i].ProductDetails[0].images[0]%>" class="img-fluid" alt="">
+                                                </td>
                                                 <td><b>
                                                         <%=orders[i].ProductDetails[0].name%>
                                                     </b></td>
@@ -117,10 +122,11 @@
                                                                             id="<%=orders[i].ProductDetails[0]._id%>badge"
                                                                             class="badge rounded-pill alert-info">Confirmed</span>
                                                                     </td>
-                                                                    <%}else{%>
-                                                                        <p>
-                                                                            <%=orders[i].orderStatus%>
-                                                                        </p>
+                                                                    <%}else if(orders[i].orderStatus == 'return'){%>
+                                                                        <td><span
+                                                                            id="<%=orders[i].ProductDetails[0]._id%>badge"
+                                                                            class="badge rounded-pill alert-info">Returned</span>
+                                                                        </td>
                                                                         <%}%>
                                                                             <td>
                                                                                 <%=orders[i].orderedOn%>
@@ -129,11 +135,18 @@
                                                                                 <a onclick="showDetails('<%=orders[i].adress.name%>' , '<%=orders[i].adress.number%>','<%=orders[i].adress.altNumber%>' , '<%=orders[i].adress.pinCode%>' , '<%=orders[i].adress.house%>' , '<%=orders[i].adress.area%>' , '<%=orders[i].adress.landmark%>' ,'<%=orders[i].adress.town%>' ,  '<%=orders[i].adress.state%>','<%=orders[i].adress.country%>' , '<%=orders[i].GrandTotal%>' , '<%=orders[i].paymentstatus%>' , '<%=orders[i].orderStatus%>' , '<%=orders[i].paymentMethod%>' , '<%=orders[i].orderedOn%>')"
                                                                                     class="btn btn-md rounded font-sm">Detail</a>
                                                                             </td>
-                                                                            <%if(orders[i].orderStatus !=='cancled' ){%>
+                                                                            <%if(orders[i].orderStatus =='pending' || orders[i].orderStatus =='confirmed'){%>
                                                                                 <td class="btn btn-danger p-1"
                                                                                     onclick="cancelOrder('<%=orders[i]._id%>' , '<%=orders[i].ProductDetails[0]._id%>')">
                                                                                     Cancle</td>
-                                                                                <%}%>
+                                                                            <%}%>
+
+                                                                            <%if(orders[i].orderStatus =='delivered'){%>
+                                                                                <td class="btn btn-info p-1"
+                                                                                    onclick="returnOrder('<%=orders[i]._id%>' , '<%=orders[i].ProductDetails[0]._id%>')">
+                                                                                    Return</td>
+                                                                            <%}%>
+                                                                            
                                             </tr>
                                             <%}else{%>
                                                 <tr>
@@ -204,6 +217,34 @@
 
 
 <script>
+    async function returnOrder(orderId , productId){
+        const { value: reason } = await Swal.fire({
+        input: 'textarea',
+        inputLabel: 'Reason for return',
+        inputPlaceholder: 'Type your message here...',
+        inputAttributes: {
+            'aria-label': 'Type your message here'
+        },
+        showCancelButton: true
+        })
+
+        if (reason) {
+            $.ajax({
+            url:'/return-order',
+            method:'post',
+            data:{
+                orderId,
+                productId,
+                reason,
+            },
+            success:(response)=>{
+                if(response.isRefunded==true){
+                    Swal.fire('Your amount has been refunded to your wallet.')
+                }
+            }
+        })
+        }
+    }
 
     function changeStatus() {
         const status = document.getElementById('status').value;
@@ -214,6 +255,7 @@
                 status
             },
             success: (orders) => {
+                orders.orders.reverse()
                 $('.table').empty();
                 $('.table').append(`
                 <thead>
@@ -241,7 +283,9 @@
                         statusTag = `<span class="badge rounded-pill alert-primary">${orders.orders[i].orderStatus}</span>`
                     }else if(orders.orders[i].orderStatus == 'confirmed'){
                         statusTag = `<span class="badge rounded-pill alert-info">${orders.orders[i].orderStatus}</span>`
-                    }
+                    }else if(orders.orders[i].orderStatus == 'return'){
+                        statusTag = `<span class="badge rounded-pill alert-info">Returned</span>`
+                    } 
                     $('.table').append(`
                         <tbody>
                         <tr>
@@ -274,6 +318,8 @@
             imgUrl = '/assets/imgs/order-status/cancle.png'
         } else if (orderStatus == 'delivered') {
             imgUrl = '/assets/imgs/order-status/complete.webp'
+        }else if(orderStatus == 'return'){
+            imgUrl = '/assets/imgs/order-status/complete.webp'
         }
         Swal.fire({
             title: '<strong><u>ORDER DETAILS</u></strong>',
@@ -295,16 +341,13 @@
                 '<span style="font-weight:bold"> Payment Method: </span>' + payment + '<br>' +
                 '<span style="font-weight:bold">Grand Total: </span>' + GrandTotal + '<br>' +
                 '<span style="font-weight:bold">Ordered On: </span>' + createdOn + '<hr>',
-
-
             showCloseButton: true,
             focusConfirm: true,
             confirmButtonText:
                 '<i class="fa fa-thumbs-up"></i> Conntinue!',
         })
     }
-
-
+    
     function cancelOrder(orderId, proId) {
         $.ajax({
             url: '/cancle-order',
@@ -314,8 +357,12 @@
                 proId,
             },
             success: (response) => {
+                alert(response)
                 if (response == true) {
                     location.reload()
+                }else{
+                    Swal.fire('Error while canceling the order,try again')
+                    location.relaod();
                 }
             }
         })

@@ -1,6 +1,7 @@
 const userModel = require('../models/user-model')
 module.exports={
     isLogin:async(req,res,next)=>{
+        console.log("ISlogininnn")
         if(req.session.loggedIn){
             console.log("Yes logged in")
             const data = await userModel.findOne({email:req.session.user.email, isBlocked:0})
@@ -13,7 +14,16 @@ module.exports={
                 res.status(500).send("You are blocked by the admin")
             }
         }else{
-            res.redirect('/login')
+            console.log("Elseee")
+            res.render('user/login-page' , {userErr:false , passErr:false , to:req.query.to})
+            // res.json({})
         }
     },
+    isAdminLogin:(req,res,next)=>{
+        if(req.session.isAdmin){
+            next()
+        }else{
+            res.render('admin/admin-login' ,{noAdmin:false,passErr:false})
+        }
+    }
 }

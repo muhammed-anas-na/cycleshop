@@ -10,9 +10,11 @@ const paypal = require('paypal-rest-sdk');
 const bannerModel = require('../../models/banner-model');
 const { accessSync } = require('fs');
 const sendInvoice =require('../../config/send-invoice');
+const categoryModel = require('../../models/category-model')
 
 const couponModel = require('../../models/coupon-model');
 const voucher_codes = require('voucher-code-generator');
+const userModel = require('../../models/user-model');
 
 require('dotenv').config();
 var instance = new Razorpay({
@@ -23,7 +25,6 @@ var instance = new Razorpay({
 module.exports={
     loadHome:(req,res)=>{
         try{
-            console.log(req.session.user)
             res.render('user/index',{user:req.session.loggedIn , userData:req.session.user})
         }catch{
             res.redirect('/login')
@@ -31,17 +32,15 @@ module.exports={
 
     },
     Login_page:(req,res)=>{
+        console.log(req.query.to);
         try{
             if(req.session.loggedIn){
                 res.redirect('/')
             }else{
-                console.log(req.session)
-                res.render('user/login-page' , {user_err:req.session.no_user , pass_err:req.session.pass_err})
-                delete req.session.no_user;
-                delete req.session.pass_err;  
+                res.render('user/login-page' , {userErr:false,passErr:false , to:req.query.to})
             }
-            
-        }catch{
+        }catch(err){
+            console.log(err);
             res.redrect('/login')
         }
   
@@ -62,7 +61,6 @@ module.exports={
               );
             if(referalExistUser){
                 req.session.wallet = 100
-                console.log("Referal Exist");
             }else{
                 req.session.wallet = 0;
             }
@@ -100,8 +98,6 @@ module.exports={
             console.log(err)
             res.redirect('/login')
         }
-        
-
     },
     checkOtp:async (req,res)=>{
         if(req.session.otp == req.body.otp.join('')){
@@ -123,7 +119,6 @@ module.exports={
             })
 
             await use.save().then((data)=>{
-                console.log("Sucess" , req.session) 
                 req.session.loggedIn = true;
                 req.session.user = use;
                 res.redirect('/')
@@ -132,56 +127,50 @@ module.exports={
                 res.status(500).json({err : 'Otp error'})
             })
         }else{
-            console.log("Not success");
             res.redirect('/signup')
         }
     },
     doLogin:async (req,res)=>{
-        console.log("Do login");
-        console.log(req.body)
+        console.log(req.query)
         let userExist = await user.findOne({email:req.body.email , isAdmin:0 , isBlocked:0}).lean()
         Object.freeze(userExist)
-        console.log(userExist);
         if(userExist){
             bcrypt.compare(req.body.password,userExist.password).then((status)=>{
-                console.log(status);
                 if(status){
                     req.session.loggedIn = true;
                     req.session.user = userExist;
-                    res.redirect('/')
+                    if(req.query.to){
+                        res.redirect('/'+req.query.to)
+                    }else{
+                        res.redirect('/')
+                    }
                 }else{
-                    req.session.pass_err = true;
-                    res.redirect('/login')
+                    res.render('user/login-page' , {userErr:false,passErr:true,to:undefined})
                 }
             }).catch((err)=>{
                 console.log(err);
-                res.redirect('/login')
+                res.redirect('user/login-page')
             })
         }else{
-            console.log("No user found");
-            req.session.no_user = true;
-            res.redirect('/login')
+            
+            res.render('user/login-page' , {userErr:true,passErr:false,to:undefined})
         }
     },
     showProducts:async(req,res)=>{
-        console.log("HIi")
         try{
             let bannerData =  await bannerModel.find({})
-            console.log(bannerData)
-            productModel.find({}).then((data)=>{
-                Object.freeze(data);
-                const itemsperpage = 3;
-                const currentpage = parseInt(req.query.page) || 1;
-                const startindex = (currentpage - 1) * itemsperpage;
-                const endindex = startindex + itemsperpage;
-                const totalpages = Math.ceil(data.length / 5);
-                console.log(totalpages)
-                const currentproduct = data.slice(startindex,endindex);
-                const userSession = req.session.user;
-                res.render('user/men' , {data:currentproduct ,userData:userSession, bannerData ,user:req.session.loggedIn,totalpages,currentpage})
-            }).catch((err)=>{
-                res.status(200).json({err:'Error loaidng Products'})
-            })
+            let categoryData = await categoryModel.find({isListed:'1'})
+            const categoryName = categoryData.map(category => category.category);
+            const data = await productModel.find({ category: { $in: categoryName } });
+            Object.freeze(data);
+            const itemsperpage = 12;
+            const currentpage = parseInt(req.query.page) || 1;
+            const startindex = (currentpage - 1) * itemsperpage;
+            const endindex = startindex + itemsperpage;
+            const totalpages = Math.ceil(data.length / 5);
+            const currentproduct = data.slice(startindex,endindex);
+            const userSession = req.session.user;
+            res.render('user/men' , {categoryData,data:currentproduct ,userData:userSession, bannerData ,user:req.session.loggedIn,totalpages,currentpage})
         }catch(err){
             console.log(err);
             res.status(500).send("Something went wrong")
@@ -192,7 +181,6 @@ module.exports={
         Object.freeze(userExist)
         if(userExist){
             otp = Math.floor(1000 + Math.random() * 9000).toString()
-            console.log(otp)
             req.session.otp = otp;
             req.session.number = req.body.number;
             require('dotenv').config();
@@ -206,10 +194,9 @@ module.exports={
                 from: '+16625032416',
             })
             .then((message)=>{
-                console.log(message.sid);
                 res.render('user/forget-pass-otp')
             }).catch((err)=>{
-                console.log("Eree", errorMonitor)
+                console.log("Eree", err)
             })
         }else{
             req.session.no_number = true
@@ -218,25 +205,26 @@ module.exports={
 
     },
     forgetPassword:(req,res)=>{
-        res.render('user/forget-pass' ,{err:req.session.no_number , isAdmin:0})
-        
-        req.session.no_number = false;
+        try{
+            res.render('user/forget-pass' ,{err:req.session.no_number , isAdmin:0})
+            req.session.no_number = false;
+        }catch(err){
+            console.log(err);
+        }
+
     },
     forgetCheckOtp:(req,res)=>{
         if(req.session.otp == req.body.otp.join('')){
             res.render('user/reset-pass')
         }else{
-
             res.redirect('/forget-password')
         }
     },
-    resetPass:(req,res)=>{
-        console.log(req.body)
+    resetPass:async (req,res)=>{
         if(req.body.password1 == req.body.password2){
-            console.log(req.session)
-            req.body.password2 = bcrypt.hash(req.body.password2,10)
-            user.findOneAndUpdate({number : req.session.number} , {password:req.body.password} , {new:true}).then((data)=>{
-                console.log(data);
+            req.body.password2 = await bcrypt.hash(req.body.password2,10)
+            user.findOneAndUpdate({number : req.session.number} , {password:req.body.password2} , {new:true}).then((data)=>{
+                console.log(data)
                 res.redirect('/login')
             })
         }
@@ -264,7 +252,6 @@ module.exports={
         }
     },
     editProfile:async (req,res)=>{
-        console.log("Req.body" , req.file)
         let baseUser = await user.findById(req.params.id).lean()
         let emailUser = await user.findOne({email:req.body.email}).lean()
         Object.freeze(baseUser)
@@ -282,15 +269,12 @@ module.exports={
             }else{
                 await user.findByIdAndUpdate(req.params.id , 
                     {name:req.body.name,email:req.body.email,number:req.body.number},{new:true}).then((status)=>{
-                    console.log(status)
                 })
             }
             res.redirect('/profile?id='+req.params.id)
         }else if(emailUser.email == req.body.email){
-            console.log("Dont save")
             res.redirect('/edit-profile?id='+req.params.id)
         }else{
-            console.log("Save else")
             if(req.file){
                 await user.findByIdAndUpdate(req.params.id , {name:req.body.name,email:req.body.email,number:req.body.email,image:req.file.pathname})
             }else{
@@ -301,13 +285,11 @@ module.exports={
     },
     showProductDetail:async (req,res)=>{
         let data = await productModel.findById(req.params.id)
-        console.log(data)
         res.render('user/product-detail-page' , {data})
     },  
     ShowCart:async (req,res)=>{
         try{
             let userSession = req.session.user;
-            console.log(userSession._id)
             const oid = new mongodb.ObjectId(userSession._id);
             let data = await user.aggregate([
                 {$match:{_id:oid}},
@@ -326,13 +308,11 @@ module.exports={
 
 
             ])
-            console.log(data)
             let GrandTotal = 0
             for(let i=0;i<data.length;i++){
                 let qua = parseInt(data[i].quantity);
                 GrandTotal = GrandTotal+(qua*parseInt(data[i].ProductDetails[0].sale_price))
             }
-            console.log("This is grandtotal",GrandTotal)
             res.render('user/cart' , {data , GrandTotal})
         }catch(err){
             console.log(err)
@@ -341,20 +321,15 @@ module.exports={
     },
     AddToCart:async(req,res)=>{
         try{
-            console.log("Add too cart function =================    ")
             data = req.session.user
-            console.log("User Id :",data._id)
-            console.log("ProductId :",req.params.ProId)
             let userData = await user.findOne({
                 _id: data._id,
                 cart: { $elemMatch: { ProductId: req.params.ProId } }
             }).lean();
             Object.freeze(userData)
             if(userData == null){
-                console.log(req.body);
                 req.body.quantity = parseInt(req.body.quantity)
                 let proDetails = await productModel.find({_id:req.params.ProId})
-                console.log(proDetails)
                 proDetails.sale_price = parseInt(proDetails[0].sale_price)
                 user.updateOne(
                     { _id: data._id },
@@ -364,22 +339,18 @@ module.exports={
                     price:proDetails.sale_price,
                     } } }
                 ).then((data)=>{
-                    console.log("Dataaaa",data)
-                    res.json(true)
+                    res.json({added:true})
                 }).catch(()=>{
-                    res.json(false)
+                    res.json({err:true})
                 })
             }else{
                 const matchingUser = userData;
                 const matchingCartItem = matchingUser.cart.find(item => item.ProductId === req.params.ProId)
                 let totalQua = parseInt(matchingCartItem.quantity)+parseInt(req.body.quantity);
                 let unit = await productModel.findById(req.params.ProId , {unit:1 , _id:0});
-                console.log('Total quantity====>',totalQua)
                 if(totalQua>unit.unit){
-                    console.log("IFFFFFFF")
                     return res.json({stockerr:true})
                 }
-                console.log("Unit=====================>",unit);
                 user.updateOne(
                     {
                     _id: data._id,
@@ -391,10 +362,9 @@ module.exports={
                     }
                     }
                 ).then((status)=>{
-                    console.log(status);
-                    res.json(true)
+                    res.json({added:true})
                 }).catch((err)=>{
-                    res.json(false)
+                    res.json({err:false})
                 })
             }
         }catch(err){
@@ -422,10 +392,8 @@ module.exports={
     },
     SetNewPass:async(req,res)=>{
         try{
-            console.log(req.body)
             req.body.password2 = await bcrypt.hash(req.body.password2,10);
             let data = await user.findByIdAndUpdate(req.params.id,{password:req.body.password2} , {new:true})
-            console.log(data)
             res.redirect('/profile/'+req.params.id)
         }catch{
             res.status(500).send({err:"Something went wrong"})
@@ -434,13 +402,11 @@ module.exports={
     changeQuantity:(req,res)=>{
         req.body.count = parseInt(req.body.count);
         req.body.quantity = parseInt(req.body.quantity);
-        console.log(req.body)   
         if(req.body.count == -1 && req.body.quantity == 1){
             user.updateOne(
                 {_id: req.body.userId},
                 {$pull: {cart: {ProductId: req.body.proId}}
             }).then((status)=>{
-                console.log(status);
                 res.json({status:true})
             })
         }else{
@@ -463,7 +429,6 @@ module.exports={
         }
     },
     showAddAdress:(req,res)=>{
-        console.log(req.query.from)
         res.render('user/add-adress' , {from:req.query.from})
     },
     removeFromCart:(req,res)=>{
@@ -471,17 +436,14 @@ module.exports={
             {_id: req.body.userId},
             {$pull: {cart: {ProductId: req.body.proId}}
         }).then((status)=>{
-            console.log(status);
             res.json(true)
         }).catch((err)=>{
             res.json(false)
         })
     },
     addAdress:(req,res)=>{
-        console.log("Add adress hereeee posttt")
         try{
             let userData = req.session.user;
-            console.log(req.body)
             user.updateOne(
                 {_id:userData._id},
                 {$push:{adress:{
@@ -498,7 +460,6 @@ module.exports={
                     country:req.body.country,
                 }}}
             ).then((data)=>{
-                console.log("Requerryy: ",req.query.from)
                 if(req.query.from == 'buynow'){
                     res.redirect('/buy-now')
                 }else{
@@ -510,13 +471,11 @@ module.exports={
         }
     },
     removeAdress:(req,res)=>{
-        console.log(req.body)
         req.body.adressId = parseInt(req.body.adressId)
         user.updateOne(
             {_id: req.body.userId},
             {$pull: {adress: {_id: req.body.adressId}}
         }).then((status)=>{
-            console.log(status);
             res.json(true);
         }).catch((err)=>{
             res.json(false);
@@ -524,7 +483,6 @@ module.exports={
     },
     ShowEditAdress:async(req,res)=>{
         try{
-            console.log(req.params.AdressId)
             req.params.AdressId = parseInt(req.params.AdressId)
             let userData = req.session.user;
             let Adressdata = await user.aggregate([
@@ -535,7 +493,6 @@ module.exports={
                     $match:{'adress._id':req.params.AdressId}
                 }
             ])
-            console.log(req.query.from)
             res.render('user/edit-adress' , {Adressdata:Adressdata[0] , from:req.query.from})
         }catch{
             res.redirect('/login')
@@ -566,7 +523,6 @@ module.exports={
                     }
                 }
             ).then((status)=>{
-                console.log('redirect to' + req.query.from)
                 if(req.query.from == 'buynow'){
                     res.redirect('/buy-now')
                 }else{
@@ -580,10 +536,8 @@ module.exports={
         
     },
     showBuyNow:async(req,res)=>{
-        console.log(req.query.quantity)
         try{
             if(req.query.proId){
-                console.log("YEss singlleeee")
                 if(req.query.quantity == undefined){
                 }else{
                     req.session.quantity = req.query.quantity
@@ -596,10 +550,7 @@ module.exports={
                     {_id:1, adress:1,wallet:1}
                 ).lean()
                 Object.freeze(userData);
-                console.log(ProductDetails)
-                console.log(userData);
                 let total = parseInt(ProductDetails[0].sale_price)*parseInt(req.session.quantity)
-                console.log("Totall" ,total)
                 let couponData = await couponModel.find(
                     { minPrice: { $lte: total } }
                 )
@@ -614,12 +565,10 @@ module.exports={
                 ).lean()
                 Object.freeze(userData)
                 let total = 0;
-                console.log(userData.cart)
                 for(i=0;i<userData.cart.length;i++){
                     let price = parseInt(userData.cart[i].price)
                     total = total+(price*userData.cart[i].quantity);
                 }
-                console.log(total);
                 const oid = new mongodb.ObjectId(userSession._id);
                 let productDetails = await user.aggregate([
                     {$match:{_id:oid}},
@@ -641,7 +590,6 @@ module.exports={
                     { minPrice: { $lte: total } }
                 )
                 Object.freeze(couponData)
-                console.log("User Daataa : " , userData);
                 res.render('user/buy-now' , {productDetails , total , userData , isSingle:false , couponData})   
             }
         }catch(err){
@@ -651,13 +599,15 @@ module.exports={
         
     },
     BuyNow:async(req,res)=>{
-        console.log("Req body : ",req.body)
         const userSession = req.session.user;
         if(req.body.isWalletUsed == 'used'){
-            await user.findByIdAndUpdate(userSession._id , {wallet:0})
+            const discount = "-"+req.body.discount;
+            await user.findByIdAndUpdate(userSession._id, {
+                wallet: 0,
+                $push: { 'history': discount  }
+            });
         }
         if(req.body.isSingle == true){
-            console.log("YESSINGLEE")
             let userSession = req.session.user;
             req.body.total = parseInt(req.body.total);
             if(req.body.paymentMethod == 'cod'){
@@ -669,7 +619,6 @@ module.exports={
                 req.body.proId
             )
             if(details.unit<=0){
-                console.log("Out of stockk")
                 return res.json({stockerr:true})
             }
 
@@ -693,7 +642,6 @@ module.exports={
             )
             Object.freeze(data);
             Object.freeze(updatedDetails)
-            console.log("Updated Details : " , updatedDetails);
             const date = new Date();
             const day = date.getDate(); // Returns the day of the month (1-31)
             const month = date.getMonth() + 1; // Returns the month (0-11), so adding 1 to get 1-12
@@ -712,10 +660,8 @@ module.exports={
                 discount:req.body.discount
             })
             order.save().then((status)=>{
-                console.log(status)
                 return res.json(true)
             })
-            console.log("Order saved :", order);
         }else{
         try{
             let userSession = req.session.user;
@@ -725,7 +671,6 @@ module.exports={
             }else{
                 paymentstatus = 'pending'
             }
-            console.log("Req boyddd" , req.body)
             let oid = new mongodb.ObjectId(userSession._id)
             req.body.adressId = parseInt(req.body.adressId);
             let data = await user.aggregate([
@@ -740,15 +685,13 @@ module.exports={
                 }
     
             ])
-            console.log("Data of cart:",data)
-            console.log("Data :",data)
             for (let i = 0; i < data[0].cart.length; i++) {
                 let cartItem = data[0].cart[i];
                 let details = await productModel.findById(
                     cartItem.ProductId,
                 )
+                console.log("Unit checking ==> ",details.unit)
                 if(details.unit<=0){
-                    console.log("Out of stockk")
                     return res.json({stockerr:true})
                 }
             }
@@ -761,7 +704,6 @@ module.exports={
                 )
                 
             }
-            console.log(data[0].cart)
             const date = new Date();
             const day = date.getDate(); // Returns the day of the month (1-31)
             const month = date.getMonth() + 1; // Returns the month (0-11), so adding 1 to get 1-12
@@ -779,7 +721,6 @@ module.exports={
                 createdOnS:createdOn,
                 discount:req.body.discount,
             })
-            console.log("HIIIIIIIIIIII")
             order.save().then(()=>{
                 if(req.body.paymentMethod == 'cod' || req.body.paymentMethod == 'wallet'){
                     res.json(true)
@@ -789,8 +730,6 @@ module.exports={
                         console.log(err);
                     }
                 }else if(req.body.paymentMethod =='razorpay'){
-                    console.log(req.body.total)
-                    console.log("razorpayyyy")
                     var options = {
                         amount: req.body.total*100,  // amount in the smallest currency unit
                         currency: "INR",
@@ -800,14 +739,12 @@ module.exports={
                         if(err){
                             console.log("Error while creating order : ",err)
                         }else{
-                            console.log(order);
                             res.json({order:order , razorpay:true})
                         }
                     });
                 }
                 else if(req.body.paymentMethod == 'paypal'){
                     require('dotenv').config();
-                    console.log(process.env.PAYPAL_CLIENTID)
                     paypal.configure({
                         'mode':'sandbox',
                         'client_id':'AQmlApX2q1qjQXK7bNVH9xD0zWQT7otByQH9j9aai5nYwA6VwvzSJh4XPdlcPzjgVUA_HPH7tBSp0cGC',
@@ -845,7 +782,6 @@ module.exports={
                         console.error('PayPal API Error:', error);
                         res.status(500).json({ error: 'An error occurred with PayPal API' });
                     } else {
-                        console.log(payment)
                         for(let i = 0;i < payment.links.length;i++){
                         if(payment.links[i].rel === 'approval_url'){
                             res.json({approvedUrl:payment.links[i].href});
@@ -868,24 +804,36 @@ module.exports={
     },
     VerifyPayment:(req,res)=>{
         try{
-            const userSession = req.session.user;
-            console.log("Req Bodydd: ",req.body)
+            const userSession = req.session.user
             details = req.body;
             const crypto = require('crypto');
             let hmac = crypto.createHmac('sha256' , process.env.RAZORPAY_KEYSECRET)
             hmac.update(details['response[razorpay_order_id]']+'|'+details['response[razorpay_payment_id]'])
             hmac = hmac.digest('hex');
             if(hmac == details['response[razorpay_signature]']){
-                const amount = parseInt(details['order[order][amount]']/100)
-                user.findByIdAndUpdate(userSession._id , {$inc:{'wallet':amount}}).then((status) =>{
-                    console.log("status",status)
-                    res.json(true)
-                }).catch((err)=>{
-                    res.json(false);
-                })
+                if(req.body.from == 'wallet'){
+                    const amount = parseInt(details['order[order][amount]']/100)
+                    const discount = "+"+amount;
+                    user.findByIdAndUpdate(userSession._id , {$inc:{'wallet':amount} , $push:{'history':discount}}).then((status)=>{
+                        console.log(status);
+                        res.json(true);
+                    }).catch((err)=>{
+                        res.json(false);
+                    })
+                }else{
+                    orderModel.findByIdAndUpdate(req.body['order[receipt]'] , {$set:{paymentstatus:'completed'}}).then((status) =>{
+                        res.json(true);
+                        try{
+                            sendInvoice.generateAndSendInvoice(req,res,details['order[receipt]'],userSession.email)
+                        }catch(err){
+                            console.log(err);
+                        }
+                    }).catch((err)=>{
+                        res.json(false);
+                    })
+                }
                 
             }else{
-                console.log('hmac not matchinggg..')
                 res.json(false);
             }
         }catch{
@@ -923,7 +871,6 @@ module.exports={
             const totalpages = Math.ceil(orders.length / 5);
             const currentproduct = orders.slice(startindex,endindex);
             let userData = req.session.user
-            console.log("Current products",currentproduct)
             res.render('user/orders',{orders:currentproduct,totalpages,currentpage,userData})
         }catch(err){
             console.log(err)
@@ -932,15 +879,18 @@ module.exports={
     },
 
     cancelOrder: (req,res)=>{
+        console.log("Cancle order functionn")
         try{
             const userSession = req.session.user;
-            console.log(req.body.orderId)
             orderModel.findByIdAndUpdate(
                 req.body.orderId,
-                {orderStatus:'cancled'}
+                {orderStatus:'cancled'},
+                {new:true}
             ).then(async(status)=>{
-                console.log("Statusss",status);
-                await user.findByIdAndUpdate(userSession._id , { $inc: { 'wallet': status.GrandTotal } })
+                if(status.paymentstatus == 'completed'){
+                    const discount = "+"+status.GrandTotal;
+                    await user.findByIdAndUpdate(userSession._id , { $inc: { 'wallet': status.GrandTotal } , $push:{'history':discount}})    
+                }
                 res.json(true)
             })
         }catch(err){
@@ -951,7 +901,6 @@ module.exports={
     },
     searchProducts:async (req,res)=>{
         try{
-            console.log(req.body);
             let data = await productModel.find({
                 $or: [
                   { "name": { $regex: '^' + req.body.search, $options: 'i' } }, // Search for strings
@@ -960,18 +909,35 @@ module.exports={
                 ]
               });
             Object.freeze(data);
-            console.log(data);
             res.render('user/show-products' , {data})
         }catch(err){
             console.log(err);
             res.send("Error")
         }
     },
+    categoryFilter:async(req,res)=>{
+        try { 
+          if(req.body.category == 'All'){
+          
+          let products = await productModel.find({})
+          res.json({products})
+          console.log(products);
+          console.log(req.body.category);
+        }else{
+            let category = await categoryModel.findOne({category:req.body.category})
+            let products = await productModel.find({category:category.category})
+            res.json({products})
+            console.log(products);
+            console.log(req.body.category);
+  
+        }
+        } catch (error) {
+          console.log(error.message);
+        }
+    },
     search:async(req,res)=>{
         try{
             if(req.query.min){
-                console.log(req.query.min);
-                console.log(req.query.max)
                 let data = await productModel.find({
                     sale_price: {
                         $gte: req.query.min, 
@@ -979,7 +945,6 @@ module.exports={
                     }
                 })
                 Object.freeze(data);
-                console.log(data);
                 res.render('user/show-products' , {data})
             }else{
                 let data = await productModel.find({
@@ -990,7 +955,6 @@ module.exports={
                 ]
               });
               Object.freeze(data);
-              console.log(data);
               res.render('user/show-products' , {data})
             }
         }catch(err){
@@ -998,7 +962,6 @@ module.exports={
         }
     },
     changeStatus:async(req,res)=>{
-        console.log(req.body)
         const userSession = req.session.user;
         if(req.body.status == 'all'){
             let orders =  await orderModel.aggregate([
@@ -1022,8 +985,6 @@ module.exports={
                 }}
             ])
             Object.freeze(orders)
-            orders.reverse();
-            console.log(orders);
             res.json({orders});
         }else{
             let orders =  await orderModel.aggregate([
@@ -1048,7 +1009,6 @@ module.exports={
                 }}
             ])
             orders.reverse();
-            console.log(orders);
             res.json({orders});
         }
 
@@ -1087,13 +1047,40 @@ module.exports={
                 if(err){
                     console.log("Error while creating order : ",err)
                 }else{
-                    console.log(order);
                     res.json({order:order , razorpay:true})
                 }
             });
         }catch(err){
             console.log(err);
             res.send("Cannot add amount into your acccount");
+        }
+    },
+    returnOrder:async(req,res)=>{
+        const userSession = req.session.user;
+        const orderDetails = await orderModel.findByIdAndUpdate(req.body.orderId,{
+            orderStatus:'return'
+        },{new:true})
+        Object.freeze(orderDetails);
+        console.log(orderDetails)
+        if(orderDetails.paymentstatus == 'completed'){
+            const discount = "+"+orderDetails.GrandTotal
+            userModel.findByIdAndUpdate(userSession,
+                {
+                    $inc:{'wallet':orderDetails.GrandTotal},
+                    $push:{'history':discount}
+                }
+            ).then((status)=>{
+                res.json({isRefunded:true})
+            })
+        }
+    },
+    showHistory:async(req,res)=>{
+        try{
+            const userSession = req.session.user;
+            const data = await userModel.findById(userSession._id); 
+            res.render('user/wallet-history' , {data})
+        }catch(err){
+            console.log(err)
         }
     }
 }

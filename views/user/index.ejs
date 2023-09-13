@@ -46,13 +46,19 @@
                   <li class="nav-item">
                      <a class="nav-link" href="/show-products">Shop</a>
                   </li>
-                  <%if(user){%>
+                  
                      <li class="nav-item">
+                        <%if(user){%>
                         <a class="nav-link" href="/profile?id=<%=userData._id%>">Account</a>
+                        <%}%>
                      </li>
-                  <%}%>
+                  
                   <li class="nav-item">
+                     <%if(user){%>
                      <a class="nav-link" href="/wishlist">WishList</a>
+                     <%}else{%>
+                     <a class="nav-link" href="/login?to=wishlist">WishList</a>
+                     <%}%>
                   </li>
                </ul>
                <form class="form-inline my-2 my-lg-0">
@@ -66,7 +72,7 @@
                         <%if(user){%>
                            <li><a href="/cart"><img src="images/trolly-icon.png"></a></li>
                         <%}else{%>
-                           <li><a href="/login"><img src="images/trolly-icon.png"></a></li>
+                           <li><a href="/login?to=cart"><img src="images/trolly-icon.png"></a></li>
                         <%}%>
                         <li><a href="#"><img src="images/search-icon.png"></a></li>
                      </ul>
@@ -360,9 +366,9 @@
                   </div>
                </div>
                <div class="col-lg-4 col-sm-12">
-                  <div class="call_text"><a href="#"><img src="images/map-icon.png"><span class="padding_left_0">Page when looking at its layou</span></a></div>
-                  <div class="call_text"><a href="#"><img src="images/call-icon.png"><span class="padding_left_0">Call Now  +01 123467890</span></a></div>
-                  <div class="call_text"><a href="#"><img src="images/mail-icon.png"><span class="padding_left_0">demo@gmail.com</span></a></div>
+                  <div class="call_text"><a href="#"><img src="images/map-icon.png"><span class="padding_left_0">Kakkanad,Ernakulam</span></a></div>
+                  <div class="call_text"><a href="#"><img src="images/call-icon.png"><span class="padding_left_0">Call Now  +91 8089568695</span></a></div>
+                  <div class="call_text"><a href="#"><img src="images/mail-icon.png"><span class="padding_left_0">cycleshop@gmail.com</span></a></div>
                   <div class="social_icon">
                      <ul>
                         <li><a href="#"><img src="images/fb-icon1.png"></a></li>
@@ -381,7 +387,7 @@
       <!-- copyright section start -->
       <div class="copyright_section">
          <div class="container">
-            <p class="copyright_text">Copyright 2019 All Right Reserved By.<a href="https://html.design"> Free  html Templates</p><p class="copyright_text">Disrtributed By. <a href="https://themewagon.com">ThemeWagon </a></p>
+            <p class="copywrite-text">@copywrite</p>
          </div>
       </div>
       <!-- copyright section end -->    

@@ -12,7 +12,7 @@ let userModel = new mongoose.Schema({
     referal:{
         type:String,
     },
-    wallet:{
+    history:{
         type:Array,
     },
     wallet:{

@@ -1,3 +1,4 @@
+<%- include('../partials/user-header')%>
 <head>
     <style>
         .icon-hover-primary:hover {
@@ -213,7 +214,7 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.5/dist/sweetalert2.min.js"></script>
 </head>
 <!-- cart + summary -->
-<%- include('../partials/user-header')%>
+
 <section class="bg-light my-5">
     <div class="container">
         <div class="row boxed">
@@ -271,7 +272,7 @@
                                     </label>
 
                                     <label class="card">
-                                        <input name="paymentMethod" class="radio" type="radio" value="paypal">
+                                        <input disabled name="paymentMethod" class="radio" type="radio" value="paypal">
                                         <span class="plan-details">
                                             <span class="plan-type">Paypal</span>
                                             
@@ -281,7 +282,7 @@
                                 </div>
                                 <%if(isSingle){%>
                                     <div class="d-flex mb-3 border border-success rounded p-3">
-                                        <img class="img-fluid" width="100px"
+                                        <img class="img-fluid" style="width: 80px;height: 50px;"
                                             src="/upload/product/<%=ProductDetails[0].images[0]%>"
                                             alt="Product-img">
                                         <p for="name" class="ms-4">
@@ -295,11 +296,11 @@
                                 <%}else{%>
                                 <%for(i=0;i<productDetails.length;i++){%>
                                     <div class="d-flex mb-3 border border-success rounded p-3">
-                                        <img class="img-fluid" width="100px"
+                                        <img class="img-fluid mt-3" style="width: 80px; height: 50px;"
                                             src="/upload/product/<%=productDetails[i].ProductDetails[0].images[0]%>"
                                             alt="Product-img">
                                         <p for="name" class="ms-4">
-                                            <%=productDetails[i].ProductDetails[0].name%><br>
+                                            <%=productDetails[i].ProductDetails[0].name.substring(0,21)%><br>
                                                 <s>₹<%=productDetails[i].ProductDetails[0].regular_price%></s>
                                                 <b>₹<%=productDetails[i].ProductDetails[0].sale_price%></b><br>
                                                 Quantity: <%=productDetails[i].quantity%>
@@ -363,7 +364,7 @@
                             <%}else{%>
                                 <a id="walletButton" style="display: none;">Not used</a>
                             <%}%>
-                            <a href="#" class="btn btn-light w-100 border mt-2"> Back to shop </a>
+                           
                         </div>
                     </div>
                 </div>
@@ -372,107 +373,6 @@
         </div>
     </div>
 </section>
-
-<!-- Footer -->
-<footer class="text-center text-lg-start text-muted bg-primary mt-3">
-    <!-- Section: Links  -->
-    <section class="">
-        <div class="container text-center text-md-start pt-4 pb-4">
-            <!-- Grid row -->
-            <div class="row mt-3">
-                <!-- Grid column -->
-                <div class="col-12 col-lg-3 col-sm-12 mb-2">
-                    <!-- Content -->
-                    <a href="https://mdbootstrap.com/" target="_blank" class="text-white h2">
-                        MDB
-                    </a>
-                    <p class="mt-1 text-white">
-                        © 2023 Copyright: MDBootstrap.com
-                    </p>
-                </div>
-                <!-- Grid column -->
-
-                <!-- Grid column -->
-                <div class="col-6 col-sm-4 col-lg-2">
-                    <!-- Links -->
-                    <h6 class="text-uppercase text-white fw-bold mb-2">
-                        Store
-                    </h6>
-                    <ul class="list-unstyled mb-4">
-                        <li><a class="text-white-50" href="#">About us</a></li>
-                        <li><a class="text-white-50" href="#">Find store</a></li>
-                        <li><a class="text-white-50" href="#">Categories</a></li>
-                        <li><a class="text-white-50" href="#">Blogs</a></li>
-                    </ul>
-                </div>
-                <!-- Grid column -->
-
-                <!-- Grid column -->
-                <div class="col-6 col-sm-4 col-lg-2">
-                    <!-- Links -->
-                    <h6 class="text-uppercase text-white fw-bold mb-2">
-                        Information
-                    </h6>
-                    <ul class="list-unstyled mb-4">
-                        <li><a class="text-white-50" href="#">Help center</a></li>
-                        <li><a class="text-white-50" href="#">Money refund</a></li>
-                        <li><a class="text-white-50" href="#">Shipping info</a></li>
-                        <li><a class="text-white-50" href="#">Refunds</a></li>
-                    </ul>
-                </div>
-                <!-- Grid column -->
-
-                <!-- Grid column -->
-                <div class="col-6 col-sm-4 col-lg-2">
-                    <!-- Links -->
-                    <h6 class="text-uppercase text-white fw-bold mb-2">
-                        Support
-                    </h6>
-                    <ul class="list-unstyled mb-4">
-                        <li><a class="text-white-50" href="#">Help center</a></li>
-                        <li><a class="text-white-50" href="#">Documents</a></li>
-                        <li><a class="text-white-50" href="#">Account restore</a></li>
-                        <li><a class="text-white-50" href="#">My orders</a></li>
-                    </ul>
-                </div>
-                <!-- Grid column -->
-
-                <!-- Grid column -->
-                <div class="col-12 col-sm-12 col-lg-3">
-                    <!-- Links -->
-                    <h6 class="text-uppercase text-white fw-bold mb-2">Newsletter</h6>
-                    <p class="text-white">Stay in touch with latest updates about our products and offers</p>
-                    <div class="input-group mb-3">
-                        <input type="email" class="form-control border" placeholder="Email" aria-label="Email"
-                            aria-describedby="button-addon2" />
-                        <button class="btn btn-light border shadow-0" type="button" id="button-addon2"
-                            data-mdb-ripple-color="dark">
-                            Join
-                        </button>
-                    </div>
-                </div>
-                <!-- Grid column -->
-            </div>
-            <!-- Grid row -->
-        </div>
-    </section>
-    <!-- Section: Links  -->
-
-    <div class="">
-        <div class="container">
-            <div class="d-flex justify-content-between py-4 border-top">
-                <!--- payment --->
-                <div>
-                    <i class="fab fa-lg fa-cc-visa text-white"></i>
-                    <i class="fab fa-lg fa-cc-amex text-white"></i>
-                    <i class="fab fa-lg fa-cc-mastercard text-white"></i>
-                    <i class="fab fa-lg fa-cc-paypal text-white"></i>
-                </div>
-
-            </div>
-        </div>
-    </div>
-</footer>
 
 <div class="modal fade top" id="modalCoupon" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true"
     data-bs-backdrop="true">
@@ -525,12 +425,18 @@
                 total,
             },
             success:(response)=>{
-                document.getElementById('inputCoupon').readOnly = true;
-                document.getElementById('applyButton').disabled  =true;
-                const gt = parseInt(document.getElementById('gt').innerHTML);
-                const discount = parseInt(document.getElementById('discount').innerHTML);
-                document.getElementById('gt').innerHTML = gt-parseInt(response.offerPrice);
-                document.getElementById('discount').innerHTML = discount+parseInt(response.offerPrice);
+                if(response.used == true){
+                    Swal.fire("Already used");
+                }else if(response.noCoupon == true){
+                    Swal.fire("No coupon found");
+                }else{
+                    document.getElementById('inputCoupon').readOnly = true;
+                    document.getElementById('applyButton').disabled  =true;
+                    const gt = parseInt(document.getElementById('gt').innerHTML);
+                    const discount = parseInt(document.getElementById('discount').innerHTML);
+                    document.getElementById('gt').innerHTML = gt-parseInt(response.offerPrice);
+                    document.getElementById('discount').innerHTML = discount+parseInt(response.offerPrice);
+                }
             }
         })
     }
@@ -546,10 +452,20 @@
             success: (response) => {
                 if (response) {
                     Swal.fire({
-                        title: "Success",
-                        text: "Payment has been succesful",
-                        icon: "success",
-                    })
+                            title: "Order success",
+                            text: "You'r order has been succesfully placed",
+                            icon: "success",
+                            showCancelButton: true,
+                            confirmButtonText: "View Orders",
+                            cancelButtonText: "Continue shopping",
+                            reverseButtons: true
+                        }).then(function (result) {
+                            if (result.value) {
+                                location.href = '/orders/<%=userData._id%>'
+                            } else if (result.dismiss === "cancel") {
+                                location.href = '/show-products'
+                            }
+                        });
                 } else {
                     Swal.fire("PAYMENT ERROR!", "Something wrong occured while processing the payment.", "error");
                 }
@@ -564,15 +480,15 @@
             "currency": "INR",
             "name": "CYCLE SHOP",
             "description": "Test Transaction",
-            "image": "https://example.com/your_logo",
+            "image": "http://localhost:3000/images/logo.png",
             "order_id": order.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
             "handler": function (response) {
                 verifyPayment(response, order);
             },
             "prefill": {
-                "name": "Gaurav Kumar",
-                "email": "gaurav.kumar@example.com",
-                "contact": "9000090000"
+                "name": "CycleShop",
+                "email": "cycleshop@gmail.com",
+                "contact": "8089568695"
             },
             "notes": {
                 "address": "Razorpay Corporate Office"

@@ -1,4 +1,3 @@
-
 const orderModel = require('../models/order-model')
 const mongodb = require('mongodb');
 const easyinvoice = require('easyinvoice');
@@ -9,7 +8,7 @@ const user = require('../models/user-model');
 module.exports={
     invoice:async(req,res)=>{
         try {
-            const id = req.query.id;
+            const id  = req.query.id;
             const result = await orderModel.findOne({ _id: id });
             console.log("Resultt" , result)
             const userData = await user.findOne({ _id: result.userId });
@@ -30,7 +29,6 @@ module.exports={
               state: address.state,
               items: result.items,
             };
-            console.log("ORdersss:",order)
             let oid = new mongodb.ObjectId(order.id)
             let Pname =  await orderModel.aggregate([
               {$match:{_id:oid}},
