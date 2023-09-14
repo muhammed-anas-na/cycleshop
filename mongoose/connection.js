@@ -1,7 +1,8 @@
 const mongoose = require('mongoose')
+require('dotenv').config()
 module.exports={
     connect(){
-        mongoose.connect('mongodb://0.0.0.0:27017/cycleshop', {
+        mongoose.connect(process.env.MONGO_URL, {
             useNewUrlParser: true,
             useUnifiedTopology: true
             })

@@ -101,6 +101,7 @@ module.exports={
                 date: formattedDate,
               },
               products: products,
+              data:"This is dataaaa",
               "bottom-notice": "Happy shoping and visit Cycle shop again",
             };
         
