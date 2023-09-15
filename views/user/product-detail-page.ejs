@@ -357,7 +357,16 @@
         const size = document.getElementById('size').value
         const myLink = document.getElementById('buyNowButton');
         myLink.setAttribute('href', '/buy-now?proId='+proId+'&quantity='+quantity+'&size='+size);
-        $.ajax({
+        const unit = '<%=data.unit%>'
+        if(parseInt(unit)<=0){
+                Swal.fire({
+                    title: 'STOCK',
+                    text: 'Out of stock.',
+                    icon: 'warning',
+                    timer: 5000
+                })
+        }else{
+            $.ajax({
             url:'/buy-now',
             method:'get',
             data:{
@@ -365,7 +374,8 @@
                 quantity,
                 size,
             },
-        })
+        })   
+        }
     }
     let zoomer = function () {
         document.querySelector('#img-zoomer-box')

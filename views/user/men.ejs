@@ -43,8 +43,8 @@
 		
 	<div class="colorlib-loader"></div>
     <%- include('../partials/user-header')%>
-	<div id="page">
-        <div class="sale mt-5" style="background-color: aliceblue;">
+	<div id="">
+        <div class="mt-5" style="background-color: aliceblue;">
             <div class="container">
                 <div class="row">
                     <div class="col-sm-8 offset-sm-2 text-center">
@@ -76,7 +76,7 @@
 			</div>
 		</div>
 
-		<div class="breadcrumbs-two mb-5 ">
+		<div class="breadcrumbs-two">
 			<div class="container">
 				<div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
 					<div class="carousel-inner">
@@ -99,7 +99,7 @@
 			</div>
 		</div>
 
-		<div class="colorlib-featured">
+		<!-- <div class="colorlib-featured">
 			<div class="container">
 				<div class="row">
 					<div class="col-sm-4 text-center">
@@ -128,13 +128,27 @@
 					</div>
 				</div>
 			</div>
-		</div>
+		</div> -->
 
-		<div class="colorlib-product">
+		<div class="colorlib-product mt-0">
 			<div class="container">
-				<div class="row">
+				<div class="row flex-wrap-reverse">
 					<div class="col-lg-3 col-xl-3">
 						<div class="row">
+							<div class="col-sm-12">
+								<div class="side border mb-1">
+									<h3>Category</h3>
+									<ul>
+										<li><a onclick="categoryFilter('All')">All</a></li>
+										<%categoryData.reverse()%>
+										<%for(let i=0;i<categoryData.length;i++){%>
+										<li><a onclick="categoryFilter('<%=categoryData[i].category%>')"><%=categoryData[i].category%></a></li>
+										<%}%>
+
+									</ul>
+								</div>
+							</div>
+
 							<div class="col-sm-12">
 								<div class="side border mb-1">
 									<h3>Brand</h3>
@@ -175,19 +189,7 @@
 					            </div>
 								</div>
 							</div>
-							<div class="col-sm-12">
-								<div class="side border mb-1">
-									<h3>Category</h3>
-									<ul>
-										<li><a onclick="categoryFilter('All')">All</a></li>
-										<%categoryData.reverse()%>
-										<%for(let i=0;i<categoryData.length;i++){%>
-										<li><a onclick="categoryFilter('<%=categoryData[i].category%>')"><%=categoryData[i].category%></a></li>
-										<%}%>
-
-									</ul>
-								</div>
-							</div>
+							
 						</div>
 					</div>
 					<div class="col-lg-9 col-xl-9">
@@ -203,11 +205,19 @@
 										<h2><a href="/product-detail-page/<%=data[i]._id%>"><%=data[i].name.substring(0, 20)%></a></h2>
 										<span class="text-danger"><s>₹ <%=data[i].regular_price%></s></span>
 										<span class="price">₹ <%=data[i].sale_price%></span>
-										
+										<%if(userData){%>
 										<a class="btn btn-sm btn-brand rounded" style="align-items: center;" onclick="addToCart('<%=data[i]._id%>')">
 											<i class="material-icons md-shopping_cart" style="align-items: center;"></i>Add to cart
 										</a>
 										<span onclick="addToWishList('<%=data[i]._id%>')" class="wishlist" style="padding: 5px;"><i class="fa-solid fa-heart"></i></span>	
+
+										<%}else{%>
+										<a class="btn btn-sm btn-brand rounded" style="align-items: center;" href="/login?to=show-products">
+											<i class="material-icons md-shopping_cart" style="align-items: center;"></i>Add to cart
+										</a>
+										<a href="/login?to=show-products"><span class="wishlist" style="padding: 5px;"><i class="fa-solid fa-heart"></i></span></a>
+
+										<%}%>
 										<!-- <i class="fa-regular fa-heart"></i> -->
 										
 									</div>
@@ -325,18 +335,6 @@
 							<li><a href="mailto:info@yoursite.com">info@yoursite.com</a></li>
 							<li><a href="#">yoursite.com</a></li>
 						</ul>
-					</div>
-				</div>
-			</div>
-			<div class="copy">
-				<div class="row">
-					<div class="col-sm-12 text-center">
-						<p>
-							<span><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="icon-heart" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
-<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. --></span> 
-							<span class="block">Demo Images: <a href="http://unsplash.co/" target="_blank">Unsplash</a> , <a href="http://pexels.com/" target="_blank">Pexels.com</a></span>
-						</p>
 					</div>
 				</div>
 			</div>

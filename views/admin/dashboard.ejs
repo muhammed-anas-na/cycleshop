@@ -23,7 +23,7 @@
     <div class="screen-overlay"></div>
     <aside class="navbar-aside" id="offcanvas_aside">
         <div class="aside-top">
-            <a href="index.html" class="brand-wrap">
+            <a href="/" class="brand-wrap">
                 <img src="http://localhost:3000/images/logo.png" class="logo" alt="Evara Dashboard">
             </a>
             <div>
@@ -132,7 +132,7 @@
                             <span class="icon icon-sm rounded-circle bg-primary-light"><i class="text-primary material-icons md-monetization_on"></i></span>
                             <div class="text">
                                 <h6 class="mb-1 card-title">Revenue</h6>
-                                <span>$13,456.5</span>
+                                <span id="total-revenue"></span>
                                 <span class="text-sm">
                                     Shipping fees are not included
                                 </span>
@@ -635,7 +635,8 @@
             });
             const element = document.getElementById('revenue')
             const revenue = data.revenueData[0]
-            element.textContent = revenue
+            document.getElementById('total-revenue').innerHTML = "₹"+data.revenueData[0];
+            element.textContent = "₹"+revenue
             const element1 = document.getElementById('ordercount')
             const ordercount = data.orderCountData[0]
             element1.textContent = ordercount
