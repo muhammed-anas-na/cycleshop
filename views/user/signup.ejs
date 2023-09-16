@@ -113,7 +113,7 @@ body {
           event.preventDefault()
         }
         
-        const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
+        const passwordRegex = /^(?!.*\s).{8,}$/;
         let password = document.getElementById('password').value;
         if(passwordRegex.test(password)){}else{
           document.getElementById('err-msg').innerHTML = document.getElementById('err-msg').innerHTML + '<br> Password error'
