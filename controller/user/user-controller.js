@@ -32,8 +32,7 @@ module.exports={
 
     },
     Login_page:(req,res)=>{
-        console.log(req.query.to);
-        try{
+        try{    
             if(req.session.loggedIn){
                 res.redirect('/')
             }else{

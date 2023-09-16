@@ -28,6 +28,7 @@
 
     <main class="">
         <%- include('../partials/user-header')%>
+        <%if(orders.length != 0){%>
             <section class="content-main">
                 <div class="content-header">
                     <div>
@@ -52,13 +53,6 @@
                                     <option value="pending">Pending</option>
                                     <option value="cancled">Cancled</option>
                                     <option value="return">Returned</option>
-                                </select>
-                            </div>
-                            <div class="col-lg-2 col-6 col-md-3">
-                                <select class="form-select">
-                                    <option>Show 20</option>
-                                    <option>Show 30</option>
-                                    <option>Show 40</option>
                                 </select>
                             </div>
                         </div>
@@ -159,6 +153,11 @@
                         </div> <!-- table-responsive //end -->
                     </div> <!-- card-body end// -->
                 </div> <!-- card end// -->
+                <%}else{%>
+                    <div class="container mt-5">
+                        <h4>No orders</h4>
+                    </div>
+                <%}%>
                 <% if (totalpages> 1) { %>
                     <div class="pagination-area mt-15 mb-50">
                         <nav aria-label="Page navigation example">

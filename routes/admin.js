@@ -59,5 +59,6 @@ router.get('/add-coupen',Auth.isAdminLogin,couponController.ShowBanner)
 router.post('/add-coupen',Auth.isAdminLogin,couponController.AddCoupon)
 // router.post('/add-banner',bannerSharp.resizeImages,bannerController.addBanner)
 router.get('/invoice' ,Auth.isAdminLogin, orderController.invoice)
+router.get('/logout' , Auth.isAdminLogin,adminController.logOut)
 
 module.exports = router;

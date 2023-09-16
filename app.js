@@ -8,6 +8,7 @@ const ejsLayout = require('express-ejs-layouts')
 const db = require('./mongoose/connection')
 const googlePassport = require('./passports/google')
 const passport = require('passport')
+const nocache = require('nocache')
 
 const indexRouter = require('./routes/index');
 const adminRouter = require('./routes/admin');
@@ -36,7 +37,7 @@ app.use(passport.session())
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-
+app.use(nocache())
 app.use(express.static(path.join(__dirname, 'public')));
 
 

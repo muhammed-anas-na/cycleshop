@@ -83,39 +83,13 @@
                                     <%=userData.name%>
                                 </h4>
                                 <a href="/orders/<%=userData._id%>" class="btn btn-primary mt-3">Orders</a>
-                                <a class="btn btn-outline-primary mt-3">Message</a>
+                                <a href="/wallet" class="btn btn-outline-primary mt-3"><i class="fa-solid fa-wallet me-2"></i>Wallet</a>
                             </div>
+                               
                         </div>
                     </div>
                 </div>
-                <div class="card mt-3">
-                    <ul class="list-group list-group-flush">
-                        <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
-                            <div class="d-flex" style="align-items: center;">
-                                <i class="fa-solid fa-wallet me-2"></i>
-                                <h6 class="mb-0 btn btn-outline"><a href="/wallet">Wallet</a></h6>
-                            </div>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
-                            <div class="d-flex" style="align-items: center;">
-                                <i class="fa-solid fa-key me-2"></i>
-                                 <h6 class="mb-0 btn btn-outline"><a href="/change-password/<%=userData._id%>">Change Password</a></h6>
-                            </div>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
-                            <div class="d-flex" style="align-items: center;">
-                                <i class="fa-solid fa-right-from-bracket me-2"></i>
-                                <h6 class="mb-0 btn btn-outline"><a href="/logout">Logout</a></h6>
-                            </div>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
-                            <div class="d-flex" style="align-items: center;">
-                                <i class="fa-solid fa-trash me-2"></i>
-                            <h6 class="mb-0 btn btn-outline"><a href="#">Delete Account</a></h6>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
+                
             </div>
             <div class="col-md-8">
                 <div class="card mb-3">
@@ -150,7 +124,7 @@
                         <hr>
                         <div class="row">
                             <div class="col-sm-12">
-                                <a class="btn btn-info " target="__blank"
+                                <a class="btn btn-info " 
                                     href="/edit-profile?id=<%=userData._id%>">Edit</a>
                             </div>
                         </div>
@@ -212,6 +186,29 @@
 
                             </div>
                         </div>
+                    </div>
+
+                    <div class="card mt-3">
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                                <div class="d-flex" style="align-items: center;">
+                                    <i class="fa-solid fa-key me-2"></i>
+                                     <h6 class="mb-0 btn btn-outline"><a href="/change-password/<%=userData._id%>">Change Password</a></h6>
+                                </div>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                                <div class="d-flex" style="align-items: center;">
+                                    <i class="fa-solid fa-right-from-bracket me-2"></i>
+                                    <h6 class="mb-0 btn btn-outline"><a href="/logout">Logout</a></h6>
+                                </div>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                                <div class="d-flex" style="align-items: center;">
+                                    <i class="fa-solid fa-trash me-2"></i>
+                                <h6 class="mb-0 btn btn-outline"><a href="#">Delete Account</a></h6>
+                                </div>
+                            </li>
+                        </ul>
                     </div>
                 </div>
 

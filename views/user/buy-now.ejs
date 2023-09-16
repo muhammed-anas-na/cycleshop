@@ -230,7 +230,6 @@
                         <%if(userData.adress.length<2){%>
                             <a href="/add-adress/<%=userData._id%>?from=buynow" class="btn btn-info" style="margin-left: 35rem;">Add Adress</a>
                         <%}%>
-
                         <%for(i=0;i<userData.adress.length;i++){%>
                             <div class="mb-0 mt-3">
                                 <a href="/show-edit-adress/<%=userData.adress[i]._id%>?from=buynow">Edit</a>
@@ -359,7 +358,7 @@
                                 <button onclick="deliverHere('<%=productDetails[0]._id%>' , false)" class="btn btn-success w-100 shadow-0 mb-2">
                                     DELIVER HERE </button>
                             <%}%>
-                            <%if(total>userData.wallet){%>
+                            <%if(total>userData.wallet && userData.wallet!=0){%>
                             <a id="walletButton" onclick="applyWallet()" href="#" class="btn btn-light w-100 border mt-2" onmouseover="this.style.backgroundColor='#87CEEB'" onmouseout="this.style.backgroundColor='#fff'"> Apply wallet </a>
                             <%}else{%>
                                 <a id="walletButton" style="display: none;">Not used</a>

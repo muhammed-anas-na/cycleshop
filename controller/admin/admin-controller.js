@@ -40,5 +40,14 @@ module.exports={
             res.render('admin/admin-login' , {noAdmin:true,passErr:false})
         })
     },
+    logOut:(req,res)=>{
+        try{
+            req.session.isAdmin = false;
+            res.redirect("/admin/admin-login")
+        }catch(err){
+            console.log(err);
+            res.send("Errow wile logging out")
+        }
+    }
 
 }
