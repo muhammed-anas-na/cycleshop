@@ -121,13 +121,10 @@
                         <dd class="col-9">Regular</dd>
 
                         <dt class="col-3">Color</dt>
-                        <dd class="col-9">Brown</dd>
-
-                        <dt class="col-3">Material</dt>
-                        <dd class="col-9">Cotton, Jeans</dd>
+                        <dd class="col-9">Black</dd>
 
                         <dt class="col-3">Brand</dt>
-                        <dd class="col-9">Reebook</dd>
+                        <dd class="col-9">Ninty One</dd>
                     </div>
 
                     <hr />
@@ -463,9 +460,16 @@
     decrementButton.addEventListener("click", () => {
         let currentQuantity = parseInt(quantityInput.value);
         if (!isNaN(currentQuantity)) {
-            if(currentQuantity==1){alert("Prodcut count 0 not possible")}else{
+            if(currentQuantity==1){
+                Swal.fire({
+                    title: 'ERROR!',
+                    text: 'Quantity 0 not possible',
+                    icon: 'warning',
+                    timer: 5000
+                })
+            }else{
                 currentQuantity = Math.max(currentQuantity - 1, 0);
-            quantityInput.value = currentQuantity;
+                quantityInput.value = currentQuantity;
             }
 
         }

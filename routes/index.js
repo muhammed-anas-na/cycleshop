@@ -21,15 +21,13 @@ router.post("/login-otp", login_with_otp.sendmail);
 router.post("/enter-login-otp/:id", login_with_otp.checkOtp);
 router.get("/enter-login-otp", login_with_otp.resendOtp);
 //------------>LOGIN-WITH-GOOGLE<---------------
-router.get(
-  "/auth/google/callback",
-  passport.authenticate("google", {
-    successRedirect: "/",
-    failureRedirect: "/sad",
-  })
-);
-
-
+// router.get(
+//   "/auth/google/callback",
+//   passport.authenticate("google", {
+//     successRedirect: "/",
+//     failureRedirect: "/sad",
+//   })
+// );
 
 router.get("/forget-password", userController.forgetPassword);
 router.post("/forget-password", userController.sendTwillio);

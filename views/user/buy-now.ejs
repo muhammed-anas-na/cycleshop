@@ -227,9 +227,7 @@
                         font-weight: bolder;" class="card-title mb-4">
                             Select Address
                         </h1>
-                        <%if(userData.adress.length<2){%>
                             <a href="/add-adress/<%=userData._id%>?from=buynow" class="btn btn-info" style="margin-left: 35rem;">Add Adress</a>
-                        <%}%>
                         <%for(i=0;i<userData.adress.length;i++){%>
                             <div class="mb-0 mt-3">
                                 <a href="/show-edit-adress/<%=userData.adress[i]._id%>?from=buynow">Edit</a>

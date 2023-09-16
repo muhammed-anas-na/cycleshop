@@ -554,9 +554,6 @@ module.exports={
                     { minPrice: { $lte: total } }
                 )
                 Object.freeze(couponData)
-                if(productDetails.length == 0){
-                    return res.redirect('/cart');
-                }
                 res.render('user/buy-now' ,{userData , ProductDetails ,total, isSingle:true , quantity:req.session.quantity , size:req.query.size , couponData})
                 //res.render('user/buy-now' , {isSingle:true , productDetails} )
             }else{
